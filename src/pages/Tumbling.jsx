@@ -317,7 +317,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "30px",
+    padding: "60px",
     gap: "20px",
   },
 

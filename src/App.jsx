@@ -71,6 +71,20 @@ export default function App() {
                     FIG Code of Points PDF
                   </a>
 
+                  <p style={styles.credit}>
+                    Created by Jackson Cann •{" "}
+
+                    <a
+                      href="https://www.instagram.com/jcanflip"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.instagramLink}
+                    >
+                      @jcanflip
+                    </a>
+
+                  </p>
+
                 </div>
 
               </div>
@@ -207,4 +221,16 @@ const styles = {
 
     fontSize: "16px",
   },
+
+  credit: {
+  color: "#94a3b8",
+  fontSize: "14px",
+  marginTop: "10px",
+  },
+
+  instagramLink: {
+  color: "#fcaf45",
+  textDecoration: "none",
+  },
+
 };

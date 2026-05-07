@@ -291,7 +291,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "30px",
+    padding: "60px",
     gap: "20px",
   },
 
@@ -340,7 +340,7 @@ const styles = {
   },
 
   input: {
-    width: "140px",
+    width: "90px",
     padding: "10px",
     fontSize: "18px",
   },
