@@ -75,7 +75,7 @@ const [activeEditInput, setActiveEditInput] = useState(null);
       JSON.stringify(updated)
     );
 
-    window.location.reload();
+    setSelectedRoutine(null);
   }
 
   function renderSection(title, routines) {
