@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { House } from "lucide-react";
+import { Save } from "lucide-react";
 import { doubleMiniSkills } from "../data/doubleMiniSkills";
 
 export default function DoubleMini() {
@@ -15,6 +16,9 @@ export default function DoubleMini() {
   ]);
 
   const [activeInput, setActiveInput] = useState(null);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+
+const [routineName, setRoutineName] = useState("");
 
   const containerRef = useRef(null);
 
@@ -79,6 +83,8 @@ export default function DoubleMini() {
       return total + getRoutineDD(routine);
     }, 0);
 
+
+    
   return (
     <div ref={containerRef} style={styles.container}>
 
@@ -256,6 +262,83 @@ export default function DoubleMini() {
         Total DD: {totalAllRoutines.toFixed(1)}
       </h2>
 
+<>
+  <button
+    onClick={() => setShowSaveModal(true)}
+    style={styles.saveButton}
+  >
+    <Save size={20} />
+  </button>
+
+  {showSaveModal && (
+
+    <div style={styles.modalOverlay}>
+
+      <div style={styles.modal}>
+
+        <h2>Save Routine</h2>
+
+        <input
+          type="text"
+          placeholder="Routine name"
+          value={routineName}
+          onChange={(e) =>
+            setRoutineName(e.target.value)
+          }
+          style={styles.modalInput}
+        />
+
+        <div style={styles.modalButtons}>
+
+          <button
+            onClick={() => setShowSaveModal(false)}
+            style={styles.cancelButton}
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => {
+
+              if (!routineName) return;
+
+              const existing = JSON.parse(
+                localStorage.getItem("savedRoutines") || "[]"
+              );
+
+              existing.push({
+                name: routineName,
+                event: "doubleMini",
+                routines,
+                totalDD: totalAllRoutines,
+              });
+
+              localStorage.setItem(
+                "savedRoutines",
+                JSON.stringify(existing)
+              );
+
+              setRoutineName("");
+
+              setShowSaveModal(false);
+
+              alert("Routine saved!");
+
+            }}
+            style={styles.confirmButton}
+          >
+            Save
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  )}
+</>
+
     </div>
   );
 }
@@ -378,4 +461,97 @@ const styles = {
     cursor: "pointer",
     borderBottom: "1px solid #eee",
   },
+
+saveButton: {
+
+  width: "50px",
+  height: "50px",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  borderRadius: "12px",
+
+  border: "none",
+
+  background: "#22c55e",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  marginTop: "10px",
+},
+
+modalOverlay: {
+  position: "fixed",
+  inset: 0,
+
+  background: "rgba(0,0,0,0.5)",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  zIndex: 9999,
+},
+
+modal: {
+  background: "white",
+
+  padding: "30px",
+
+  borderRadius: "20px",
+
+  width: "min(400px, 90vw)",
+
+  display: "flex",
+  flexDirection: "column",
+
+  gap: "20px",
+},
+
+modalInput: {
+  padding: "14px",
+
+  fontSize: "18px",
+
+  borderRadius: "10px",
+
+  border: "1px solid #ccc",
+},
+
+modalButtons: {
+  display: "flex",
+
+  justifyContent: "flex-end",
+
+  gap: "10px",
+},
+
+cancelButton: {
+  padding: "12px 18px",
+
+  borderRadius: "10px",
+
+  border: "none",
+
+  cursor: "pointer",
+},
+
+confirmButton: {
+  padding: "12px 18px",
+
+  borderRadius: "10px",
+
+  border: "none",
+
+  background: "#22c55e",
+
+  color: "white",
+
+  cursor: "pointer",
+},
+
 };

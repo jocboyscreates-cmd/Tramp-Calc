@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Trampoline from "./pages/Trampoline";
 import DoubleMini from "./pages/DoubleMini";
 import Tumbling from "./pages/Tumbling";
+import SavedRoutines from "./pages/SavedRoutines";
 
 export default function App() {
   return (
@@ -47,6 +48,13 @@ export default function App() {
                     style={styles.card}
                   >
                     Tumbling
+                  </Link>
+
+                  <Link
+                    to="/saved"
+                    style={styles.savedCard}
+                  >
+                    Saved Routines
                   </Link>
 
                 </div>
@@ -106,6 +114,11 @@ export default function App() {
         <Route
           path="/tumbling"
           element={<Tumbling />}
+        />
+
+        <Route
+          path="/saved"
+          element={<SavedRoutines />}
         />
 
       </Routes>
@@ -203,6 +216,33 @@ const styles = {
     boxShadow:
       "0 10px 30px rgba(0,0,0,0.25)",
   },
+
+  savedCard: {
+  width: "min(320px, 90vw)",
+
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+
+  padding: "22px",
+
+  borderRadius: "20px",
+
+  background:
+    "rgba(192,132,252,0.12)",
+
+  border:
+    "1px solid rgba(192,132,252,0.4)",
+
+  color: "#e9d5ff",
+
+  textDecoration: "none",
+
+  fontSize: "24px",
+  fontWeight: "bold",
+
+  textAlign: "center",
+},
 
   footer: {
     marginTop: "40px",
