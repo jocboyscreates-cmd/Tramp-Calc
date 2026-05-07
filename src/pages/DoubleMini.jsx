@@ -336,6 +336,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "10px",
+    flexWrap: "wrap",
   },
 
   input: {
@@ -345,7 +346,8 @@ const styles = {
   },
 
   dropdown: {
-    width: "320px",
+    flex: 1,
+    minWidth: "180px",
     padding: "10px",
     fontSize: "16px",
   },

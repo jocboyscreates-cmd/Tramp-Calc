@@ -51,6 +51,28 @@ export default function App() {
 
                 </div>
 
+                <div style={styles.footer}>
+
+                  <a
+                    href="https://www.gymbc.org/media/qb5g331q/2025_tg_canadian_pathways_en_v6_march-2025.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.footerLink}
+                  >
+                    Canadian Pathways PDF
+                  </a>
+
+                  <a
+                    href="https://www.gymbc.org/media/1wbnaeax/fig-tra-cop-2025-2028.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={styles.footerLink}
+                  >
+                    FIG Code of Points PDF
+                  </a>
+
+                </div>
+
               </div>
 
             </div>
@@ -82,7 +104,7 @@ const styles = {
   container: {
     minHeight: "100vh",
     width: "100vw",
-    
+
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -115,7 +137,7 @@ const styles = {
 
   title: {
     color: "white",
-    fontSize: "56px",
+    fontSize: "clamp(32px, 8vw, 56px)",
     fontWeight: "bold",
 
     margin: 0,
@@ -135,7 +157,7 @@ const styles = {
   },
 
   card: {
-    width: "320px",
+    width: "min(320px, 90vw)",
 
     display: "flex",
     justifyContent: "center",
@@ -166,5 +188,23 @@ const styles = {
 
     boxShadow:
       "0 10px 30px rgba(0,0,0,0.25)",
+  },
+
+  footer: {
+    marginTop: "40px",
+
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+
+    alignItems: "center",
+  },
+
+  footerLink: {
+    color: "#cbd5e1",
+
+    textDecoration: "none",
+
+    fontSize: "16px",
   },
 };
