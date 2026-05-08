@@ -13,6 +13,9 @@ import Tumbling from "./pages/Tumbling";
 import SavedRoutines from "./pages/SavedRoutines";
 import Leaderboard from "./pages/Leaderboard";
 
+import SharedRoutine
+from "./pages/SharedRoutine";
+
 import {
   Trophy,
   Settings,
@@ -240,6 +243,11 @@ export default function App() {
         <Route
           path="/leaderboard"
           element={<Leaderboard />}
+        />
+
+        <Route
+          path="/shared"
+          element={<SharedRoutine />}
         />
 
       </Routes>
