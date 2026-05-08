@@ -1,11 +1,27 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { useState } from "react";
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+} from "react-router-dom";
 
 import Trampoline from "./pages/Trampoline";
 import DoubleMini from "./pages/DoubleMini";
 import Tumbling from "./pages/Tumbling";
 import SavedRoutines from "./pages/SavedRoutines";
+import Leaderboard from "./pages/Leaderboard";
+
+import {
+  Trophy,
+  Settings,
+} from "lucide-react";
 
 export default function App() {
+  const [settingsOpen, setSettingsOpen] =
+  useState(false);
+
   return (
     <BrowserRouter>
       <Routes>
@@ -56,8 +72,108 @@ export default function App() {
                   >
                     Saved Routines
                   </Link>
+</div>
+                <div style={styles.bottomButtons}>
+
+                  <Link
+                    to="/leaderboard"
+                    style={styles.squareButton}
+                  >
+                    <Trophy size={34} />
+                  </Link>
+
+                  <button
+                    onClick={() =>
+                      setSettingsOpen(true)
+                    }
+
+                    style={styles.squareButton}
+                  >
+                    <Settings size={34} />
+                  </button>
 
                 </div>
+
+{settingsOpen && (
+
+  <div style={styles.modalOverlay}>
+
+    <div style={styles.settingsModal}>
+
+      <h2>
+        Settings
+      </h2>
+
+      <div style={styles.settingItem}>
+        <span>
+          Show Skill Names
+        </span>
+
+        <button style={styles.settingButton}>
+          Soon
+        </button>
+      </div>
+
+      <div style={styles.settingItem}>
+        <span>
+          Dark Mode
+        </span>
+
+        <button style={styles.settingButton}>
+          Enabled
+        </button>
+      </div>
+
+      <div style={styles.settingItem}>
+        <span>
+          Reset Saved Routines
+        </span>
+
+        <button
+          style={styles.deleteButton}
+
+          onClick={() => {
+
+            const confirmed =
+              window.confirm(
+                "Delete all saved routines?"
+              );
+
+            if (!confirmed) return;
+
+            localStorage.removeItem(
+              "savedRoutines"
+            );
+
+            alert(
+              "Saved routines deleted."
+            );
+
+          }}
+        >
+          Reset
+        </button>
+      </div>
+
+      <p style={styles.versionText}>
+        Version 1.0
+      </p>
+
+      <button
+        onClick={() =>
+          setSettingsOpen(false)
+        }
+
+        style={styles.closeButton}
+      >
+        Close
+      </button>
+
+    </div>
+
+  </div>
+
+)}
 
                 <div style={styles.footer}>
 
@@ -119,6 +235,11 @@ export default function App() {
         <Route
           path="/saved"
           element={<SavedRoutines />}
+        />
+
+        <Route
+          path="/leaderboard"
+          element={<Leaderboard />}
         />
 
       </Routes>
@@ -272,5 +393,129 @@ const styles = {
   color: "#fcaf45",
   textDecoration: "none",
   },
+
+  bottomButtons: {
+  display: "flex",
+
+  gap: "18px",
+
+  marginTop: "18px",
+},
+
+squareButton: {
+  width: "74px",
+  height: "74px",
+
+  borderRadius: "18px",
+
+  border: "none",
+
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  border:
+    "1px solid rgba(255,255,255,0.15)",
+
+  color: "white",
+
+  cursor: "pointer",
+
+  textDecoration: "none",
+
+  backdropFilter: "blur(10px)",
+
+  boxShadow:
+    "0 10px 30px rgba(0,0,0,0.25)",
+},
+modalOverlay: {
+  position: "fixed",
+
+  inset: 0,
+
+  background:
+    "rgba(0,0,0,0.5)",
+
+  display: "flex",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  zIndex: 9999,
+},
+
+settingsModal: {
+  width: "min(420px, 92vw)",
+
+  background:
+    "linear-gradient(135deg, #111827, #1e293b)",
+
+  border:
+    "1px solid rgba(255,255,255,0.1)",
+
+  borderRadius: "24px",
+
+  padding: "28px",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "20px",
+
+  color: "white",
+
+  boxShadow:
+    "0 20px 60px rgba(0,0,0,0.45)",
+},
+
+settingItem: {
+  display: "flex",
+
+  justifyContent: "space-between",
+
+  alignItems: "center",
+},
+
+settingButton: {
+  padding: "10px 16px",
+
+  borderRadius: "10px",
+
+  border: "none",
+
+  background:
+    "rgba(255,255,255,0.1)",
+
+  color: "white",
+},
+
+closeButton: {
+  padding: "14px",
+
+  borderRadius: "14px",
+
+  border: "none",
+
+  background: "white",
+
+  color: "black",
+
+  fontWeight: "bold",
+
+  cursor: "pointer",
+},
+
+versionText: {
+  color: "#94a3b8",
+
+  textAlign: "center",
+
+  marginTop: "10px",
+},
 
 };

@@ -21,6 +21,22 @@ const [routineName, setRoutineName] = useState("");
       }
     }
 
+const savedRoutine = JSON.parse(
+  localStorage.getItem("currentRoutine")
+);
+
+if (
+  savedRoutine &&
+  savedRoutine.event === "trampoline"
+) {
+
+  setSkills(savedRoutine.skills);
+
+  localStorage.removeItem(
+    "currentRoutine"
+  );
+}
+
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {

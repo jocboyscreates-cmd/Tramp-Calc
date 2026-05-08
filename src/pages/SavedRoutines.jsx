@@ -50,6 +50,23 @@ const [activeEditInput, setActiveEditInput] = useState(null);
 
 ];
 
+const liveDD = editingRoutine?.skills
+  ? editingRoutine.skills.reduce(
+      (total, skillCode) => {
+
+        const foundSkill = allSkills.find(
+          (item) => item.code === skillCode
+        );
+
+        return total + (
+          foundSkill?.dd || 0
+        );
+
+      },
+      0
+    )
+  : selectedRoutine?.totalDD || 0;
+
   function shareRoutine(routine) {
 
     const encoded = encodeURIComponent(
@@ -175,7 +192,7 @@ setEditingRoutine(
       <p>
         Total DD:
         {" "}
-        {selectedRoutine.totalDD.toFixed(1)}
+        {liveDD.toFixed(1)}
       </p>
 
       <div style={styles.skillsList}>
@@ -342,6 +359,41 @@ setEditingRoutine(
 
       <div style={styles.modalButtons}>
 
+  <button
+    onClick={() => {
+
+      localStorage.setItem(
+        "currentRoutine",
+        JSON.stringify(selectedRoutine)
+      );
+
+      if (
+        selectedRoutine.event === "trampoline"
+      ) {
+        window.location.href =
+          "/trampoline";
+      }
+
+      if (
+        selectedRoutine.event === "doubleMini"
+      ) {
+        window.location.href =
+          "/double-mini";
+      }
+
+      if (
+        selectedRoutine.event === "tumbling"
+      ) {
+        window.location.href =
+          "/tumbling";
+      }
+
+    }}
+    style={styles.button}
+  >
+    Open
+  </button>
+
         <button
           onClick={() => {
 
@@ -355,6 +407,8 @@ setEditingRoutine(
                     ...editingRoutine,
 
                     name: editName,
+
+                    totalDD: liveDD,
                   };
                 }
 
@@ -366,7 +420,7 @@ setEditingRoutine(
               JSON.stringify(updated)
             );
 
-            window.location.reload();
+            setSelectedRoutine(null);
 
           }}
           style={styles.button}
@@ -382,12 +436,12 @@ setEditingRoutine(
         >
           Close
         </button>
+        </div>
 
       </div>
 
     </div>
 
-  </div>
 
 )}
 
