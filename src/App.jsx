@@ -12,13 +12,18 @@ import DoubleMini from "./pages/DoubleMini";
 import Tumbling from "./pages/Tumbling";
 import SavedRoutines from "./pages/SavedRoutines";
 import Leaderboard from "./pages/Leaderboard";
+import Games from "./pages/Games";
+import DiceGame from "./pages/DiceGame";
+import ImposterGame from "./pages/ImposterGame";
+import BingoGame from "./pages/BingoGame";
 
-import SharedRoutine
-from "./pages/SharedRoutine";
+import SharedRoutine from "./pages/SharedRoutine";
 
 import {
   Trophy,
   Settings,
+  Save,
+  Gamepad2,
 } from "lucide-react";
 
 export default function App() {
@@ -69,34 +74,42 @@ export default function App() {
                     Tumbling
                   </Link>
 
-                  <Link
-                    to="/saved"
-                    style={styles.savedCard}
-                  >
-                    Saved Routines
-                  </Link>
+<div style={styles.bottomButtons}>
+
+  <Link
+    to="/saved"
+    style={styles.squareButton}
+  >
+    <Save size={40} />
+  </Link>
+
+  <Link
+    to="/leaderboard"
+    style={styles.squareButton}
+  >
+    <Trophy size={40} />
+  </Link>
+
+  <Link
+  to="/games"
+  style={styles.squareButton}
+>
+  <Gamepad2 size={40} />
+</Link>
+
+  <button
+    onClick={() =>
+      setSettingsOpen(true)
+    }
+
+    style={styles.squareButton}
+  >
+    <Settings size={40} />
+  </button>
+
 </div>
-                <div style={styles.bottomButtons}>
 
-                  <Link
-                    to="/leaderboard"
-                    style={styles.squareButton}
-                  >
-                    <Trophy size={34} />
-                  </Link>
-
-                  <button
-                    onClick={() =>
-                      setSettingsOpen(true)
-                    }
-
-                    style={styles.squareButton}
-                  >
-                    <Settings size={34} />
-                  </button>
-
-                </div>
-
+            
 {settingsOpen && (
 
   <div style={styles.modalOverlay}>
@@ -177,7 +190,7 @@ export default function App() {
   </div>
 
 )}
-
+</div>
                 <div style={styles.footer}>
 
                   <a
@@ -231,8 +244,18 @@ export default function App() {
         />
 
         <Route
+          path="/dice-game"
+          element={<DiceGame />}
+        />
+
+        <Route
           path="/tumbling"
           element={<Tumbling />}
+        />
+
+        <Route
+          path="/bingo-game"
+          element={<BingoGame />}
         />
 
         <Route
@@ -243,6 +266,14 @@ export default function App() {
         <Route
           path="/leaderboard"
           element={<Leaderboard />}
+        />
+        <Route
+          path="/games"
+          element={<Games />}
+        />
+        <Route
+          path="/imposter-game"
+          element={<ImposterGame />}
         />
 
         <Route
@@ -346,32 +377,7 @@ const styles = {
       "0 10px 30px rgba(0,0,0,0.25)",
   },
 
-  savedCard: {
-  width: "min(320px, 90vw)",
 
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-
-  padding: "22px",
-
-  borderRadius: "20px",
-
-  background:
-    "rgba(192,132,252,0.12)",
-
-  border:
-    "1px solid rgba(192,132,252,0.4)",
-
-  color: "#e9d5ff",
-
-  textDecoration: "none",
-
-  fontSize: "24px",
-  fontWeight: "bold",
-
-  textAlign: "center",
-},
 
   footer: {
     marginTop: "40px",
@@ -403,16 +409,21 @@ const styles = {
   },
 
   bottomButtons: {
-  display: "flex",
+  display: "grid",
+
+  gridTemplateColumns: "repeat(2, 92px)",
+  justifyContent: "center",
 
   gap: "18px",
 
   marginTop: "18px",
+
+  justifyContent: "center",
 },
 
 squareButton: {
-  width: "74px",
-  height: "74px",
+  width: "92px",
+  height: "92px",
 
   borderRadius: "18px",
 
@@ -500,6 +511,22 @@ settingButton: {
     "rgba(255,255,255,0.1)",
 
   color: "white",
+},
+
+deleteButton: {
+  padding: "10px 16px",
+
+  borderRadius: "10px",
+
+  border: "none",
+
+  background: "#ef4444",
+
+  color: "white",
+
+  fontWeight: "bold",
+
+  cursor: "pointer",
 },
 
 closeButton: {
