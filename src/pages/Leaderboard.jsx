@@ -13,52 +13,51 @@ import {
 
 export default function Leaderboard() {
 
-  
-
   const [selectedGender, setSelectedGender] =
     useState("Everyone");
 
-const [selectedEvent, setSelectedEvent] =
-  useState("Trampoline");
+  const [selectedEvent, setSelectedEvent] =
+    useState("Trampoline");
 
-const [selectedLevel, setSelectedLevel] =
-  useState("All Levels");
+  const [selectedLevel, setSelectedLevel] =
+    useState("All Levels");
 
   const [submitOpen, setSubmitOpen] =
-  useState(false);
+    useState(false);
 
-const [submitData, setSubmitData] =
-  useState({
-    username: "",
-    event: "Trampoline",
-    level: "",
-    gender: "",
-    dd: "",
-    video: null,
-  });
+  const [submitData, setSubmitData] =
+    useState({
+      username: "",
+      event: "Trampoline",
+      level: "",
+      gender: "",
+      dd: "",
+      video: null,
+    });
 
   const filteredData =
-  leaderboardData.filter((item) => {
+    leaderboardData.filter((item) => {
 
-    const genderMatch =
-      selectedGender === "Everyone" ||
-      item.gender === selectedGender;
+      const genderMatch =
+        selectedGender === "Everyone" ||
+        item.gender === selectedGender;
 
-    const levelMatch =
-      selectedLevel === "All Levels" ||
-      item.level === selectedLevel;
+      const levelMatch =
+        selectedLevel === "All Levels" ||
+        item.level === selectedLevel;
 
-    const eventMatch =
-      item.event === selectedEvent;
+      const eventMatch =
+        item.event === selectedEvent;
 
-    return (
-      genderMatch &&
-      levelMatch &&
-      eventMatch
-    );
-  });
+      return (
+        genderMatch &&
+        levelMatch &&
+        eventMatch
+      );
+    });
 
-  const topThree = filteredData.slice(0, 3);
+  const topThree =
+    filteredData.slice(0, 3);
 
   const remaining =
     filteredData.slice(3);
@@ -71,144 +70,112 @@ const [submitData, setSubmitData] =
         to="/"
         style={styles.homeButton}
       >
-        <House size={30} />
+        <House size={28} />
       </Link>
 
       <h1 style={styles.title}>
         Leaderboard
       </h1>
 
-<div style={styles.filterRow}>
-
-  {[
-    "Trampoline",
-    "Double Mini",
-    "Tumbling",
-  ].map((event) => (
-
-    <button
-      key={event}
-
-      onClick={() =>
-        setSelectedEvent(event)
-      }
-
-      style={
-        selectedEvent === event
-
-          ? styles.activeFilter
-
-          : styles.filterButton
-      }
-    >
-      {event}
-    </button>
-
-  ))}
-
-</div>
-
       <div style={styles.filterRow}>
 
-        <button
-          onClick={() =>
-            setSelectedGender("Everyone")
-          }
+        {[
+          "Trampoline",
+          "Double Mini",
+          "Tumbling",
+        ].map((event) => (
 
-          style={
-            selectedGender === "Everyone"
+          <button
+            key={event}
 
-              ? styles.activeFilter
+            onClick={() =>
+              setSelectedEvent(event)
+            }
 
-              : styles.filterButton
-          }
-        >
-          Everyone
-        </button>
+            style={
+              selectedEvent === event
+                ? styles.activeFilter
+                : styles.filterButton
+            }
+          >
+            {event}
+          </button>
 
-        <button
-          onClick={() =>
-            setSelectedGender("Male")
-          }
-
-          style={
-            selectedGender === "Male"
-
-              ? styles.activeFilter
-
-              : styles.filterButton
-          }
-        >
-          Male
-        </button>
-
-        <button
-          onClick={() =>
-            setSelectedGender("Female")
-          }
-
-          style={
-            selectedGender === "Female"
-
-              ? styles.activeFilter
-
-              : styles.filterButton
-          }
-        >
-          Female
-        </button>
+        ))}
 
       </div>
 
-    
+      <div style={styles.filterRow}>
 
-<div style={styles.filterRow}>
+        {[
+          "Everyone",
+          "Male",
+          "Female",
+        ].map((gender) => (
 
-  {[
-  "All Levels",
+          <button
+            key={gender}
 
-  "Level 1",
-  "Level 2",
-  "Level 3",
-  "Level 4",
-  "Level 5",
-  "Level 6",
+            onClick={() =>
+              setSelectedGender(gender)
+            }
 
-  "Level 7",
+            style={
+              selectedGender === gender
+                ? styles.activeFilter
+                : styles.filterButton
+            }
+          >
+            {gender}
+          </button>
 
-  "Junior",
-  "Senior",
-].map((level) => (
+        ))}
 
-    <button
-      key={level}
+      </div>
 
-      onClick={() =>
-        setSelectedLevel(level)
-      }
+      <div style={styles.filterRow}>
 
-      style={
-        selectedLevel === level
+        {[
+          "All Levels",
+          "Level 1",
+          "Level 2",
+          "Level 3",
+          "Level 4",
+          "Level 5",
+          "Level 6",
+          "Level 7",
+          "Junior",
+          "Senior",
+        ].map((level) => (
 
-          ? styles.activeFilter
+          <button
+            key={level}
 
-          : styles.filterButton
-      }
-    >
-      {level}
-    </button>
+            onClick={() =>
+              setSelectedLevel(level)
+            }
 
-  ))}
+            style={
+              selectedLevel === level
+                ? styles.activeFilter
+                : styles.filterButton
+            }
+          >
+            {level}
+          </button>
 
-</div>
+        ))}
+
+      </div>
 
       <div style={styles.podium}>
 
         {topThree[1] && (
+
           <div
             style={{
               ...styles.podiumCard,
-              height: "170px",
+              height: "180px",
             }}
           >
 
@@ -225,14 +192,12 @@ const [submitData, setSubmitData] =
             </div>
 
           </div>
+
         )}
 
         {topThree[0] && (
-          <div
-            style={{
-              ...styles.firstPlace,
-            }}
-          >
+
+          <div style={styles.firstPlace}>
 
             <Trophy size={42} />
 
@@ -249,13 +214,15 @@ const [submitData, setSubmitData] =
             </div>
 
           </div>
+
         )}
 
         {topThree[2] && (
+
           <div
             style={{
               ...styles.podiumCard,
-              height: "140px",
+              height: "150px",
             }}
           >
 
@@ -272,6 +239,7 @@ const [submitData, setSubmitData] =
             </div>
 
           </div>
+
         )}
 
       </div>
@@ -303,7 +271,7 @@ const [submitData, setSubmitData] =
                 {person.gender}
               </div>
 
-              <div>
+              <div style={styles.ddSmall}>
                 {person.dd.toFixed(1)}
               </div>
 
@@ -315,12 +283,12 @@ const [submitData, setSubmitData] =
       </div>
 
       <button
-  style={styles.submitButton}
+        style={styles.submitButton}
 
-  onClick={() =>
-    setSubmitOpen(true)
-  }
->
+        onClick={() =>
+          setSubmitOpen(true)
+        }
+      >
 
         <Plus size={24} />
 
@@ -328,244 +296,251 @@ const [submitData, setSubmitData] =
 
       </button>
 
-{submitOpen && (
+      {submitOpen && (
 
-  <div style={styles.modalOverlay}>
+        <div style={styles.modalOverlay}>
 
-    <div style={styles.submitModal}>
+          <div style={styles.submitModal}>
 
-      <h2>
-        Submit Routine
-      </h2>
+            <h2 style={styles.modalTitle}>
+              Submit Routine
+            </h2>
 
-      <input
-        placeholder="Display Name"
+            <input
+              placeholder="Display Name"
 
-        value={submitData.username}
+              value={submitData.username}
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            username: e.target.value,
-          })
-        }
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  username:
+                    e.target.value,
+                })
+              }
 
-        style={styles.input}
-      />
+              style={styles.input}
+            />
 
-      <select
-        value={submitData.event}
+            <select
+              value={submitData.event}
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            event: e.target.value,
-          })
-        }
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  event:
+                    e.target.value,
+                })
+              }
 
-        style={styles.input}
-      >
+              style={styles.input}
+            >
 
-        <option>
-          Trampoline
-        </option>
+              <option>
+                Trampoline
+              </option>
 
-        <option>
-          Double Mini
-        </option>
+              <option>
+                Double Mini
+              </option>
 
-        <option>
-          Tumbling
-        </option>
+              <option>
+                Tumbling
+              </option>
 
-      </select>
+            </select>
 
-      <select
-        value={submitData.level}
+            <select
+              value={submitData.level}
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            level: e.target.value,
-          })
-        }
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  level:
+                    e.target.value,
+                })
+              }
 
-        style={styles.input}
-      >
+              style={styles.input}
+            >
 
-        <option value="">
-          Select Level
-        </option>
+              <option value="">
+                Select Level
+              </option>
 
-        <option>
-          Level 1
-        </option>
+              <option>
+                Level 1
+              </option>
 
-        <option>
-          Level 2
-        </option>
+              <option>
+                Level 2
+              </option>
 
-        <option>
-          Level 3
-        </option>
+              <option>
+                Level 3
+              </option>
 
-        <option>
-          Level 4
-        </option>
+              <option>
+                Level 4
+              </option>
 
-        <option>
-          Level 5
-        </option>
+              <option>
+                Level 5
+              </option>
 
-        <option>
-          Level 6
-        </option>
+              <option>
+                Level 6
+              </option>
 
-        <option>
-          Level 7
-        </option>
+              <option>
+                Level 7
+              </option>
 
-        <option>
-          Junior
-        </option>
+              <option>
+                Junior
+              </option>
 
-        <option>
-          Senior
-        </option>
+              <option>
+                Senior
+              </option>
+
+            </select>
+
+            <select
+              value={submitData.gender}
 
-      </select>
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  gender:
+                    e.target.value,
+                })
+              }
+
+              style={styles.input}
+            >
 
-      <select
-        value={submitData.gender}
+              <option value="">
+                Select Gender
+              </option>
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            gender: e.target.value,
-          })
-        }
+              <option>
+                Male
+              </option>
 
-        style={styles.input}
-      >
+              <option>
+                Female
+              </option>
 
-        <option value="">
-          Select Gender
-        </option>
+            </select>
 
-        <option>
-          Male
-        </option>
+            <input
+              type="number"
 
-        <option>
-          Female
-        </option>
+              placeholder="DD"
 
-      </select>
+              value={submitData.dd}
 
-      <input
-        type="number"
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  dd:
+                    e.target.value,
+                })
+              }
 
-        placeholder="DD"
+              style={styles.input}
+            />
 
-        value={submitData.dd}
+            <label style={styles.uploadLabel}>
+              Video of Pass / Routine
+            </label>
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            dd: e.target.value,
-          })
-        }
+            <input
+              type="file"
 
-        style={styles.input}
-      />
+              accept="video/*"
 
-<label style={styles.uploadLabel}>
-  Video of Pass / Routine
-</label>
+              onChange={(e) =>
+                setSubmitData({
+                  ...submitData,
+                  video:
+                    e.target.files[0],
+                })
+              }
 
-      <input
-        type="file"
+              style={styles.input}
+            />
 
-        accept="video/*"
+            <p style={styles.reviewText}>
+              Submissions are manually reviewed
+              and may not appear immediately.
+            </p>
 
-        onChange={(e) =>
-          setSubmitData({
-            ...submitData,
-            video:
-              e.target.files[0],
-          })
-        }
+            <button
+              style={
+                styles.submitRoutineButton
+              }
 
-        style={styles.input}
-      />
+              onClick={() => {
 
-<p style={styles.reviewText}>
-  Submissions are manually reviewed
-  and may not appear immediately.
-</p>
+                if (
+                  !submitData.username ||
+                  !submitData.level ||
+                  !submitData.gender ||
+                  !submitData.dd ||
+                  !submitData.video
+                ) {
 
-      <button
-        style={styles.submitRoutineButton}
+                  alert(
+                    "Please fill out every field."
+                  );
 
-        onClick={() => {
+                  return;
+                }
 
-          if (
-            !submitData.username ||
-            !submitData.level ||
-            !submitData.gender ||
-            !submitData.dd ||
-            !submitData.video
-          ) {
+                const pending =
+                  JSON.parse(
+                    localStorage.getItem(
+                      "pendingSubmissions"
+                    ) || "[]"
+                  );
 
-            alert(
-              "Please fill out every field."
-            );
+                pending.push(submitData);
 
-            return;
-          }
+                localStorage.setItem(
+                  "pendingSubmissions",
+                  JSON.stringify(pending)
+                );
 
-          const pending =
-            JSON.parse(
-              localStorage.getItem(
-                "pendingSubmissions"
-              ) || "[]"
-            );
+                alert(
+                  "Routine submitted for review!"
+                );
 
-          pending.push(submitData);
+                setSubmitOpen(false);
 
-          localStorage.setItem(
-            "pendingSubmissions",
-            JSON.stringify(pending)
-          );
+              }}
+            >
 
-          alert(
-            "Routine submitted for review!"
-          );
+              Submit
 
-          setSubmitOpen(false);
+            </button>
 
-        }}
-      >
+            <button
+              onClick={() =>
+                setSubmitOpen(false)
+              }
 
-        Submit
+              style={styles.closeButton}
+            >
+              Cancel
+            </button>
 
-      </button>
+          </div>
 
-      <button
-        onClick={() =>
-          setSubmitOpen(false)
-        }
+        </div>
 
-        style={styles.closeButton}
-      >
-        Cancel
-      </button>
-
-    </div>
-
-  </div>
-
-)}
+      )}
 
     </div>
 
@@ -578,13 +553,15 @@ const styles = {
     minHeight: "100vh",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
-    padding: "30px",
+    padding: "40px 20px",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     display: "flex",
+
     flexDirection: "column",
 
     alignItems: "center",
@@ -596,28 +573,42 @@ const styles = {
     top: "30px",
     left: "30px",
 
-    width: "52px",
-    height: "52px",
+    width: "54px",
+    height: "54px",
 
     display: "flex",
+
     alignItems: "center",
+
     justifyContent: "center",
 
-    background: "white",
+    background:
+      "var(--card-bg)",
 
-    borderRadius: "14px",
+    border:
+      "1px solid var(--border)",
 
-    color: "black",
+    borderRadius: "16px",
+
+    color:
+      "var(--text-primary)",
 
     textDecoration: "none",
+
+    backdropFilter:
+      "blur(10px)",
   },
 
   title: {
-    fontSize: "52px",
+    fontSize: "58px",
 
-    marginTop: "40px",
+    fontWeight: "bold",
 
-    marginBottom: "30px",
+    marginTop: "30px",
+
+    marginBottom: "36px",
+
+    textAlign: "center",
   },
 
   filterRow: {
@@ -625,7 +616,7 @@ const styles = {
 
     gap: "12px",
 
-    marginBottom: "40px",
+    marginBottom: "22px",
 
     flexWrap: "wrap",
 
@@ -635,31 +626,40 @@ const styles = {
   filterButton: {
     padding: "12px 20px",
 
-    borderRadius: "14px",
+    borderRadius: "16px",
 
     border: "none",
 
     background:
       "rgba(255,255,255,0.08)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     cursor: "pointer",
+
+    fontWeight: "600",
+
+    transition:
+      "0.2s ease",
   },
 
   activeFilter: {
     padding: "12px 20px",
 
-    borderRadius: "14px",
+    borderRadius: "16px",
 
     border: "none",
 
     background:
-      "rgba(192,132,252,0.35)",
+      "var(--accent-glow)",
 
-    color: "white",
+    color:
+      "var(--accent)",
 
     cursor: "pointer",
+
+    fontWeight: "bold",
   },
 
   podium: {
@@ -667,7 +667,9 @@ const styles = {
 
     alignItems: "flex-end",
 
-    gap: "20px",
+    gap: "22px",
+
+    marginTop: "30px",
 
     marginBottom: "50px",
 
@@ -677,103 +679,123 @@ const styles = {
   },
 
   podiumCard: {
-    width: "120px",
+    width: "140px",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
     border:
-      "1px solid rgba(255,255,255,0.1)",
+      "1px solid var(--border)",
 
-    borderRadius: "22px",
+    borderRadius: "26px",
 
     display: "flex",
+
     flexDirection: "column",
 
     alignItems: "center",
+
     justifyContent: "center",
 
     gap: "10px",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter:
+      "blur(10px)",
   },
 
   firstPlace: {
-    width: "140px",
-    height: "220px",
+    width: "170px",
+    height: "240px",
 
     background:
-      "linear-gradient(135deg, rgba(250,204,21,0.35), rgba(255,255,255,0.08))",
+      "linear-gradient(135deg, rgba(252,175,69,0.25), rgba(255,255,255,0.05))",
 
     border:
-      "1px solid rgba(250,204,21,0.4)",
+      "1px solid rgba(252,175,69,0.45)",
 
-    borderRadius: "24px",
+    borderRadius: "30px",
 
     display: "flex",
+
     flexDirection: "column",
 
     alignItems: "center",
+
     justifyContent: "center",
 
-    gap: "12px",
+    gap: "14px",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter:
+      "blur(12px)",
 
     boxShadow:
-      "0 20px 50px rgba(0,0,0,0.35)",
+      "0 18px 50px rgba(0,0,0,0.25)",
   },
 
   place: {
-    fontSize: "28px",
+    fontSize: "30px",
 
     fontWeight: "bold",
   },
 
   username: {
-    fontSize: "22px",
+    fontSize: "24px",
 
     fontWeight: "bold",
+
+    textAlign: "center",
   },
 
   dd: {
-    fontSize: "24px",
+    fontSize: "28px",
 
-    color: "#facc15",
+    fontWeight: "bold",
+
+    color:
+      "var(--accent)",
+  },
+
+  ddSmall: {
+    color:
+      "var(--accent)",
 
     fontWeight: "bold",
   },
 
   list: {
-    width: "min(900px, 95vw)",
+    width: "min(950px, 95vw)",
 
     display: "flex",
+
     flexDirection: "column",
 
-    gap: "12px",
+    gap: "14px",
   },
 
   row: {
     display: "grid",
 
     gridTemplateColumns:
-      "80px 1fr 1fr 1fr 100px",
+      "70px 1fr 1fr 1fr 100px",
 
     alignItems: "center",
 
-    padding: "18px 22px",
+    padding: "20px",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
     border:
-      "1px solid rgba(255,255,255,0.08)",
+      "1px solid var(--border)",
 
-    borderRadius: "18px",
+    borderRadius: "20px",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter:
+      "blur(10px)",
 
     fontSize: "18px",
+
+    gap: "10px",
   },
 
   rowName: {
@@ -796,9 +818,10 @@ const styles = {
     border: "none",
 
     background:
-      "rgba(192,132,252,0.35)",
+      "var(--accent-glow)",
 
-    color: "white",
+    color:
+      "var(--accent)",
 
     fontSize: "20px",
 
@@ -807,103 +830,133 @@ const styles = {
     cursor: "pointer",
 
     boxShadow:
-      "0 10px 30px rgba(0,0,0,0.35)",
+      "0 12px 30px rgba(0,0,0,0.2)",
   },
 
   modalOverlay: {
-  position: "fixed",
+    position: "fixed",
 
-  inset: 0,
+    inset: 0,
 
-  background:
-    "rgba(0,0,0,0.5)",
+    background:
+      "rgba(0,0,0,0.55)",
 
-  display: "flex",
+    display: "flex",
 
-  justifyContent: "center",
+    justifyContent: "center",
 
-  alignItems: "center",
+    alignItems: "center",
 
-  zIndex: 9999,
-},
+    zIndex: 9999,
+  },
 
-submitModal: {
-  width: "min(500px, 92vw)",
+  submitModal: {
+    width: "min(520px, 92vw)",
 
-  maxHeight: "85vh",
+    maxHeight: "88vh",
 
-overflowY: "auto",
+    overflowY: "auto",
 
-overscrollBehavior: "contain",
+    background:
+      "var(--card-bg)",
 
-  background:
-    "linear-gradient(135deg, #111827, #1e293b)",
+    borderRadius: "28px",
 
-  borderRadius: "24px",
+    padding: "30px",
 
-  padding: "30px",
+    display: "flex",
 
-  display: "flex",
+    flexDirection: "column",
 
-  flexDirection: "column",
+    gap: "18px",
 
-  gap: "18px",
+    color:
+      "var(--text-primary)",
 
-  color: "white",
+    border:
+      "1px solid var(--border)",
 
-  border:
-    "1px solid rgba(255,255,255,0.08)",
-},
+    backdropFilter:
+      "blur(12px)",
+  },
 
-input: {
-  padding: "14px",
+  modalTitle: {
+    fontSize: "34px",
 
-  borderRadius: "14px",
+    fontWeight: "bold",
 
-  border: "none",
+    marginBottom: "8px",
+  },
 
-  fontSize: "16px",
-},
+  input: {
+    padding: "15px",
 
-submitRoutineButton: {
-  padding: "16px",
+    borderRadius: "16px",
 
-  borderRadius: "16px",
+    border:
+      "1px solid var(--border)",
 
-  border: "none",
+    background:
+      "rgba(255,255,255,0.06)",
 
-  background:
-    "rgba(192,132,252,0.5)",
+    color:
+      "var(--text-primary)",
 
-  color: "white",
+    fontSize: "16px",
 
-  fontWeight: "bold",
+    outline: "none",
+  },
 
-  fontSize: "18px",
+  uploadLabel: {
+    fontSize: "15px",
 
-  cursor: "pointer",
-},
+    color:
+      "var(--text-secondary)",
+  },
 
-closeButton: {
-  padding: "14px",
+  reviewText: {
+    color:
+      "var(--text-secondary)",
 
-  borderRadius: "14px",
+    fontSize: "14px",
 
-  border: "none",
+    lineHeight: 1.5,
+  },
 
-  background:
-    "rgba(255,255,255,0.1)",
+  submitRoutineButton: {
+    padding: "16px",
 
-  color: "white",
+    borderRadius: "18px",
 
-  cursor: "pointer",
-},
-uploadLabel: {
-  fontSize: "15px",
+    border: "none",
 
-  color: "#cbd5e1",
+    background:
+      "var(--accent-glow)",
 
-  marginBottom: "-10px",
-},
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    fontSize: "18px",
+
+    cursor: "pointer",
+  },
+
+  closeButton: {
+    padding: "15px",
+
+    borderRadius: "18px",
+
+    border: "none",
+
+    background:
+      "rgba(255,255,255,0.08)",
+
+    color:
+      "var(--text-primary)",
+
+    cursor: "pointer",
+  },
 
 };

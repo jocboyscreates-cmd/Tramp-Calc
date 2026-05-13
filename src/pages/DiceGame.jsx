@@ -33,33 +33,33 @@ export default function DiceGame() {
     setTimeout(() => {
 
       const safeFlipValues = [
-  0,
-  1,
-  3,
-  4,
-  5,
-  7,
-  8,
-  9,
-  11,
-  12,
-  13,
-  15,
-  16,
-];
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9,
+        11,
+        12,
+        13,
+        15,
+        16,
+      ];
 
-const availableFlips =
-  safeFlipValues.filter(
-    (v) => v <= maxFlips
-  );
+      const availableFlips =
+        safeFlipValues.filter(
+          (v) => v <= maxFlips
+        );
 
-const flipRoll =
-  availableFlips[
-    Math.floor(
-      Math.random() *
-      availableFlips.length
-    )
-  ];
+      const flipRoll =
+        availableFlips[
+          Math.floor(
+            Math.random() *
+            availableFlips.length
+          )
+        ];
 
       const twistRoll =
         Math.floor(
@@ -80,7 +80,10 @@ const flipRoll =
 
       const positions =
         weirdPositions
-          ? [...normalPositions, ...weird]
+          ? [
+              ...normalPositions,
+              ...weird,
+            ]
           : normalPositions;
 
       const position =
@@ -125,7 +128,7 @@ const flipRoll =
 
         <div style={styles.section}>
 
-          <p>
+          <p style={styles.label}>
             Max Twists
           </p>
 
@@ -144,7 +147,7 @@ const flipRoll =
             }
           />
 
-          <div>
+          <div style={styles.valueText}>
             {maxTwists / 2} twists
           </div>
 
@@ -152,7 +155,7 @@ const flipRoll =
 
         <div style={styles.section}>
 
-          <p>
+          <p style={styles.label}>
             Max Flips
           </p>
 
@@ -171,7 +174,7 @@ const flipRoll =
             }
           />
 
-          <div>
+          <div style={styles.valueText}>
             {maxFlips / 4} flips
           </div>
 
@@ -179,7 +182,7 @@ const flipRoll =
 
         <div style={styles.toggleRow}>
 
-          <span>
+          <span style={styles.label}>
             Weird Positions
           </span>
 
@@ -192,15 +195,15 @@ const flipRoll =
 
             style={
               weirdPositions
-
                 ? styles.activeToggle
-
                 : styles.toggle
             }
           >
+
             {weirdPositions
               ? "ON"
               : "OFF"}
+
           </button>
 
         </div>
@@ -210,85 +213,89 @@ const flipRoll =
 
           onClick={rollDice}
         >
+
           <Dice5 size={28} />
 
           Roll Dice
+
         </button>
 
       </div>
 
       {rolling && (
 
-  <div style={styles.overlay}>
+        <div style={styles.overlay}>
 
-    <div style={styles.popup}>
+          <div style={styles.popup}>
 
-      <div style={styles.diceRow}>
+            <div style={styles.diceRow}>
 
-        <div style={styles.dice}>
-          🎲
+              <div style={styles.dice}>
+                🎲
+              </div>
+
+              <div style={styles.dice}>
+                🎲
+              </div>
+
+              <div style={styles.dice}>
+                🎲
+              </div>
+
+            </div>
+
+            <p style={styles.rollingText}>
+              Rolling...
+            </p>
+
+          </div>
+
         </div>
 
-        <div style={styles.dice}>
-          🎲
-        </div>
-
-        <div style={styles.dice}>
-          🎲
-        </div>
-
-      </div>
-
-      <p>
-        Rolling...
-      </p>
-
-    </div>
-
-  </div>
-
-)}
+      )}
 
       {result && (
 
-  <div style={styles.overlay}>
+        <div style={styles.overlay}>
 
-        <div style={styles.popup}>
+          <div style={styles.popup}>
 
-          <h2>
-            Result
-          </h2>
+            <h2 style={styles.resultTitle}>
+              Result
+            </h2>
 
-          <div style={styles.resultText}>
-            {result.flips} flips
+            <div style={styles.resultText}>
+              {result.flips} flips
+            </div>
+
+            <div style={styles.resultText}>
+              {result.twists} twists
+            </div>
+
+            <div style={styles.resultText}>
+              {result.position}
+            </div>
+
+            <button
+              style={styles.playButton}
+
+              onClick={rollDice}
+            >
+              Roll Again
+            </button>
+
+            <Link
+              to="/games"
+
+              style={styles.backButton}
+            >
+              Back
+            </Link>
+
           </div>
-
-          <div style={styles.resultText}>
-            {result.twists} twists
-          </div>
-
-          <div style={styles.resultText}>
-            {result.position}
-          </div>
-
-          <button
-            style={styles.playButton}
-
-            onClick={rollDice}
-          >
-            Roll Again
-          </button>
-
-          <Link
-            to="/games"
-
-            style={styles.backButton}
-          >
-            Back
-          </Link>
 
         </div>
-</div>
+
       )}
 
     </div>
@@ -301,9 +308,10 @@ const styles = {
     minHeight: "100vh",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     display: "flex",
 
@@ -315,21 +323,21 @@ const styles = {
   },
 
   overlay: {
-  position: "fixed",
+    position: "fixed",
 
-  inset: 0,
+    inset: 0,
 
-  background:
-    "rgba(0,0,0,0.55)",
+    background:
+      "rgba(0,0,0,0.55)",
 
-  display: "flex",
+    display: "flex",
 
-  alignItems: "center",
+    alignItems: "center",
 
-  justifyContent: "center",
+    justifyContent: "center",
 
-  zIndex: 9999,
-},
+    zIndex: 9999,
+  },
 
   homeButton: {
     position: "absolute",
@@ -341,7 +349,9 @@ const styles = {
     height: "52px",
 
     display: "flex",
+
     alignItems: "center",
+
     justifyContent: "center",
 
     background: "white",
@@ -351,6 +361,8 @@ const styles = {
     color: "black",
 
     textDecoration: "none",
+
+    transition: "0.2s",
   },
 
   title: {
@@ -363,10 +375,10 @@ const styles = {
     width: "min(500px, 92vw)",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
     border:
-      "1px solid rgba(255,255,255,0.1)",
+      "1px solid var(--border)",
 
     borderRadius: "24px",
 
@@ -378,7 +390,10 @@ const styles = {
 
     gap: "30px",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter: "blur(12px)",
+
+    boxShadow:
+      "0 10px 30px rgba(0,0,0,0.2)",
   },
 
   section: {
@@ -387,6 +402,15 @@ const styles = {
     flexDirection: "column",
 
     gap: "12px",
+  },
+
+  label: {
+    fontWeight: "bold",
+  },
+
+  valueText: {
+    color:
+      "var(--text-secondary)",
   },
 
   toggleRow: {
@@ -405,11 +429,14 @@ const styles = {
     border: "none",
 
     background:
-      "rgba(255,255,255,0.1)",
+      "rgba(255,255,255,0.08)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     cursor: "pointer",
+
+    transition: "0.2s",
   },
 
   activeToggle: {
@@ -420,9 +447,12 @@ const styles = {
     border: "none",
 
     background:
-      "rgba(192,132,252,0.4)",
+      "var(--accent-glow)",
 
-    color: "white",
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
 
     cursor: "pointer",
   },
@@ -435,9 +465,10 @@ const styles = {
     border: "none",
 
     background:
-      "rgba(192,132,252,0.4)",
+      "var(--accent-glow)",
 
-    color: "white",
+    color:
+      "var(--accent)",
 
     fontSize: "20px",
 
@@ -452,18 +483,8 @@ const styles = {
     justifyContent: "center",
 
     gap: "12px",
-  },
 
-  rollingBox: {
-    marginTop: "40px",
-
-    display: "flex",
-
-    flexDirection: "column",
-
-    alignItems: "center",
-
-    gap: "20px",
+    transition: "0.2s",
   },
 
   diceRow: {
@@ -479,7 +500,7 @@ const styles = {
     borderRadius: "20px",
 
     background:
-      "rgba(255,255,255,0.1)",
+      "rgba(255,255,255,0.08)",
 
     display: "flex",
 
@@ -491,27 +512,42 @@ const styles = {
   },
 
   popup: {
-    marginTop: "40px",
-
     width: "min(420px, 92vw)",
 
     background:
-  "linear-gradient(135deg, #111827, #1e293b)",
+      "var(--card-bg)",
 
-  border:
-  "1px solid rgba(255,255,255,0.08)",
+    border:
+      "1px solid var(--border)",
 
-    borderRadius: "24px",
+    borderRadius: "28px",
 
-    padding: "30px",
+    padding: "34px",
 
     display: "flex",
 
     flexDirection: "column",
 
-    gap: "18px",
+    gap: "20px",
 
     alignItems: "center",
+
+    backdropFilter: "blur(14px)",
+
+    boxShadow:
+      "0 20px 60px rgba(0,0,0,0.35)",
+  },
+
+  rollingText: {
+    fontSize: "22px",
+
+    fontWeight: "bold",
+  },
+
+  resultTitle: {
+    fontSize: "36px",
+
+    margin: 0,
   },
 
   resultText: {
@@ -526,11 +562,14 @@ const styles = {
     borderRadius: "16px",
 
     background:
-      "rgba(255,255,255,0.1)",
+      "rgba(255,255,255,0.08)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     textDecoration: "none",
+
+    transition: "0.2s",
   },
 
 };

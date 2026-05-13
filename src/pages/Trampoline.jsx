@@ -1,274 +1,624 @@
-import { useState, useEffect, useRef } from "react";
-import { trampolineSkills } from "../data/trampolineSkills";
-import { House, Save } from "lucide-react";
-import { Link } from "react-router-dom";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+
+import {
+  trampolineSkills,
+} from "../data/trampolineSkills";
+
+import {
+  House,
+  Save,
+} from "lucide-react";
+
+import { Link }
+from "react-router-dom";
 
 export default function Trampoline() {
-  const [skills, setSkills] = useState(Array(10).fill(""));
-  const [activeInput, setActiveInput] = useState(null);
-  const containerRef = useRef(null);
-  const [showSaveModal, setShowSaveModal] = useState(false);
 
-const [routineName, setRoutineName] = useState("");
+  const [skills, setSkills] =
+    useState(Array(10).fill(""));
+
+  const [activeInput, setActiveInput] =
+    useState(null);
+
+  const containerRef =
+    useRef(null);
+
+  const [showSaveModal, setShowSaveModal] =
+    useState(false);
+
+  const [routineName, setRoutineName] =
+    useState("");
 
   useEffect(() => {
+
     function handleClickOutside(event) {
+
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target)
+        !containerRef.current.contains(
+          event.target
+        )
       ) {
+
         setActiveInput(null);
+
       }
     }
 
-const savedRoutine = JSON.parse(
-  localStorage.getItem("currentRoutine")
-);
+    const savedRoutine =
+      JSON.parse(
+        localStorage.getItem(
+          "currentRoutine"
+        )
+      );
 
-if (
-  savedRoutine &&
-  savedRoutine.event === "trampoline"
-) {
+    if (
+      savedRoutine &&
+      savedRoutine.event ===
+        "trampoline"
+    ) {
 
-  setSkills(savedRoutine.skills);
+      setSkills(
+        savedRoutine.skills
+      );
 
-  localStorage.removeItem(
-    "currentRoutine"
-  );
-}
+      localStorage.removeItem(
+        "currentRoutine"
+      );
+    }
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+
     };
+
   }, []);
 
-  const allSkills = trampolineSkills.flatMap((group) => group.items);
+  const allSkills =
+    trampolineSkills.flatMap(
+      (group) => group.items
+    );
 
-  function updateSkill(index, value) {
-    const updatedSkills = [...skills];
-    updatedSkills[index] = value;
+  function updateSkill(
+    index,
+    value
+  ) {
+
+    const updatedSkills =
+      [...skills];
+
+    updatedSkills[index] =
+      value;
+
     setSkills(updatedSkills);
   }
 
   function getSkillDD(code) {
-    const foundSkill = allSkills.find((skill) => skill.code === code);
-    return foundSkill ? foundSkill.dd : 0;
+
+    const foundSkill =
+      allSkills.find(
+        (skill) =>
+          skill.code === code
+      );
+
+    return foundSkill
+      ? foundSkill.dd
+      : 0;
   }
 
-  function getSkillName(code) {
-    const foundSkill = allSkills.find((skill) => skill.code === code);
-    return foundSkill ? foundSkill.name : "";
-  }
-
-  const totalDD = skills.reduce((total, skillCode) => {
-    return total + getSkillDD(skillCode);
-  }, 0);
-
-  function saveRoutine() {
-
-  const name = window.prompt("Routine name:");
-
-  if (!name) return;
-
-  alert(`Saving: ${name}`);
-
-}
-
-  return (
-    <div ref={containerRef} style={styles.container}>
-      <Link to="/" style={styles.homeButton}>
-        <House size={30} />
-      </Link>
-
-      <h1>Trampoline Calculator</h1>
-
-      {skills.map((skill, index) => {
-        const matchingSkills = allSkills.filter((item) => {
-          const search = skill.toLowerCase();
-
-          return (
-            item.code.toLowerCase().includes(search) ||
-            item.name.toLowerCase().includes(search) ||
-            (item.aliases &&
-              item.aliases.some((alias) =>
-                alias.toLowerCase().includes(search)
-              ))
-          );
-        }).slice(0, 8);
+  const totalDD =
+    skills.reduce(
+      (total, skillCode) => {
 
         return (
-          <div key={index} style={styles.skillContainer}>
-            <div style={styles.row}>
-              <input
-                type="text"
-                placeholder={`Skill ${index + 1}`}
-                value={skill}
-                onChange={(e) => updateSkill(index, e.target.value)}
-                onFocus={() => setActiveInput(index)}
-                style={styles.input}
-              />
-
-              <select
-                value={skill}
-                onChange={(e) => updateSkill(index, e.target.value)}
-                style={styles.dropdown}
-              >
-                <option value="">Select Skill</option>
-
-                {trampolineSkills.map((group) => (
-                  <optgroup
-                    key={`${group.section}-${group.direction}`}
-                    label={`${group.section} - ${group.direction}`}
-                  >
-                    {group.items.map((item) => (
-                      <option
-                        key={`${item.code}-${item.name}`}
-                        value={item.code}
-                      >
-                        {item.name} | {item.code} | {item.dd}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-
-              <div style={styles.ddBox}>
-                {getSkillDD(skill).toFixed(1)}
-              </div>
-            </div>
-
-            {activeInput === index &&
-              skill.length > 0 &&
-              matchingSkills.length > 0 && (
-                <div style={styles.suggestions}>
-                  {matchingSkills.map((item) => (
-                    <div
-                      key={`${item.code}-${item.name}`}
-                      style={styles.suggestionItem}
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                        updateSkill(index, item.code);
-                        setActiveInput(null);
-                      }}
-                    >
-                      {item.name} | {item.code} | {item.dd}
-                    </div>
-                  ))}
-                </div>
-              )}
-          </div>
+          total +
+          getSkillDD(skillCode)
         );
-      })}
 
-      <h2>Total DD: {totalDD.toFixed(1)}</h2>
+      },
+      0
+    );
 
-  <>
-  <button
-    onClick={() => setShowSaveModal(true)}
-    style={styles.saveButton}
-  >
-    <Save size={20} />
-  </button>
+  return (
 
-  {showSaveModal && (
+    <div
+      ref={containerRef}
 
-    <div style={styles.modalOverlay}>
+      style={styles.container}
+    >
 
-      <div style={styles.modal}>
+      <Link
+        to="/"
 
-        <h2>Save Routine</h2>
+        style={styles.homeButton}
+      >
+        <House size={28} />
+      </Link>
 
-        <input
-          type="text"
-          placeholder="Routine name"
-          value={routineName}
-          onChange={(e) =>
-            setRoutineName(e.target.value)
-          }
-          style={styles.modalInput}
-        />
+      <h1 style={styles.title}>
+        Trampoline Calculator
+      </h1>
 
-        <div style={styles.modalButtons}>
+      <div style={styles.totalCard}>
 
-          <button
-            onClick={() => setShowSaveModal(false)}
-            style={styles.cancelButton}
-          >
-            Cancel
-          </button>
+        <div style={styles.totalLabel}>
+          Total DD
+        </div>
 
-          <button
-            onClick={() => {
-
-              if (!routineName) return;
-
-              const existing = JSON.parse(
-                localStorage.getItem("savedRoutines") || "[]"
-              );
-
-              existing.push({
-                name: routineName,
-                event: "trampoline",
-                skills,
-                totalDD,
-              });
-
-              localStorage.setItem(
-                "savedRoutines",
-                JSON.stringify(existing)
-              );
-
-              setRoutineName("");
-
-              setShowSaveModal(false);
-
-              alert("Routine saved!");
-
-            }}
-            style={styles.confirmButton}
-          >
-            Save
-          </button>
-
+        <div style={styles.totalDD}>
+          {totalDD.toFixed(1)}
         </div>
 
       </div>
 
+      <div style={styles.skillsWrapper}>
+
+        {skills.map(
+          (skill, index) => {
+
+            const matchingSkills =
+              allSkills
+                .filter((item) => {
+
+                  const search =
+                    skill.toLowerCase();
+
+                  return (
+
+                    item.code
+                      .toLowerCase()
+                      .includes(search)
+
+                    ||
+
+                    item.name
+                      .toLowerCase()
+                      .includes(search)
+
+                    ||
+
+                    (
+                      item.aliases &&
+
+                      item.aliases.some(
+                        (alias) =>
+
+                          alias
+                            .toLowerCase()
+                            .includes(
+                              search
+                            )
+                      )
+                    )
+
+                  );
+
+                })
+                .slice(0, 8);
+
+            return (
+
+              <div
+                key={index}
+
+                style={
+                  styles.skillContainer
+                }
+              >
+
+                <div style={styles.row}>
+
+                  <div
+                    style={
+                      styles.skillNumber
+                    }
+                  >
+                    {index + 1}
+                  </div>
+
+                  <input
+                    type="text"
+
+                    placeholder={`Skill ${index + 1}`}
+
+                    value={skill}
+
+                    onChange={(e) =>
+                      updateSkill(
+                        index,
+                        e.target.value
+                      )
+                    }
+
+                    onFocus={() =>
+                      setActiveInput(
+                        index
+                      )
+                    }
+
+                    style={styles.input}
+                  />
+
+                  <select
+                    value={skill}
+
+                    onChange={(e) =>
+                      updateSkill(
+                        index,
+                        e.target.value
+                      )
+                    }
+
+                    style={styles.dropdown}
+                  >
+
+                    <option
+  value=""
+>
+                      Select Skill
+                    </option>
+
+                    {trampolineSkills.map(
+                      (group) => (
+
+                        <optgroup
+                          key={`${group.section}-${group.direction}`}
+
+                          label={`${group.section} - ${group.direction}`}
+                        >
+
+                          {group.items.map(
+                            (item) => (
+
+                              <option
+  key={`${item.code}-${item.name}`}
+
+  style={styles.option}
+
+                                value={
+                                  item.code
+                                }
+                              >
+
+                                {item.name}
+                                {" | "}
+                                {item.code}
+                                {" | "}
+                                {item.dd}
+
+                              </option>
+
+                            )
+                          )}
+
+                        </optgroup>
+
+                      )
+                    )}
+
+                  </select>
+
+                  <div style={styles.ddBox}>
+
+                    {getSkillDD(skill)
+                      .toFixed(1)}
+
+                  </div>
+
+                </div>
+
+                {activeInput ===
+                  index &&
+
+                  skill.length > 0 &&
+
+                  matchingSkills.length > 0 && (
+
+                  <div
+                    style={
+                      styles.suggestions
+                    }
+                  >
+
+                    {matchingSkills.map(
+                      (item) => (
+
+                        <div
+                          key={`${item.code}-${item.name}`}
+
+                          style={
+                            styles.suggestionItem
+                          }
+
+                          onMouseDown={(e) => {
+
+                            e.preventDefault();
+
+                            updateSkill(
+                              index,
+                              item.code
+                            );
+
+                            setActiveInput(
+                              null
+                            );
+
+                          }}
+                        >
+
+                          {item.name}
+                          {" | "}
+                          {item.code}
+                          {" | "}
+                          {item.dd}
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                )}
+
+              </div>
+
+            );
+
+          }
+        )}
+
+      </div>
+
+      <button
+        onClick={() =>
+          setShowSaveModal(true)
+        }
+
+        style={styles.saveButton}
+      >
+
+        <Save size={20} />
+
+        Save Routine
+
+      </button>
+
+      {showSaveModal && (
+
+        <div style={styles.modalOverlay}>
+
+          <div style={styles.modal}>
+
+            <h2 style={styles.modalTitle}>
+              Save Routine
+            </h2>
+
+            <input
+              type="text"
+
+              placeholder="Routine name"
+
+              value={routineName}
+
+              onChange={(e) =>
+                setRoutineName(
+                  e.target.value
+                )
+              }
+
+              style={styles.modalInput}
+            />
+
+            <div
+              style={
+                styles.modalButtons
+              }
+            >
+
+              <button
+                onClick={() =>
+                  setShowSaveModal(
+                    false
+                  )
+                }
+
+                style={
+                  styles.cancelButton
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+
+                  if (!routineName)
+                    return;
+
+                  const existing =
+                    JSON.parse(
+                      localStorage.getItem(
+                        "savedRoutines"
+                      ) || "[]"
+                    );
+
+                  existing.push({
+
+                    name:
+                      routineName,
+
+                    event:
+                      "trampoline",
+
+                    skills,
+
+                    totalDD,
+
+                  });
+
+                  localStorage.setItem(
+                    "savedRoutines",
+
+                    JSON.stringify(
+                      existing
+                    )
+                  );
+
+                  setRoutineName("");
+
+                  setShowSaveModal(
+                    false
+                  );
+
+                }}
+
+                style={
+                  styles.confirmButton
+                }
+              >
+                Save
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
     </div>
 
-  )}
-</>
-    </div>
   );
 }
 
 const styles = {
-  homeButton: {
-    position: "absolute",
-    top: "20px",
-    left: "20px",
-    width: "52px",
-    height: "52px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    textDecoration: "none",
-    backgroundColor: "white",
-    border: "2px solid black",
-    borderRadius: "12px",
-    color: "black",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
-    cursor: "pointer",
-  },
 
   container: {
+    minHeight: "100vh",
+
+    background:
+      "var(--bg-primary)",
+
+    color:
+      "var(--text-primary)",
+
     display: "flex",
+
     flexDirection: "column",
+
     alignItems: "center",
-    padding: "60px",
-    gap: "14px",
+
+    padding:
+      "40px 20px 80px",
+  },
+
+  homeButton: {
+    position: "absolute",
+
+    top: "30px",
+    left: "30px",
+
+    width: "54px",
+    height: "54px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    textDecoration: "none",
+
+    borderRadius: "16px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    color:
+      "var(--text-primary)",
+
+    backdropFilter:
+      "blur(10px)",
+  },
+
+  title: {
+    fontSize: "56px",
+
+    fontWeight: "bold",
+
+    textAlign: "center",
+
+    marginBottom: "24px",
+  },
+
+  totalCard: {
+    padding: "24px 40px",
+
+    borderRadius: "28px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    alignItems: "center",
+
+    gap: "8px",
+
+    marginBottom: "40px",
+
+    backdropFilter:
+      "blur(12px)",
+  },
+
+  totalLabel: {
+    fontSize: "18px",
+
+    color:
+      "var(--text-secondary)",
+  },
+
+  totalDD: {
+    fontSize: "58px",
+
+    fontWeight: "bold",
+
+    color:
+      "var(--accent)",
+  },
+
+  skillsWrapper: {
+    width:
+      "min(900px, 95vw)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    gap: "18px",
   },
 
   skillContainer: {
@@ -277,134 +627,295 @@ const styles = {
 
   row: {
     display: "flex",
+
     alignItems: "center",
-    gap: "10px",
+
+    gap: "14px",
+
     flexWrap: "wrap",
+
+    padding: "18px",
+
+    borderRadius: "24px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    backdropFilter:
+      "blur(10px)",
+  },
+
+  skillNumber: {
+    width: "52px",
+    height: "52px",
+
+    borderRadius: "16px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    fontSize: "20px",
   },
 
   input: {
-    width: "90px",
-    padding: "10px",
+    width: "120px",
+
+    padding: "14px",
+
+    borderRadius: "16px",
+
+    border:
+      "1px solid var(--border)",
+
+    background:
+      "rgba(255,255,255,0.06)",
+
+    color:
+      "var(--text-primary)",
+
     fontSize: "18px",
+
+    outline: "none",
   },
 
   dropdown: {
-    flex: 1,
-    minWidth: "180px",
-    padding: "10px",
-    fontSize: "16px",
-  },
+  flex: 1,
+
+  minWidth: "220px",
+
+  padding: "12px",
+
+  fontSize: "16px",
+
+  borderRadius: "12px",
+
+  border:
+    "1px solid var(--border)",
+
+  background:
+    "var(--input-bg)",
+
+  color:
+    "var(--input-text)",
+
+  cursor: "pointer",
+
+  outline: "none",
+},
 
   ddBox: {
-    width: "60px",
-    textAlign: "center",
-    fontSize: "20px",
+    width: "70px",
+
+    height: "52px",
+
+    borderRadius: "16px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
     fontWeight: "bold",
+
+    fontSize: "22px",
   },
 
   suggestions: {
     position: "absolute",
-    top: "50px",
-    left: "0",
-    width: "400px",
-    backgroundColor: "white",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    zIndex: 1000,
-    maxHeight: "220px",
-    overflowY: "auto",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+
+    top: "92px",
+
+    left: 0,
+
+    width: "100%",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    borderRadius: "22px",
+
+    overflow: "hidden",
+
+    zIndex: 9999,
+
+    backdropFilter:
+      "blur(14px)",
+
+    boxShadow:
+      "0 14px 40px rgba(0,0,0,0.18)",
   },
 
   suggestionItem: {
-    padding: "10px",
+    padding: "16px",
+
     cursor: "pointer",
-    borderBottom: "1px solid #eee",
+
+    borderBottom:
+      "1px solid var(--border)",
+
+    transition:
+      "0.15s ease",
   },
 
   saveButton: {
-    width: "50px",
-    height: "50px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: "12px",
+    marginTop: "34px",
+
+    padding: "18px 26px",
+
+    borderRadius: "20px",
+
     border: "none",
-    background: "#22c55e",
-    color: "white",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontSize: "18px",
+
+    fontWeight: "bold",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    gap: "12px",
+
     cursor: "pointer",
-    marginTop: "10px",
-    position: "relative",
-    zIndex: 5,
   },
 
-modalOverlay: {
-  position: "fixed",
-  inset: 0,
-  background: "rgba(0,0,0,0.5)",
+  modalOverlay: {
+    position: "fixed",
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    inset: 0,
 
-  zIndex: 9999,
-},
+    background:
+      "rgba(0,0,0,0.55)",
 
-modal: {
-  background: "white",
+    display: "flex",
 
-  padding: "30px",
+    alignItems: "center",
 
-  borderRadius: "20px",
+    justifyContent: "center",
 
-  width: "min(400px, 90vw)",
+    zIndex: 9999,
+  },
 
-  display: "flex",
-  flexDirection: "column",
+  modal: {
+    width:
+      "min(450px, 92vw)",
 
-  gap: "20px",
-},
+    background:
+      "var(--card-bg)",
 
-modalInput: {
-  padding: "14px",
+    border:
+      "1px solid var(--border)",
 
-  fontSize: "18px",
+    borderRadius: "30px",
 
-  borderRadius: "10px",
+    padding: "30px",
 
-  border: "1px solid #ccc",
-},
+    display: "flex",
 
-modalButtons: {
-  display: "flex",
+    flexDirection: "column",
 
-  justifyContent: "flex-end",
+    gap: "22px",
 
-  gap: "10px",
-},
+    backdropFilter:
+      "blur(14px)",
+  },
 
-cancelButton: {
-  padding: "12px 18px",
+  modalTitle: {
+    fontSize: "34px",
 
-  borderRadius: "10px",
+    fontWeight: "bold",
+  },
 
-  border: "none",
+  modalInput: {
+    padding: "16px",
 
-  cursor: "pointer",
-},
+    borderRadius: "18px",
 
-confirmButton: {
-  padding: "12px 18px",
+    border:
+      "1px solid var(--border)",
 
-  borderRadius: "10px",
+    background:
+      "rgba(255,255,255,0.06)",
 
-  border: "none",
+    color:
+      "var(--text-primary)",
 
-  background: "#22c55e",
+    fontSize: "18px",
 
-  color: "white",
+    outline: "none",
+  },
 
-  cursor: "pointer",
-},
+  modalButtons: {
+    display: "flex",
+
+    justifyContent:
+      "flex-end",
+
+    gap: "12px",
+  },
+
+  cancelButton: {
+    padding: "14px 18px",
+
+    borderRadius: "16px",
+
+    border: "none",
+
+    background:
+      "rgba(255,255,255,0.08)",
+
+    color:
+      "var(--text-primary)",
+
+    cursor: "pointer",
+  },
+
+  confirmButton: {
+    padding: "14px 18px",
+
+    borderRadius: "16px",
+
+    border: "none",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    cursor: "pointer",
+  },
 
 };

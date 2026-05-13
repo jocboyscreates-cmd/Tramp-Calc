@@ -1,4 +1,7 @@
-import { useState } from "react";
+import {
+  useState,
+  useEffect,
+} from "react";
 
 import {
   BrowserRouter,
@@ -16,7 +19,6 @@ import Games from "./pages/Games";
 import DiceGame from "./pages/DiceGame";
 import ImposterGame from "./pages/ImposterGame";
 import BingoGame from "./pages/BingoGame";
-
 import SharedRoutine from "./pages/SharedRoutine";
 
 import {
@@ -27,16 +29,66 @@ import {
 } from "lucide-react";
 
 export default function App() {
+
   const [settingsOpen, setSettingsOpen] =
-  useState(false);
+    useState(false);
+
+  const [darkMode, setDarkMode] =
+    useState(true);
+
+  useEffect(() => {
+
+    if (darkMode) {
+
+      document.body.classList.add(
+        "dark"
+      );
+
+    } else {
+
+      document.body.classList.remove(
+        "dark"
+      );
+
+    }
+
+  }, [darkMode]);
+
+  const hoverIn = (e) => {
+
+    e.currentTarget.style.transform =
+      "translateY(-6px)";
+
+    e.currentTarget.style.border =
+      "1px solid rgba(252,175,69,0.4)";
+
+    e.currentTarget.style.boxShadow =
+      "0 0 30px rgba(252,175,69,0.22)";
+  };
+
+  const hoverOut = (e) => {
+
+    e.currentTarget.style.transform =
+      "translateY(0px)";
+
+    e.currentTarget.style.border =
+      "1px solid var(--border)";
+
+    e.currentTarget.style.boxShadow =
+      "0 12px 30px rgba(0,0,0,0.18)";
+  };
 
   return (
+
     <BrowserRouter>
+
       <Routes>
 
         <Route
           path="/"
+
           element={
+
             <div style={styles.container}>
 
               <div style={styles.overlay} />
@@ -55,148 +107,202 @@ export default function App() {
 
                   <Link
                     to="/trampoline"
+
                     style={styles.card}
+
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
                   >
                     Trampoline
                   </Link>
 
                   <Link
                     to="/double-mini"
+
                     style={styles.card}
+
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
                   >
                     Double Mini
                   </Link>
 
                   <Link
                     to="/tumbling"
+
                     style={styles.card}
+
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
                   >
                     Tumbling
                   </Link>
 
-<div style={styles.bottomButtons}>
+                </div>
 
-  <Link
-    to="/saved"
-    style={styles.squareButton}
-  >
-    <Save size={40} />
-  </Link>
+                <div style={styles.bottomButtons}>
 
-  <Link
-    to="/leaderboard"
-    style={styles.squareButton}
-  >
-    <Trophy size={40} />
-  </Link>
+                  <Link
+                    to="/saved"
 
-  <Link
-  to="/games"
-  style={styles.squareButton}
->
-  <Gamepad2 size={40} />
-</Link>
+                    style={styles.squareButton}
 
-  <button
-    onClick={() =>
-      setSettingsOpen(true)
-    }
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
+                  >
+                    <Save size={40} />
+                  </Link>
 
-    style={styles.squareButton}
-  >
-    <Settings size={40} />
-  </button>
+                  <Link
+                    to="/leaderboard"
 
-</div>
+                    style={styles.squareButton}
 
-            
-{settingsOpen && (
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
+                  >
+                    <Trophy size={40} />
+                  </Link>
 
-  <div style={styles.modalOverlay}>
+                  <Link
+                    to="/games"
 
-    <div style={styles.settingsModal}>
+                    style={styles.squareButton}
 
-      <h2>
-        Settings
-      </h2>
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
+                  >
+                    <Gamepad2 size={40} />
+                  </Link>
 
-      <div style={styles.settingItem}>
-        <span>
-          Show Skill Names
-        </span>
+                  <button
+                    onClick={() =>
+                      setSettingsOpen(true)
+                    }
 
-        <button style={styles.settingButton}>
-          Soon
-        </button>
-      </div>
+                    style={styles.squareButton}
 
-      <div style={styles.settingItem}>
-        <span>
-          Dark Mode
-        </span>
+                    onMouseEnter={hoverIn}
+                    onMouseLeave={hoverOut}
+                  >
+                    <Settings size={40} />
+                  </button>
 
-        <button style={styles.settingButton}>
-          Enabled
-        </button>
-      </div>
+                </div>
 
-      <div style={styles.settingItem}>
-        <span>
-          Reset Saved Routines
-        </span>
+                {settingsOpen && (
 
-        <button
-          style={styles.deleteButton}
+                  <div style={styles.modalOverlay}>
 
-          onClick={() => {
+                    <div style={styles.settingsModal}>
 
-            const confirmed =
-              window.confirm(
-                "Delete all saved routines?"
-              );
+                      <h2 style={styles.settingsTitle}>
+                        Settings
+                      </h2>
 
-            if (!confirmed) return;
+                      <div style={styles.settingItem}>
 
-            localStorage.removeItem(
-              "savedRoutines"
-            );
+                        <span>
+                          Show Skill Names
+                        </span>
 
-            alert(
-              "Saved routines deleted."
-            );
+                        <button
+                          style={styles.settingButton}
+                        >
+                          Soon
+                        </button>
 
-          }}
-        >
-          Reset
-        </button>
-      </div>
+                      </div>
 
-      <p style={styles.versionText}>
-        Version 1.0
-      </p>
+                      <div style={styles.settingItem}>
 
-      <button
-        onClick={() =>
-          setSettingsOpen(false)
-        }
+                        <span>
+                          Dark Mode
+                        </span>
 
-        style={styles.closeButton}
-      >
-        Close
-      </button>
+                        <button
+                          style={
+                            darkMode
+                              ? styles.settingButtonActive
+                              : styles.settingButton
+                          }
 
-    </div>
+                          onClick={() =>
+                            setDarkMode(!darkMode)
+                          }
+                        >
 
-  </div>
+                          {darkMode
+                            ? "Enabled"
+                            : "Disabled"}
 
-)}
-</div>
+                        </button>
+
+                      </div>
+
+                      <div style={styles.settingItem}>
+
+                        <span>
+                          Reset Saved Routines
+                        </span>
+
+                        <button
+                          style={styles.deleteButton}
+
+                          onClick={() => {
+
+                            const confirmed =
+                              window.confirm(
+                                "Delete all saved routines?"
+                              );
+
+                            if (!confirmed)
+                              return;
+
+                            localStorage.removeItem(
+                              "savedRoutines"
+                            );
+
+                            alert(
+                              "Saved routines deleted."
+                            );
+
+                          }}
+                        >
+                          Reset
+                        </button>
+
+                      </div>
+
+                      <p style={styles.versionText}>
+                        Version 1.0
+                      </p>
+
+                      <button
+                        onClick={() =>
+                          setSettingsOpen(false)
+                        }
+
+                        style={styles.closeButton}
+                      >
+                        Close
+                      </button>
+
+                    </div>
+
+                  </div>
+
+                )}
+
                 <div style={styles.footer}>
 
                   <a
                     href="https://www.gymbc.org/media/qb5g331q/2025_tg_canadian_pathways_en_v6_march-2025.pdf"
+
                     target="_blank"
+
                     rel="noopener noreferrer"
+
                     style={styles.footerLink}
                   >
                     Canadian Pathways PDF
@@ -204,20 +310,27 @@ export default function App() {
 
                   <a
                     href="https://www.gymbc.org/media/1wbnaeax/fig-tra-cop-2025-2028.pdf"
+
                     target="_blank"
+
                     rel="noopener noreferrer"
+
                     style={styles.footerLink}
                   >
                     FIG Code of Points PDF
                   </a>
 
                   <p style={styles.credit}>
+
                     Created by Jackson Cann •{" "}
 
                     <a
                       href="https://www.instagram.com/jcanflip"
+
                       target="_blank"
+
                       rel="noopener noreferrer"
+
                       style={styles.instagramLink}
                     >
                       @jcanflip
@@ -230,6 +343,7 @@ export default function App() {
               </div>
 
             </div>
+
           }
         />
 
@@ -267,10 +381,12 @@ export default function App() {
           path="/leaderboard"
           element={<Leaderboard />}
         />
+
         <Route
           path="/games"
           element={<Games />}
         />
+
         <Route
           path="/imposter-game"
           element={<ImposterGame />}
@@ -282,7 +398,9 @@ export default function App() {
         />
 
       </Routes>
+
     </BrowserRouter>
+
   );
 }
 
@@ -297,11 +415,13 @@ const styles = {
     alignItems: "center",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
     position: "relative",
 
     overflow: "hidden",
+
+    transition: "0.3s",
   },
 
   overlay: {
@@ -309,7 +429,7 @@ const styles = {
     inset: 0,
 
     background:
-      "radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 40%)",
+      "radial-gradient(circle at top, rgba(252,175,69,0.12), transparent 45%)",
   },
 
   content: {
@@ -323,74 +443,136 @@ const styles = {
   },
 
   title: {
-    color: "white",
-    fontSize: "clamp(32px, 8vw, 56px)",
+    color:
+      "var(--text-primary)",
+
+    fontSize:
+      "clamp(42px, 8vw, 72px)",
+
     fontWeight: "bold",
 
     margin: 0,
+
+    letterSpacing: "-2px",
+
+    textAlign: "center",
   },
 
   subtitle: {
-    color: "#cbd5e1",
+    color:
+      "var(--text-secondary)",
+
     fontSize: "20px",
 
-    marginBottom: "30px",
+    marginBottom: "34px",
+
+    textAlign: "center",
   },
 
   buttonContainer: {
     display: "flex",
+
     flexDirection: "column",
+
     gap: "20px",
   },
 
   card: {
-    width: "min(320px, 90vw)",
+    width: "min(340px, 92vw)",
 
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
 
-    padding: "28px",
+    padding: "30px",
 
-    borderRadius: "20px",
+    borderRadius: "28px",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter: "blur(14px)",
 
     border:
-      "1px solid rgba(255,255,255,0.15)",
+      "1px solid var(--border)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     textDecoration: "none",
 
-    fontSize: "32px",
+    fontSize: "34px",
+
     fontWeight: "bold",
 
     textAlign: "center",
 
-    transition: "0.2s",
+    transition:
+      "0.22s ease",
 
     boxShadow:
-      "0 10px 30px rgba(0,0,0,0.25)",
+      "0 12px 30px rgba(0,0,0,0.18)",
+
+    cursor: "pointer",
   },
 
+  bottomButtons: {
+    display: "grid",
 
+    gridTemplateColumns:
+      "repeat(2, 92px)",
 
-  footer: {
-    marginTop: "40px",
+    gap: "18px",
+
+    marginTop: "18px",
+  },
+
+  squareButton: {
+    width: "92px",
+    height: "92px",
+
+    borderRadius: "24px",
+
+    border:
+      "1px solid var(--border)",
 
     display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+
+    background:
+      "var(--card-bg)",
+
+    color:
+      "var(--text-primary)",
+
+    cursor: "pointer",
+
+    textDecoration: "none",
+
+    backdropFilter: "blur(12px)",
+
+    boxShadow:
+      "0 10px 25px rgba(0,0,0,0.18)",
+
+    transition: "0.2s",
+  },
+
+  footer: {
+    marginTop: "42px",
+
+    display: "flex",
+
     flexDirection: "column",
+
     gap: "10px",
 
     alignItems: "center",
   },
 
   footerLink: {
-    color: "#cbd5e1",
+    color:
+      "var(--text-secondary)",
 
     textDecoration: "none",
 
@@ -398,159 +580,158 @@ const styles = {
   },
 
   credit: {
-  color: "#94a3b8",
-  fontSize: "14px",
-  marginTop: "10px",
+    color:
+      "var(--text-secondary)",
+
+    fontSize: "14px",
+
+    marginTop: "10px",
   },
 
   instagramLink: {
-  color: "#fcaf45",
-  textDecoration: "none",
+    color:
+      "var(--accent)",
+
+    textDecoration: "none",
+
+    fontWeight: "bold",
   },
 
-  bottomButtons: {
-  display: "grid",
+  modalOverlay: {
+    position: "fixed",
 
-  gridTemplateColumns: "repeat(2, 92px)",
-  justifyContent: "center",
+    inset: 0,
 
-  gap: "18px",
+    background:
+      "rgba(0,0,0,0.5)",
 
-  marginTop: "18px",
+    display: "flex",
 
-  justifyContent: "center",
-},
+    alignItems: "center",
 
-squareButton: {
-  width: "92px",
-  height: "92px",
+    justifyContent: "center",
 
-  borderRadius: "18px",
+    zIndex: 9999,
+  },
 
-  border: "none",
+  settingsModal: {
+    width: "min(430px, 92vw)",
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    background:
+      "var(--card-bg)",
 
-  background:
-    "rgba(255,255,255,0.08)",
+    border:
+      "1px solid var(--border)",
 
-  border:
-    "1px solid rgba(255,255,255,0.15)",
+    borderRadius: "30px",
 
-  color: "white",
+    padding: "30px",
 
-  cursor: "pointer",
+    display: "flex",
 
-  textDecoration: "none",
+    flexDirection: "column",
 
-  backdropFilter: "blur(10px)",
+    gap: "22px",
 
-  boxShadow:
-    "0 10px 30px rgba(0,0,0,0.25)",
-},
-modalOverlay: {
-  position: "fixed",
+    color:
+      "var(--text-primary)",
 
-  inset: 0,
+    backdropFilter:
+      "blur(16px)",
 
-  background:
-    "rgba(0,0,0,0.5)",
+    boxShadow:
+      "0 20px 60px rgba(0,0,0,0.4)",
+  },
 
-  display: "flex",
+  settingsTitle: {
+    fontSize: "36px",
 
-  alignItems: "center",
+    fontWeight: "bold",
 
-  justifyContent: "center",
+    margin: 0,
+  },
 
-  zIndex: 9999,
-},
+  settingItem: {
+    display: "flex",
 
-settingsModal: {
-  width: "min(420px, 92vw)",
+    justifyContent: "space-between",
 
-  background:
-    "linear-gradient(135deg, #111827, #1e293b)",
+    alignItems: "center",
+  },
 
-  border:
-    "1px solid rgba(255,255,255,0.1)",
+  settingButton: {
+    padding: "10px 16px",
 
-  borderRadius: "24px",
+    borderRadius: "12px",
 
-  padding: "28px",
+    border: "none",
 
-  display: "flex",
+    background:
+      "rgba(255,255,255,0.08)",
 
-  flexDirection: "column",
+    color:
+      "var(--text-primary)",
+  },
 
-  gap: "20px",
+  settingButtonActive: {
+    padding: "10px 16px",
 
-  color: "white",
+    borderRadius: "12px",
 
-  boxShadow:
-    "0 20px 60px rgba(0,0,0,0.45)",
-},
+    border: "none",
 
-settingItem: {
-  display: "flex",
+    background:
+      "var(--accent-glow)",
 
-  justifyContent: "space-between",
+    color:
+      "var(--accent)",
 
-  alignItems: "center",
-},
+    fontWeight: "bold",
 
-settingButton: {
-  padding: "10px 16px",
+    cursor: "pointer",
+  },
 
-  borderRadius: "10px",
+  deleteButton: {
+    padding: "10px 16px",
 
-  border: "none",
+    borderRadius: "12px",
 
-  background:
-    "rgba(255,255,255,0.1)",
+    border: "none",
 
-  color: "white",
-},
+    background: "#ef4444",
 
-deleteButton: {
-  padding: "10px 16px",
+    color: "white",
 
-  borderRadius: "10px",
+    fontWeight: "bold",
 
-  border: "none",
+    cursor: "pointer",
+  },
 
-  background: "#ef4444",
+  closeButton: {
+    padding: "16px",
 
-  color: "white",
+    borderRadius: "16px",
 
-  fontWeight: "bold",
+    border: "none",
 
-  cursor: "pointer",
-},
+    background:
+      "var(--accent-glow)",
 
-closeButton: {
-  padding: "14px",
+    color:
+      "var(--accent)",
 
-  borderRadius: "14px",
+    fontWeight: "bold",
 
-  border: "none",
+    cursor: "pointer",
+  },
 
-  background: "white",
+  versionText: {
+    color:
+      "var(--text-secondary)",
 
-  color: "black",
+    textAlign: "center",
 
-  fontWeight: "bold",
-
-  cursor: "pointer",
-},
-
-versionText: {
-  color: "#94a3b8",
-
-  textAlign: "center",
-
-  marginTop: "10px",
-},
+    marginTop: "8px",
+  },
 
 };

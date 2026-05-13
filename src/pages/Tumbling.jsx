@@ -1,26 +1,51 @@
-import { useState, useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
-import { House } from "lucide-react";
-import { Save } from "lucide-react";
-import { tumblingSkills } from "../data/tumblingSkills";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
+
+import { Link }
+from "react-router-dom";
+
+import {
+  House,
+  Save,
+} from "lucide-react";
+
+import {
+  tumblingSkills,
+} from "../data/tumblingSkills";
 
 export default function Tumbling() {
 
-  const [mode, setMode] = useState("twoPass");
+  const [mode, setMode] =
+    useState("twoPass");
 
-  const [passes, setPasses] = useState({
-    pass1: Array(8).fill(""),
-    pass2: Array(8).fill(""),
-    pass3: Array(3).fill(""),
-  });
+  const [passes, setPasses] =
+    useState({
 
-  const [activeInput, setActiveInput] = useState(null);
+      pass1:
+        Array(8).fill(""),
 
-  const [showSaveModal, setShowSaveModal] = useState(false);
+      pass2:
+        Array(8).fill(""),
 
-const [routineName, setRoutineName] = useState("");
+      pass3:
+        Array(3).fill(""),
 
-  const containerRef = useRef(null);
+    });
+
+  const [activeInput, setActiveInput] =
+    useState(null);
+
+  const [showSaveModal, setShowSaveModal] =
+    useState(false);
+
+  const [routineName, setRoutineName] =
+    useState("");
+
+  const containerRef =
+    useRef(null);
 
   useEffect(() => {
 
@@ -28,27 +53,38 @@ const [routineName, setRoutineName] = useState("");
 
       if (
         containerRef.current &&
-        !containerRef.current.contains(event.target)
+        !containerRef.current.contains(
+          event.target
+        )
       ) {
+
         setActiveInput(null);
+
       }
     }
 
-const savedRoutine = JSON.parse(
-  localStorage.getItem("currentRoutine")
-);
+    const savedRoutine =
+      JSON.parse(
+        localStorage.getItem(
+          "currentRoutine"
+        )
+      );
 
-if (
-  savedRoutine &&
-  savedRoutine.event === "tumbling"
-) {
+    if (
+      savedRoutine &&
+      savedRoutine.event ===
+        "tumbling"
+    ) {
 
-  setPasses(savedRoutine.passes);
+      setPasses(
+        savedRoutine.passes
+      );
 
-  localStorage.removeItem(
-    "currentRoutine"
-  );
-}
+      localStorage.removeItem(
+        "currentRoutine"
+      );
+
+    }
 
     document.addEventListener(
       "mousedown",
@@ -56,402 +92,867 @@ if (
     );
 
     return () => {
+
       document.removeEventListener(
         "mousedown",
         handleClickOutside
       );
+
     };
 
   }, []);
 
-  const allSkills = tumblingSkills.flatMap(
-    (group) => group.items
-  );
+  const allSkills =
+    tumblingSkills.flatMap(
+      (group) => group.items
+    );
 
-  function updateSkill(passName, skillIndex, value) {
+  function updateSkill(
+    passName,
+    skillIndex,
+    value
+  ) {
 
     setPasses((prev) => {
 
-      const updatedPass = [...prev[passName]];
+      const updatedPass =
+        [...prev[passName]];
 
-      updatedPass[skillIndex] = value;
+      updatedPass[skillIndex] =
+        value;
 
       return {
+
         ...prev,
-        [passName]: updatedPass,
+
+        [passName]:
+          updatedPass,
+
       };
+
     });
+
   }
 
   function getSkillDD(code) {
 
-    const foundSkill = allSkills.find(
-      (skill) => skill.code === code
-    );
+    const foundSkill =
+      allSkills.find(
+        (skill) =>
+          skill.code === code
+      );
 
-    return foundSkill ? foundSkill.dd : 0;
+    return foundSkill
+      ? foundSkill.dd
+      : 0;
+
   }
 
   function getPassDD(passArray) {
 
-    return passArray.reduce((total, skillCode) => {
-      return total + getSkillDD(skillCode);
-    }, 0);
+    return passArray.reduce(
+      (
+        total,
+        skillCode
+      ) => {
+
+        return (
+          total +
+          getSkillDD(skillCode)
+        );
+
+      },
+      0
+    );
+
   }
 
   const visiblePasses =
+
     mode === "twoPass"
-      ? ["pass1", "pass2"]
-      : ["pass1", "pass3"];
+
+      ? [
+          "pass1",
+          "pass2",
+        ]
+
+      : [
+          "pass1",
+          "pass3",
+        ];
 
   const passLabels = {
-    pass1: "First Pass",
-    pass2: "Second Pass",
-    pass3: "3 Skill Pass",
+
+    pass1:
+      "First Pass",
+
+    pass2:
+      "Second Pass",
+
+    pass3:
+      "3 Skill Pass",
+
   };
 
-  const totalDD = visiblePasses.reduce(
-    (total, passName) => {
-      return total + getPassDD(passes[passName]);
-    },
-    0
-  );
+  const totalDD =
+    visiblePasses.reduce(
+      (
+        total,
+        passName
+      ) => {
 
+        return (
+          total +
+          getPassDD(
+            passes[passName]
+          )
+        );
 
+      },
+      0
+    );
 
   return (
-    <div ref={containerRef} style={styles.container}>
 
-      <Link to="/" style={styles.homeButton}>
-        <House size={30} />
+    <div
+      ref={containerRef}
+
+      style={styles.container}
+    >
+
+      <Link
+        to="/"
+
+        style={styles.homeButton}
+      >
+        <House size={28} />
       </Link>
 
-      <h1>Tumbling Calculator</h1>
+      <h1 style={styles.title}>
+        Tumbling Calculator
+      </h1>
 
-      <div style={styles.toggleContainer}>
+      <div style={styles.totalCard}>
+
+        <div style={styles.totalLabel}>
+          Total DD
+        </div>
+
+        <div style={styles.totalDD}>
+          {totalDD.toFixed(1)}
+        </div>
+
+      </div>
+
+      <div
+        style={
+          styles.toggleContainer
+        }
+      >
 
         <button
           style={
+
             mode === "twoPass"
+
               ? styles.activeButton
+
               : styles.toggleButton
+
           }
-          onClick={() => setMode("twoPass")}
+
+          onClick={() =>
+            setMode("twoPass")
+          }
         >
           Two 8 Skill Passes
         </button>
 
         <button
           style={
+
             mode === "shortPass"
+
               ? styles.activeButton
+
               : styles.toggleButton
+
           }
-          onClick={() => setMode("shortPass")}
+
+          onClick={() =>
+            setMode("shortPass")
+          }
         >
           8 Skill + 3 Skill
         </button>
 
       </div>
 
-      {visiblePasses.map((passName) => {
+      <div style={styles.passWrapper}>
 
-        const passSkills = passes[passName];
+        {visiblePasses.map(
+          (passName) => {
 
-        return (
+            const passSkills =
+              passes[passName];
 
-          <div
-            key={passName}
-            style={styles.passBox}
-          >
+            return (
 
-            <h2>
-              {passLabels[passName]}
-            </h2>
+              <div
+                key={passName}
 
-            {passSkills.map((skill, skillIndex) => {
+                style={styles.passBox}
+              >
 
-              const matchingSkills = allSkills.filter((item) => {
-
-                const search = skill.toLowerCase();
-
-                return (
-                  item.code.toLowerCase().includes(search) ||
-                  item.name.toLowerCase().includes(search) ||
-
-                  (item.aliases &&
-                    item.aliases.some(alias =>
-                      alias.toLowerCase().includes(search)
-                    ))
-                );
-
-              }).slice(0, 8);
-
-              return (
                 <div
-                  key={skillIndex}
-                  style={styles.skillContainer}
+                  style={
+                    styles.passHeader
+                  }
                 >
 
-                  <div style={styles.row}>
+                  <h2
+                    style={
+                      styles.passTitle
+                    }
+                  >
 
-                    <input
-                      type="text"
-                      placeholder={`Skill ${skillIndex + 1}`}
-                      value={skill}
-                      onChange={(e) =>
-                        updateSkill(
-                          passName,
-                          skillIndex,
-                          e.target.value
-                        )
-                      }
-                      onFocus={() =>
-                        setActiveInput(
-                          `${passName}-${skillIndex}`
-                        )
-                      }
-                      style={styles.input}
-                    />
+                    {
+                      passLabels[
+                        passName
+                      ]
+                    }
 
-                    <select
-                      value={skill}
-                      onChange={(e) =>
-                        updateSkill(
-                          passName,
-                          skillIndex,
-                          e.target.value
-                        )
-                      }
-                      style={styles.dropdown}
-                    >
+                  </h2>
 
-                      <option value="">
-                        Select Skill
-                      </option>
+                  <div
+                    style={
+                      styles.passDD
+                    }
+                  >
 
-                      {tumblingSkills.map((group) => (
-                        <optgroup
-                          key={group.section}
-                          label={group.section}
-                        >
-
-                          {group.items.map((item) => (
-                            <option
-                              key={`${item.code}-${item.name}`}
-                              value={item.code}
-                            >
-                              {item.name} | {item.code} | {item.dd}
-                            </option>
-                          ))}
-
-                        </optgroup>
-                      ))}
-
-                    </select>
-
-                    <div style={styles.ddBox}>
-                      {getSkillDD(skill).toFixed(1)}
-                    </div>
+                    {getPassDD(
+                      passSkills
+                    ).toFixed(1)}
 
                   </div>
 
-                  {activeInput === `${passName}-${skillIndex}` &&
-                    skill.length > 0 &&
-                    matchingSkills.length > 0 && (
+                </div>
 
-                    <div style={styles.suggestions}>
+                {passSkills.map(
+                  (
+                    skill,
+                    skillIndex
+                  ) => {
 
-                      {matchingSkills.map((item) => (
+                    const matchingSkills =
 
-                        <div
-                          key={`${item.code}-${item.name}`}
-                          style={styles.suggestionItem}
-                          onMouseDown={(e) => {
+                      allSkills
+                        .filter(
+                          (
+                            item
+                          ) => {
 
-                            e.preventDefault();
+                            const search =
+                              skill.toLowerCase();
 
-                            updateSkill(
-                              passName,
-                              skillIndex,
+                            return (
+
                               item.code
+                                .toLowerCase()
+                                .includes(
+                                  search
+                                )
+
+                              ||
+
+                              item.name
+                                .toLowerCase()
+                                .includes(
+                                  search
+                                )
+
+                              ||
+
+                              (
+                                item.aliases &&
+
+                                item.aliases.some(
+                                  (
+                                    alias
+                                  ) =>
+
+                                    alias
+                                      .toLowerCase()
+                                      .includes(
+                                        search
+                                      )
+                                )
+                              )
+
                             );
 
-                            setActiveInput(null);
-                          }}
+                          }
+                        )
+                        .slice(0, 8);
+
+                    return (
+
+                      <div
+                        key={skillIndex}
+
+                        style={
+                          styles.skillContainer
+                        }
+                      >
+
+                        <div
+                          style={
+                            styles.row
+                          }
                         >
-                          {item.name} | {item.code} | {item.dd}
+
+                          <div
+                            style={
+                              styles.skillNumber
+                            }
+                          >
+
+                            {skillIndex + 1}
+
+                          </div>
+
+                          <input
+                            type="text"
+
+                            placeholder={`Skill ${skillIndex + 1}`}
+
+                            value={skill}
+
+                            onChange={(e) =>
+
+                              updateSkill(
+                                passName,
+                                skillIndex,
+                                e.target.value
+                              )
+
+                            }
+
+                            onFocus={() =>
+
+                              setActiveInput(
+                                `${passName}-${skillIndex}`
+                              )
+
+                            }
+
+                            style={
+                              styles.input
+                            }
+                          />
+
+                          <select
+                            value={skill}
+
+                            onChange={(e) =>
+
+                              updateSkill(
+                                passName,
+                                skillIndex,
+                                e.target.value
+                              )
+
+                            }
+
+                            style={
+                              styles.dropdown
+                            }
+                          >
+
+                            <option value="">
+                              Select Skill
+                            </option>
+
+                            {tumblingSkills.map(
+                              (
+                                group
+                              ) => (
+
+                                <optgroup
+                                  key={
+                                    group.section
+                                  }
+
+                                  label={
+                                    group.section
+                                  }
+                                >
+
+                                  {group.items.map(
+                                    (
+                                      item
+                                    ) => (
+
+                                      <option
+                                        key={`${item.code}-${item.name}`}
+
+                                        value={
+                                          item.code
+                                        }
+                                      >
+
+                                        {item.name}
+                                        {" | "}
+                                        {item.code}
+                                        {" | "}
+                                        {item.dd}
+
+                                      </option>
+
+                                    )
+                                  )}
+
+                                </optgroup>
+
+                              )
+                            )}
+
+                          </select>
+
+                          <div
+                            style={
+                              styles.ddBox
+                            }
+                          >
+
+                            {getSkillDD(
+                              skill
+                            ).toFixed(1)}
+
+                          </div>
+
                         </div>
 
-                      ))}
+                        {activeInput ===
+                          `${passName}-${skillIndex}` &&
 
-                    </div>
+                          skill.length > 0 &&
 
-                  )}
+                          matchingSkills.length > 0 && (
 
-                </div>
-              );
-            })}
+                          <div
+                            style={
+                              styles.suggestions
+                            }
+                          >
 
-            <h3>
-              Pass DD: {getPassDD(passSkills).toFixed(1)}
-            </h3>
+                            {matchingSkills.map(
+                              (
+                                item
+                              ) => (
 
-          </div>
-        );
-      })}
+                                <div
+                                  key={`${item.code}-${item.name}`}
 
-      <h2>
-        Total DD: {totalDD.toFixed(1)}
-      </h2>
+                                  style={
+                                    styles.suggestionItem
+                                  }
 
-     <>
-  <button
-    onClick={() => setShowSaveModal(true)}
-    style={styles.saveButton}
-  >
-    <Save size={20} />
-  </button>
+                                  onMouseDown={(e) => {
 
-  {showSaveModal && (
+                                    e.preventDefault();
 
-    <div style={styles.modalOverlay}>
+                                    updateSkill(
+                                      passName,
+                                      skillIndex,
+                                      item.code
+                                    );
 
-      <div style={styles.modal}>
+                                    setActiveInput(
+                                      null
+                                    );
 
-        <h2>Save Routine</h2>
+                                  }}
+                                >
 
-        <input
-          type="text"
-          placeholder="Routine name"
-          value={routineName}
-          onChange={(e) =>
-            setRoutineName(e.target.value)
+                                  {item.name}
+                                  {" | "}
+                                  {item.code}
+                                  {" | "}
+                                  {item.dd}
+
+                                </div>
+
+                              )
+                            )}
+
+                          </div>
+
+                        )}
+
+                      </div>
+
+                    );
+
+                  }
+                )}
+
+              </div>
+
+            );
+
           }
-          style={styles.modalInput}
-        />
-
-        <div style={styles.modalButtons}>
-
-          <button
-            onClick={() => setShowSaveModal(false)}
-            style={styles.cancelButton}
-          >
-            Cancel
-          </button>
-
-          <button
-            onClick={() => {
-
-              if (!routineName) return;
-
-              const existing = JSON.parse(
-                localStorage.getItem("savedRoutines") || "[]"
-              );
-
-              existing.push({
-                name: routineName,
-                event: "tumbling",
-                passes,
-                totalDD,
-              });
-
-              localStorage.setItem(
-                "savedRoutines",
-                JSON.stringify(existing)
-              );
-
-              setRoutineName("");
-
-              setShowSaveModal(false);
-
-              alert("Routine saved!");
-
-            }}
-            style={styles.confirmButton}
-          >
-            Save
-          </button>
-
-        </div>
+        )}
 
       </div>
 
+      <button
+        onClick={() =>
+          setShowSaveModal(true)
+        }
+
+        style={styles.saveButton}
+      >
+
+        <Save size={20} />
+
+        Save Routine
+
+      </button>
+
+      {showSaveModal && (
+
+        <div style={styles.modalOverlay}>
+
+          <div style={styles.modal}>
+
+            <h2 style={styles.modalTitle}>
+              Save Routine
+            </h2>
+
+            <input
+              type="text"
+
+              placeholder="Routine name"
+
+              value={routineName}
+
+              onChange={(e) =>
+                setRoutineName(
+                  e.target.value
+                )
+              }
+
+              style={styles.modalInput}
+            />
+
+            <div
+              style={
+                styles.modalButtons
+              }
+            >
+
+              <button
+                onClick={() =>
+                  setShowSaveModal(
+                    false
+                  )
+                }
+
+                style={
+                  styles.cancelButton
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+
+                  if (!routineName)
+                    return;
+
+                  const existing =
+                    JSON.parse(
+                      localStorage.getItem(
+                        "savedRoutines"
+                      ) || "[]"
+                    );
+
+                  existing.push({
+
+                    name:
+                      routineName,
+
+                    event:
+                      "tumbling",
+
+                    passes,
+
+                    totalDD,
+
+                  });
+
+                  localStorage.setItem(
+                    "savedRoutines",
+
+                    JSON.stringify(
+                      existing
+                    )
+                  );
+
+                  setRoutineName("");
+
+                  setShowSaveModal(
+                    false
+                  );
+
+                }}
+
+                style={
+                  styles.confirmButton
+                }
+              >
+                Save
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
     </div>
 
-  )}
-</>
-
-    </div>
   );
+
 }
 
 const styles = {
 
-  homeButton: {
-    position: "absolute",
-    top: "20px",
-    left: "20px",
+  container: {
+    minHeight: "100vh",
 
-    width: "52px",
-    height: "52px",
+    background:
+      "var(--bg-primary)",
+
+    color:
+      "var(--text-primary)",
 
     display: "flex",
+
+    flexDirection: "column",
+
     alignItems: "center",
+
+    padding:
+      "40px 20px 80px",
+  },
+
+  homeButton: {
+    position: "absolute",
+
+    top: "30px",
+    left: "30px",
+
+    width: "54px",
+    height: "54px",
+
+    display: "flex",
+
+    alignItems: "center",
+
     justifyContent: "center",
 
     textDecoration: "none",
 
-    backgroundColor: "white",
-    border: "2px solid black",
-    borderRadius: "12px",
+    borderRadius: "16px",
 
-    color: "black",
+    background:
+      "var(--card-bg)",
 
-    boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+    border:
+      "1px solid var(--border)",
 
-    cursor: "pointer",
+    color:
+      "var(--text-primary)",
+
+    backdropFilter:
+      "blur(10px)",
   },
 
-  container: {
+  title: {
+    fontSize: "56px",
+
+    fontWeight: "bold",
+
+    textAlign: "center",
+
+    marginBottom: "24px",
+  },
+
+  totalCard: {
+    padding: "24px 40px",
+
+    borderRadius: "28px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
     display: "flex",
+
     flexDirection: "column",
+
     alignItems: "center",
-    padding: "60px",
-    gap: "20px",
+
+    gap: "8px",
+
+    marginBottom: "40px",
+
+    backdropFilter:
+      "blur(12px)",
+  },
+
+  totalLabel: {
+    fontSize: "18px",
+
+    color:
+      "var(--text-secondary)",
+  },
+
+  totalDD: {
+    fontSize: "58px",
+
+    fontWeight: "bold",
+
+    color:
+      "var(--accent)",
   },
 
   toggleContainer: {
     display: "flex",
-    gap: "12px",
+
+    gap: "14px",
+
+    flexWrap: "wrap",
+
+    justifyContent: "center",
+
+    marginBottom: "34px",
   },
 
   toggleButton: {
-    padding: "12px 20px",
-    fontSize: "18px",
-    borderRadius: "10px",
-    border: "2px solid black",
-    backgroundColor: "white",
+    padding: "16px 22px",
+
+    borderRadius: "18px",
+
+    border:
+      "1px solid var(--border)",
+
+    background:
+      "var(--card-bg)",
+
+    color:
+      "var(--text-primary)",
+
+    fontSize: "16px",
+
     cursor: "pointer",
+
+    backdropFilter:
+      "blur(10px)",
   },
 
   activeButton: {
-    padding: "12px 20px",
-    fontSize: "18px",
-    borderRadius: "10px",
-    border: "2px solid black",
-    backgroundColor: "black",
-    color: "white",
+    padding: "16px 22px",
+
+    borderRadius: "18px",
+
+    border: "none",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontSize: "16px",
+
+    fontWeight: "bold",
+
     cursor: "pointer",
   },
 
-  passBox: {
-    border: "2px solid #ddd",
-    borderRadius: "16px",
-    padding: "20px",
+  passWrapper: {
+    width:
+      "min(1000px, 95vw)",
+
     display: "flex",
+
     flexDirection: "column",
-    gap: "12px",
+
+    gap: "30px",
+  },
+
+  passBox: {
+    padding: "24px",
+
+    borderRadius: "30px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    gap: "18px",
+
+    backdropFilter:
+      "blur(10px)",
+  },
+
+  passHeader: {
+    display: "flex",
+
+    justifyContent:
+      "space-between",
+
+    alignItems: "center",
+
+    flexWrap: "wrap",
+
+    gap: "14px",
+  },
+
+  passTitle: {
+    fontSize: "34px",
+
+    fontWeight: "bold",
+  },
+
+  passDD: {
+    padding: "14px 18px",
+
+    borderRadius: "18px",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    fontSize: "22px",
   },
 
   skillContainer: {
@@ -460,141 +961,286 @@ const styles = {
 
   row: {
     display: "flex",
+
     alignItems: "center",
-    gap: "10px",
+
+    gap: "14px",
+
     flexWrap: "wrap",
+
+    padding: "18px",
+
+    borderRadius: "24px",
+
+    background:
+      "rgba(255,255,255,0.04)",
+
+    border:
+      "1px solid var(--border)",
+  },
+
+  skillNumber: {
+    width: "52px",
+    height: "52px",
+
+    borderRadius: "16px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    fontSize: "20px",
   },
 
   input: {
-    width: "90px",
-    padding: "10px",
+    width: "120px",
+
+    padding: "14px",
+
+    borderRadius: "16px",
+
+    border:
+      "1px solid var(--border)",
+
+    background:
+      "rgba(255,255,255,0.06)",
+
+    color:
+      "var(--text-primary)",
+
     fontSize: "18px",
+
+    outline: "none",
   },
 
   dropdown: {
-    flex: 1,
-    minWidth: "180px",
-    padding: "10px",
-    fontSize: "16px",
-  },
+  flex: 1,
+
+  minWidth: "220px",
+
+  padding: "12px",
+
+  fontSize: "16px",
+
+  borderRadius: "12px",
+
+  border:
+    "1px solid var(--border)",
+
+  background:
+    "var(--input-bg)",
+
+  color:
+    "var(--input-text)",
+
+  cursor: "pointer",
+
+  outline: "none",
+},
 
   ddBox: {
-    width: "60px",
-    textAlign: "center",
-    fontSize: "20px",
+    width: "70px",
+
+    height: "52px",
+
+    borderRadius: "16px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
     fontWeight: "bold",
+
+    fontSize: "22px",
   },
 
   suggestions: {
     position: "absolute",
-    top: "50px",
-    left: "0",
-    width: "400px",
-    backgroundColor: "white",
-    border: "1px solid #ccc",
-    borderRadius: "8px",
-    zIndex: 1000,
-    maxHeight: "220px",
-    overflowY: "auto",
-    boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+
+    top: "92px",
+
+    left: 0,
+
+    width: "100%",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    borderRadius: "22px",
+
+    overflow: "hidden",
+
+    zIndex: 9999,
+
+    backdropFilter:
+      "blur(14px)",
   },
 
   suggestionItem: {
-    padding: "10px",
+    padding: "16px",
+
     cursor: "pointer",
-    borderBottom: "1px solid #eee",
+
+    borderBottom:
+      "1px solid var(--border)",
   },
 
-saveButton: {
+  saveButton: {
+    marginTop: "34px",
 
-  width: "50px",
-  height: "50px",
+    padding: "18px 26px",
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    borderRadius: "20px",
 
-  borderRadius: "12px",
+    border: "none",
 
-  border: "none",
+    background:
+      "var(--accent-glow)",
 
-  background: "#22c55e",
+    color:
+      "var(--accent)",
 
-  color: "white",
+    fontSize: "18px",
 
-  cursor: "pointer",
+    fontWeight: "bold",
 
-  marginTop: "10px",
-},
+    display: "flex",
 
-modalOverlay: {
-  position: "fixed",
-  inset: 0,
+    alignItems: "center",
 
-  background: "rgba(0,0,0,0.5)",
+    gap: "12px",
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    cursor: "pointer",
+  },
 
-  zIndex: 9999,
-},
+  modalOverlay: {
+    position: "fixed",
 
-modal: {
-  background: "white",
+    inset: 0,
 
-  padding: "30px",
+    background:
+      "rgba(0,0,0,0.55)",
 
-  borderRadius: "20px",
+    display: "flex",
 
-  width: "min(400px, 90vw)",
+    alignItems: "center",
 
-  display: "flex",
-  flexDirection: "column",
+    justifyContent: "center",
 
-  gap: "20px",
-},
+    zIndex: 9999,
+  },
 
-modalInput: {
-  padding: "14px",
+  modal: {
+    width:
+      "min(450px, 92vw)",
 
-  fontSize: "18px",
+    background:
+      "var(--card-bg)",
 
-  borderRadius: "10px",
+    border:
+      "1px solid var(--border)",
 
-  border: "1px solid #ccc",
-},
+    borderRadius: "30px",
 
-modalButtons: {
-  display: "flex",
+    padding: "30px",
 
-  justifyContent: "flex-end",
+    display: "flex",
 
-  gap: "10px",
-},
+    flexDirection: "column",
 
-cancelButton: {
-  padding: "12px 18px",
+    gap: "22px",
 
-  borderRadius: "10px",
+    backdropFilter:
+      "blur(14px)",
+  },
 
-  border: "none",
+  modalTitle: {
+    fontSize: "34px",
 
-  cursor: "pointer",
-},
+    fontWeight: "bold",
+  },
 
-confirmButton: {
-  padding: "12px 18px",
+  modalInput: {
+    padding: "16px",
 
-  borderRadius: "10px",
+    borderRadius: "18px",
 
-  border: "none",
+    border:
+      "1px solid var(--border)",
 
-  background: "#22c55e",
+    background:
+      "rgba(255,255,255,0.06)",
 
-  color: "white",
+    color:
+      "var(--text-primary)",
 
-  cursor: "pointer",
-},
+    fontSize: "18px",
+
+    outline: "none",
+  },
+
+  modalButtons: {
+    display: "flex",
+
+    justifyContent:
+      "flex-end",
+
+    gap: "12px",
+  },
+
+  cancelButton: {
+    padding: "14px 18px",
+
+    borderRadius: "16px",
+
+    border: "none",
+
+    background:
+      "rgba(255,255,255,0.08)",
+
+    color:
+      "var(--text-primary)",
+
+    cursor: "pointer",
+  },
+
+  confirmButton: {
+    padding: "14px 18px",
+
+    borderRadius: "16px",
+
+    border: "none",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
+
+    cursor: "pointer",
+  },
 
 };

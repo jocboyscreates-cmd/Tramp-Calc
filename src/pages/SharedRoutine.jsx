@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
-import { House } from "lucide-react";
+import {
+  House,
+  Share2,
+} from "lucide-react";
 
 export default function SharedRoutine() {
 
@@ -22,8 +25,6 @@ export default function SharedRoutine() {
         decodeURIComponent(encoded)
       );
 
-      console.log(routine);
-
     }
 
   } catch {
@@ -36,11 +37,23 @@ export default function SharedRoutine() {
 
     return (
 
-      <div style={styles.container}>
+      <div style={styles.invalidContainer}>
 
-        <h1>
+        <h1 style={styles.invalidTitle}>
           Invalid Shared Routine
         </h1>
+
+        <p style={styles.invalidText}>
+          This routine link is broken or invalid.
+        </p>
+
+        <Link
+          to="/"
+
+          style={styles.backButton}
+        >
+          Back Home
+        </Link>
 
       </div>
 
@@ -53,35 +66,67 @@ export default function SharedRoutine() {
 
       <Link
         to="/"
+
         style={styles.homeButton}
       >
         <House size={28} />
       </Link>
 
-      <h1 style={styles.title}>
-        {routine.name}
-      </h1>
+      <div style={styles.header}>
 
-      <p style={styles.subtitle}>
-        {routine.event}
-      </p>
+        <div style={styles.shareIcon}>
 
-      <h2 style={styles.dd}>
-        DD: {Number(routine.totalDD || 0).toFixed(1)}
-      </h2>
+          <Share2 size={34} />
+
+        </div>
+
+        <h1 style={styles.title}>
+          {routine.name}
+        </h1>
+
+        <p style={styles.subtitle}>
+          {routine.event}
+        </p>
+
+        <div style={styles.ddCard}>
+
+          <div style={styles.ddLabel}>
+            Difficulty
+          </div>
+
+          <div style={styles.dd}>
+            {Number(
+              routine.totalDD || 0
+            ).toFixed(1)}
+          </div>
+
+        </div>
+
+      </div>
 
       <div style={styles.skills}>
 
         {routine.skills &&
           routine.skills.map(
-            (skill, index) => (
+            (
+              skill,
+              index
+            ) => (
 
               <div
                 key={index}
 
                 style={styles.skill}
               >
-                {index + 1}. {skill}
+
+                <div style={styles.skillNumber}>
+                  {index + 1}
+                </div>
+
+                <div style={styles.skillText}>
+                  {skill}
+                </div>
+
               </div>
 
             )
@@ -100,17 +145,75 @@ const styles = {
     minHeight: "100vh",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
-    padding: "30px",
+    padding: "40px 20px",
 
     display: "flex",
 
     flexDirection: "column",
 
     alignItems: "center",
+  },
+
+  invalidContainer: {
+    minHeight: "100vh",
+
+    background:
+      "var(--bg-primary)",
+
+    color:
+      "var(--text-primary)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    gap: "18px",
+
+    padding: "20px",
+  },
+
+  invalidTitle: {
+    fontSize: "52px",
+
+    fontWeight: "bold",
+
+    textAlign: "center",
+  },
+
+  invalidText: {
+    color:
+      "var(--text-secondary)",
+
+    fontSize: "18px",
+
+    textAlign: "center",
+  },
+
+  backButton: {
+    marginTop: "10px",
+
+    padding: "16px 24px",
+
+    borderRadius: "18px",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    textDecoration: "none",
+
+    fontWeight: "bold",
   },
 
   homeButton: {
@@ -119,8 +222,8 @@ const styles = {
     top: "30px",
     left: "30px",
 
-    width: "52px",
-    height: "52px",
+    width: "54px",
+    height: "54px",
 
     display: "flex",
 
@@ -128,57 +231,188 @@ const styles = {
 
     justifyContent: "center",
 
-    background: "white",
+    background:
+      "var(--card-bg)",
 
-    color: "black",
+    border:
+      "1px solid var(--border)",
 
-    borderRadius: "14px",
+    borderRadius: "16px",
 
     textDecoration: "none",
+
+    color:
+      "var(--text-primary)",
+
+    backdropFilter:
+      "blur(10px)",
+
+    boxShadow:
+      "0 8px 24px rgba(0,0,0,0.18)",
   },
 
-  title: {
+  header: {
     marginTop: "70px",
-
-    fontSize: "42px",
-  },
-
-  subtitle: {
-    color: "#cbd5e1",
-
-    fontSize: "20px",
-  },
-
-  dd: {
-    marginTop: "10px",
-
-    color: "#facc15",
-  },
-
-  skills: {
-    marginTop: "40px",
-
-    width: "min(500px, 92vw)",
 
     display: "flex",
 
     flexDirection: "column",
 
-    gap: "12px",
+    alignItems: "center",
+
+    gap: "16px",
+
+    textAlign: "center",
+  },
+
+  shareIcon: {
+    width: "90px",
+    height: "90px",
+
+    borderRadius: "28px",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    boxShadow:
+      "0 14px 40px rgba(0,0,0,0.22)",
+  },
+
+  title: {
+    fontSize: "58px",
+
+    fontWeight: "bold",
+
+    lineHeight: 1.1,
+  },
+
+  subtitle: {
+    color:
+      "var(--text-secondary)",
+
+    fontSize: "22px",
+
+    textTransform: "capitalize",
+  },
+
+  ddCard: {
+    marginTop: "10px",
+
+    padding: "22px 34px",
+
+    borderRadius: "26px",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    alignItems: "center",
+
+    gap: "6px",
+
+    backdropFilter:
+      "blur(12px)",
+
+    boxShadow:
+      "0 14px 40px rgba(0,0,0,0.18)",
+  },
+
+  ddLabel: {
+    fontSize: "16px",
+
+    color:
+      "var(--text-secondary)",
+  },
+
+  dd: {
+    fontSize: "48px",
+
+    fontWeight: "bold",
+
+    color:
+      "var(--accent)",
+  },
+
+  skills: {
+    marginTop: "50px",
+
+    width: "min(700px, 92vw)",
+
+    display: "flex",
+
+    flexDirection: "column",
+
+    gap: "16px",
+
+    paddingBottom: "60px",
   },
 
   skill: {
-    padding: "18px",
+    padding: "22px",
 
-    borderRadius: "18px",
+    borderRadius: "24px",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
     border:
-      "1px solid rgba(255,255,255,0.08)",
+      "1px solid var(--border)",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    gap: "18px",
+
+    backdropFilter:
+      "blur(10px)",
+
+    boxShadow:
+      "0 10px 28px rgba(0,0,0,0.15)",
+  },
+
+  skillNumber: {
+    minWidth: "52px",
+    height: "52px",
+
+    borderRadius: "16px",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    fontWeight: "bold",
 
     fontSize: "20px",
+  },
+
+  skillText: {
+    fontSize: "22px",
+
+    fontWeight: "600",
   },
 
 };

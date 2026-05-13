@@ -3,7 +3,7 @@ export const tumblingSkills = [
   {
     section: "Skills",
     items: [
-      { name: "Cartwheel", code: "", dd: 0.1 },
+      { name: "Cartwheel", code: "cartwheel", dd: 0.1 },
 
       { name: "Round-off", code: "(", dd: 0.1 },
 

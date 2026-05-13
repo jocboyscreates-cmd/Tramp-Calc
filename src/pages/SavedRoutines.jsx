@@ -1,89 +1,127 @@
 import { useState } from "react";
+
 import { Link } from "react-router-dom";
-import { House } from "lucide-react";
 
-import { trampolineSkills } from "../data/trampolineSkills";
+import {
+  House,
+  Share2,
+  Trash2,
+  Pencil,
+} from "lucide-react";
 
-import { doubleMiniSkills } from "../data/doubleMiniSkills";
+import { trampolineSkills }
+from "../data/trampolineSkills";
 
-import { tumblingSkills } from "../data/tumblingSkills";
+import { doubleMiniSkills }
+from "../data/doubleMiniSkills";
+
+import { tumblingSkills }
+from "../data/tumblingSkills";
 
 export default function SavedRoutines() {
 
-const [selectedRoutine, setSelectedRoutine] = useState(null);
+  const [selectedRoutine, setSelectedRoutine] =
+    useState(null);
 
-const [editName, setEditName] = useState("");
+  const [editName, setEditName] =
+    useState("");
 
-const [editingRoutine, setEditingRoutine] = useState(null);
+  const [editingRoutine, setEditingRoutine] =
+    useState(null);
 
-const [activeEditInput, setActiveEditInput] = useState(null);
+  const [activeEditInput, setActiveEditInput] =
+    useState(null);
 
   const savedRoutines = JSON.parse(
-    localStorage.getItem("savedRoutines") || "[]"
+    localStorage.getItem(
+      "savedRoutines"
+    ) || "[]"
   );
 
-  const trampoline = savedRoutines.filter(
-    (routine) => routine.event === "trampoline"
-  );
+  const trampoline =
+    savedRoutines.filter(
+      (routine) =>
+        routine.event ===
+        "trampoline"
+    );
 
-  const doubleMini = savedRoutines.filter(
-    (routine) => routine.event === "doubleMini"
-  );
+  const doubleMini =
+    savedRoutines.filter(
+      (routine) =>
+        routine.event ===
+        "doubleMini"
+    );
 
-  const tumbling = savedRoutines.filter(
-    (routine) => routine.event === "tumbling"
-  );
+  const tumbling =
+    savedRoutines.filter(
+      (routine) =>
+        routine.event ===
+        "tumbling"
+    );
 
   const allSkills = [
 
-  ...trampolineSkills.flatMap(
-    (group) => group.items
-  ),
+    ...trampolineSkills.flatMap(
+      (group) => group.items
+    ),
 
-  ...doubleMiniSkills.flatMap(
-    (group) => group.items
-  ),
+    ...doubleMiniSkills.flatMap(
+      (group) => group.items
+    ),
 
-  ...tumblingSkills.flatMap(
-    (group) => group.items
-  ),
+    ...tumblingSkills.flatMap(
+      (group) => group.items
+    ),
 
-];
+  ];
 
-const liveDD = editingRoutine?.skills
-  ? editingRoutine.skills.reduce(
-      (total, skillCode) => {
+  const liveDD =
+    editingRoutine?.skills
 
-        const foundSkill = allSkills.find(
-          (item) => item.code === skillCode
-        );
+      ? editingRoutine.skills.reduce(
+          (total, skillCode) => {
 
-        return total + (
-          foundSkill?.dd || 0
-        );
+            const foundSkill =
+              allSkills.find(
+                (item) =>
+                  item.code ===
+                  skillCode
+              );
 
-      },
-      0
-    )
-  : selectedRoutine?.totalDD || 0;
+            return total + (
+              foundSkill?.dd || 0
+            );
+
+          },
+          0
+        )
+
+      : selectedRoutine?.totalDD || 0;
 
   function shareRoutine(routine) {
 
-    const encoded = encodeURIComponent(
-      JSON.stringify(routine)
-    );
+    const encoded =
+      encodeURIComponent(
+        JSON.stringify(routine)
+      );
 
     const url =
       `${window.location.origin}/shared?r=${encoded}`;
 
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(
+      url
+    );
 
-    alert("Share link copied!");
+    alert(
+      "Share link copied!"
+    );
   }
 
   function deleteRoutine(index) {
 
-    const updated = [...savedRoutines];
+    const updated = [
+      ...savedRoutines,
+    ];
 
     updated.splice(index, 1);
 
@@ -95,69 +133,126 @@ const liveDD = editingRoutine?.skills
     setSelectedRoutine(null);
   }
 
-  function renderSection(title, routines) {
+  function renderSection(
+    title,
+    routines
+  ) {
 
     return (
+
       <div style={styles.section}>
 
-        <h2>{title}</h2>
+        <h2 style={styles.sectionTitle}>
+          {title}
+        </h2>
 
         {routines.length === 0 && (
-          <p>No saved routines yet.</p>
+
+          <p style={styles.emptyText}>
+            No saved routines yet.
+          </p>
+
         )}
 
-        {routines.map((routine, index) => (
+        {routines.map(
+          (
+            routine,
+            index
+          ) => (
 
-          <div
-  key={index}
-  style={styles.card}
+            <div
+              key={index}
 
-  onClick={() => {
+              style={styles.card}
 
-    setSelectedRoutine(routine);
+              onClick={() => {
 
-setEditName(routine.name);
+                setSelectedRoutine(
+                  routine
+                );
 
-setEditingRoutine(
-  JSON.parse(JSON.stringify(routine))
-);
+                setEditName(
+                  routine.name
+                );
 
-  }}
->
+                setEditingRoutine(
+                  JSON.parse(
+                    JSON.stringify(
+                      routine
+                    )
+                  )
+                );
 
-            <div>
+              }}
+            >
 
-              <h3>{routine.name}</h3>
+              <div>
 
-              <p>
-                DD: {routine.totalDD.toFixed(1)}
-              </p>
+                <h3 style={styles.cardTitle}>
+                  {routine.name}
+                </h3>
+
+                <p style={styles.cardDD}>
+                  DD:
+                  {" "}
+                  {routine.totalDD.toFixed(1)}
+                </p>
+
+              </div>
+
+              <div style={styles.buttonRow}>
+
+                <button
+                  onClick={(e) => {
+
+                    e.stopPropagation();
+
+                    shareRoutine(
+                      routine
+                    );
+
+                  }}
+
+                  style={styles.button}
+                >
+
+                  <Share2 size={18} />
+
+                  Share
+
+                </button>
+
+                <button
+                  onClick={(e) => {
+
+                    e.stopPropagation();
+
+                    deleteRoutine(
+                      index
+                    );
+
+                  }}
+
+                  style={
+                    styles.deleteButton
+                  }
+                >
+
+                  <Trash2 size={18} />
+
+                  Delete
+
+                </button>
+
+              </div>
 
             </div>
 
-            <div style={styles.buttonRow}>
-
-              <button
-                onClick={() => shareRoutine(routine)}
-                style={styles.button}
-              >
-                Share
-              </button>
-
-              <button
-                onClick={() => deleteRoutine(index)}
-                style={styles.deleteButton}
-              >
-                Delete
-              </button>
-
-            </div>
-
-          </div>
-
-        ))}
+          )
+        )}
 
       </div>
+
     );
   }
 
@@ -165,285 +260,331 @@ setEditingRoutine(
 
     <div style={styles.container}>
 
-      <Link to="/" style={styles.homeButton}>
-        <House size={30} />
+      <Link
+        to="/"
+
+        style={styles.homeButton}
+      >
+        <House size={28} />
       </Link>
 
-      <h1>Saved Routines</h1>
+      <h1 style={styles.title}>
+        Saved Routines
+      </h1>
 
-      {renderSection("Trampoline", trampoline)}
+      {renderSection(
+        "Trampoline",
+        trampoline
+      )}
 
-      {renderSection("Double Mini", doubleMini)}
+      {renderSection(
+        "Double Mini",
+        doubleMini
+      )}
 
-      {renderSection("Tumbling", tumbling)}
+      {renderSection(
+        "Tumbling",
+        tumbling
+      )}
 
-{selectedRoutine && (
+      {selectedRoutine && (
 
-  <div style={styles.modalOverlay}>
+        <div style={styles.modalOverlay}>
 
-    <div style={styles.modal}>
+          <div style={styles.modal}>
 
-      <h2>{selectedRoutine.name}</h2>
+            <div style={styles.modalTop}>
 
-      <p>
-        Event: {selectedRoutine.event}
-      </p>
+              <div>
 
-      <p>
-        Total DD:
-        {" "}
-        {liveDD.toFixed(1)}
-      </p>
+                <h2 style={styles.modalTitle}>
+                  {selectedRoutine.name}
+                </h2>
 
-      <div style={styles.skillsList}>
-
-        {editingRoutine?.skills &&
-  editingRoutine.skills.map(
-    (skill, index) => (
-
-      <div
-        key={index}
-        style={styles.editRow}
-      >
-
-        <span>
-          {index + 1}.
-        </span>
-
-        <div style={styles.editInputContainer}>
-
-  <input
-    value={skill}
-
-    onFocus={() =>
-      setActiveEditInput(index)
-    }
-
-    onChange={(e) => {
-
-      const updated = {
-        ...editingRoutine,
-      };
-
-      updated.skills[index] =
-        e.target.value;
-
-      setEditingRoutine(updated);
-
-    }}
-
-    style={styles.modalInput}
-  />
-
-  {activeEditInput === index &&
-
-    skill.length > 0 && (
-
-    <div style={styles.suggestions}>
-
-      {allSkills
-        .filter((item) => {
-
-          const search =
-            skill.toLowerCase();
-
-          return (
-            item.code
-              .toLowerCase()
-              .includes(search) ||
-
-            item.name
-              .toLowerCase()
-              .includes(search)
-          );
-        })
-        .slice(0, 6)
-        .map((item) => (
-
-          <div
-            key={`${item.code}-${item.name}`}
-
-            style={styles.suggestionItem}
-
-            onMouseDown={() => {
-
-              const updated = {
-                ...editingRoutine,
-              };
-
-              updated.skills[index] =
-                item.code;
-
-              setEditingRoutine(updated);
-
-              setActiveEditInput(null);
-
-            }}
-          >
-
-            {item.name}
-            {" | "}
-            {item.code}
-            {" | "}
-            {item.dd}
-
-          </div>
-
-        ))}
-
-    </div>
-
-  )}
-
-</div>
-
-      </div>
-
-    )
-  )}
-
-        {selectedRoutine.routines &&
-          selectedRoutine.routines.map(
-            (routine, routineIndex) => (
-
-              <div key={routineIndex}>
-
-                <strong>
-                  Routine {routineIndex + 1}
-                </strong>
-
-                {routine.map((skill, index) => (
-
-                  <div key={index}>
-                    {index + 1}. {skill || "-"}
-                  </div>
-
-                ))}
+                <p style={styles.modalSubtitle}>
+                  {selectedRoutine.event}
+                </p>
 
               </div>
 
-            )
-          )}
-
-        {selectedRoutine.passes &&
-          Object.entries(
-            selectedRoutine.passes
-          ).map(([passName, passSkills]) => (
-
-            <div key={passName}>
-
-              <strong>{passName}</strong>
-
-              {passSkills.map((skill, index) => (
-
-                <div key={index}>
-                  {index + 1}. {skill || "-"}
-                </div>
-
-              ))}
+              <div style={styles.liveDD}>
+                DD
+                {" "}
+                {liveDD.toFixed(1)}
+              </div>
 
             </div>
 
-          ))}
+            <div style={styles.skillsList}>
 
-      </div>
+              {editingRoutine?.skills &&
+                editingRoutine.skills.map(
+                  (
+                    skill,
+                    index
+                  ) => (
 
-      <input
-        type="text"
-        value={editName}
-        onChange={(e) =>
-          setEditName(e.target.value)
-        }
-        style={styles.modalInput}
-      />
+                    <div
+                      key={index}
 
-      <div style={styles.modalButtons}>
+                      style={styles.editRow}
+                    >
 
-  <button
-    onClick={() => {
+                      <span>
+                        {index + 1}.
+                      </span>
 
-      localStorage.setItem(
-        "currentRoutine",
-        JSON.stringify(selectedRoutine)
-      );
+                      <div
+                        style={
+                          styles.editInputContainer
+                        }
+                      >
 
-      if (
-        selectedRoutine.event === "trampoline"
-      ) {
-        window.location.href =
-          "/trampoline";
-      }
+                        <input
+                          value={skill}
 
-      if (
-        selectedRoutine.event === "doubleMini"
-      ) {
-        window.location.href =
-          "/double-mini";
-      }
+                          onFocus={() =>
+                            setActiveEditInput(
+                              index
+                            )
+                          }
 
-      if (
-        selectedRoutine.event === "tumbling"
-      ) {
-        window.location.href =
-          "/tumbling";
-      }
+                          onChange={(e) => {
 
-    }}
-    style={styles.button}
-  >
-    Open
-  </button>
+                            const updated = {
+                              ...editingRoutine,
+                            };
 
-        <button
-          onClick={() => {
+                            updated.skills[index] =
+                              e.target.value;
 
-            const updated =
-              savedRoutines.map((routine) => {
+                            setEditingRoutine(
+                              updated
+                            );
 
-                if (routine === selectedRoutine) {
+                          }}
 
-                  return {
-                    ...routine,
-                    ...editingRoutine,
+                          style={
+                            styles.modalInput
+                          }
+                        />
 
-                    name: editName,
+                        {activeEditInput ===
+                          index &&
 
-                    totalDD: liveDD,
-                  };
+                          skill.length > 0 && (
+
+                          <div
+                            style={
+                              styles.suggestions
+                            }
+                          >
+
+                            {allSkills
+                              .filter(
+                                (item) => {
+
+                                  const search =
+                                    skill.toLowerCase();
+
+                                  return (
+                                    item.code
+                                      .toLowerCase()
+                                      .includes(
+                                        search
+                                      ) ||
+
+                                    item.name
+                                      .toLowerCase()
+                                      .includes(
+                                        search
+                                      )
+                                  );
+                                }
+                              )
+                              .slice(0, 6)
+                              .map((item) => (
+
+                                <div
+                                  key={`${item.code}-${item.name}`}
+
+                                  style={
+                                    styles.suggestionItem
+                                  }
+
+                                  onMouseDown={() => {
+
+                                    const updated = {
+                                      ...editingRoutine,
+                                    };
+
+                                    updated.skills[index] =
+                                      item.code;
+
+                                    setEditingRoutine(
+                                      updated
+                                    );
+
+                                    setActiveEditInput(
+                                      null
+                                    );
+
+                                  }}
+                                >
+
+                                  {item.name}
+                                  {" | "}
+                                  {item.code}
+                                  {" | "}
+                                  {item.dd}
+
+                                </div>
+
+                              ))}
+
+                          </div>
+
+                        )}
+
+                      </div>
+
+                    </div>
+
+                  )
+                )}
+
+            </div>
+
+            <input
+              type="text"
+
+              value={editName}
+
+              onChange={(e) =>
+                setEditName(
+                  e.target.value
+                )
+              }
+
+              style={styles.modalInput}
+            />
+
+            <div style={styles.modalButtons}>
+
+              <button
+                onClick={() => {
+
+                  localStorage.setItem(
+                    "currentRoutine",
+                    JSON.stringify(
+                      selectedRoutine
+                    )
+                  );
+
+                  if (
+                    selectedRoutine.event ===
+                    "trampoline"
+                  ) {
+                    window.location.href =
+                      "/trampoline";
+                  }
+
+                  if (
+                    selectedRoutine.event ===
+                    "doubleMini"
+                  ) {
+                    window.location.href =
+                      "/double-mini";
+                  }
+
+                  if (
+                    selectedRoutine.event ===
+                    "tumbling"
+                  ) {
+                    window.location.href =
+                      "/tumbling";
+                  }
+
+                }}
+
+                style={styles.button}
+              >
+
+                <Pencil size={18} />
+
+                Open
+
+              </button>
+
+              <button
+                onClick={() => {
+
+                  const updated =
+                    savedRoutines.map(
+                      (routine) => {
+
+                        if (
+                          routine ===
+                          selectedRoutine
+                        ) {
+
+                          return {
+                            ...routine,
+                            ...editingRoutine,
+
+                            name:
+                              editName,
+
+                            totalDD:
+                              liveDD,
+                          };
+                        }
+
+                        return routine;
+                      }
+                    );
+
+                  localStorage.setItem(
+                    "savedRoutines",
+                    JSON.stringify(
+                      updated
+                    )
+                  );
+
+                  setSelectedRoutine(
+                    null
+                  );
+
+                }}
+
+                style={styles.button}
+              >
+
+                Save Edit
+
+              </button>
+
+              <button
+                onClick={() =>
+                  setSelectedRoutine(
+                    null
+                  )
                 }
 
-                return routine;
-              });
+                style={
+                  styles.deleteButton
+                }
+              >
+                Close
+              </button>
 
-            localStorage.setItem(
-              "savedRoutines",
-              JSON.stringify(updated)
-            );
+            </div>
 
-            setSelectedRoutine(null);
+          </div>
 
-          }}
-          style={styles.button}
-        >
-          Save Edit
-        </button>
-
-        <button
-          onClick={() =>
-            setSelectedRoutine(null)
-          }
-          style={styles.deleteButton}
-        >
-          Close
-        </button>
         </div>
 
-      </div>
-
-    </div>
-
-
-)}
+      )}
 
     </div>
 
@@ -454,173 +595,337 @@ const styles = {
 
   container: {
     minHeight: "100vh",
-    padding: "30px",
+
+    padding: "40px 20px",
 
     display: "flex",
+
     flexDirection: "column",
-    gap: "30px",
+
+    gap: "34px",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
   },
 
   homeButton: {
-    width: "52px",
-    height: "52px",
+    width: "54px",
+    height: "54px",
 
     display: "flex",
+
     alignItems: "center",
+
     justifyContent: "center",
 
     textDecoration: "none",
 
-    backgroundColor: "white",
-    borderRadius: "12px",
+    background:
+      "var(--card-bg)",
 
-    color: "black",
+    border:
+      "1px solid var(--border)",
+
+    borderRadius: "16px",
+
+    color:
+      "var(--text-primary)",
+
+    backdropFilter:
+      "blur(10px)",
+  },
+
+  title: {
+    fontSize: "56px",
+
+    fontWeight: "bold",
+
+    textAlign: "center",
   },
 
   section: {
     display: "flex",
+
     flexDirection: "column",
-    gap: "14px",
+
+    gap: "16px",
+  },
+
+  sectionTitle: {
+    fontSize: "34px",
+
+    fontWeight: "bold",
+  },
+
+  emptyText: {
+    color:
+      "var(--text-secondary)",
   },
 
   card: {
-    background: "rgba(255,255,255,0.08)",
+    background:
+      "var(--card-bg)",
 
-    borderRadius: "16px",
+    border:
+      "1px solid var(--border)",
 
-    padding: "20px",
+    borderRadius: "24px",
+
+    padding: "24px",
 
     display: "flex",
-    justifyContent: "space-between",
+
+    justifyContent:
+      "space-between",
+
     alignItems: "center",
 
     flexWrap: "wrap",
 
-    gap: "10px",
+    gap: "16px",
+
+    backdropFilter:
+      "blur(10px)",
+
+    cursor: "pointer",
+
+    transition:
+      "0.2s ease",
+  },
+
+  cardTitle: {
+    fontSize: "24px",
+
+    fontWeight: "bold",
+
+    marginBottom: "6px",
+  },
+
+  cardDD: {
+    color:
+      "var(--accent)",
+
+    fontWeight: "bold",
   },
 
   buttonRow: {
     display: "flex",
-    gap: "10px",
+
+    gap: "12px",
   },
 
   button: {
-    padding: "10px 16px",
-    borderRadius: "10px",
+    padding: "12px 18px",
+
+    borderRadius: "14px",
+
     border: "none",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    gap: "8px",
+
     cursor: "pointer",
+
+    fontWeight: "bold",
+
+    background:
+      "var(--accent-glow)",
+
+    color:
+      "var(--accent)",
   },
 
   deleteButton: {
-    padding: "10px 16px",
-    borderRadius: "10px",
+    padding: "12px 18px",
+
+    borderRadius: "14px",
+
     border: "none",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    gap: "8px",
+
     cursor: "pointer",
 
-    background: "#ef4444",
-    color: "white",
+    fontWeight: "bold",
+
+    background:
+      "rgba(239,68,68,0.18)",
+
+    color: "#ef4444",
   },
 
-modalOverlay: {
-  position: "fixed",
-  inset: 0,
+  modalOverlay: {
+    position: "fixed",
 
-  background: "rgba(0,0,0,0.5)",
+    inset: 0,
 
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
+    background:
+      "rgba(0,0,0,0.6)",
 
-  zIndex: 9999,
-},
+    display: "flex",
 
-modal: {
-  background: "white",
+    alignItems: "center",
 
-  color: "black",
+    justifyContent: "center",
 
-  padding: "30px",
+    zIndex: 9999,
+  },
 
-  borderRadius: "20px",
+  modal: {
+    width: "min(700px, 92vw)",
 
-  width: "min(500px, 92vw)",
+    maxHeight: "88vh",
 
-  maxHeight: "80vh",
+    overflowY: "auto",
 
-  overflowY: "auto",
+    background:
+      "var(--card-bg)",
 
-  display: "flex",
-  flexDirection: "column",
+    border:
+      "1px solid var(--border)",
 
-  gap: "20px",
-},
+    borderRadius: "30px",
 
-skillsList: {
-  display: "flex",
-  flexDirection: "column",
-  gap: "6px",
-},
+    padding: "30px",
 
-modalButtons: {
-  display: "flex",
-  gap: "10px",
-},
+    display: "flex",
 
-modalInput: {
-  padding: "12px",
+    flexDirection: "column",
 
-  fontSize: "16px",
+    gap: "24px",
 
-  borderRadius: "10px",
+    backdropFilter:
+      "blur(14px)",
+  },
 
-  border: "1px solid #ccc",
-},
+  modalTop: {
+    display: "flex",
 
-editRow: {
-  display: "flex",
-  alignItems: "center",
-  gap: "10px",
-},
+    justifyContent:
+      "space-between",
 
-editInputContainer: {
-  position: "relative",
-},
+    alignItems: "center",
 
-suggestions: {
-  position: "absolute",
+    gap: "20px",
 
-  top: "50px",
-  left: 0,
+    flexWrap: "wrap",
+  },
 
-  width: "100%",
+  modalTitle: {
+    fontSize: "36px",
 
-  background: "white",
+    fontWeight: "bold",
+  },
 
-  border: "1px solid #ccc",
+  modalSubtitle: {
+    color:
+      "var(--text-secondary)",
+  },
 
-  borderRadius: "10px",
+  liveDD: {
+    fontSize: "28px",
 
-  zIndex: 9999,
+    fontWeight: "bold",
 
-  maxHeight: "220px",
+    color:
+      "var(--accent)",
+  },
 
-  overflowY: "auto",
+  skillsList: {
+    display: "flex",
 
-  boxShadow:
-    "0 4px 10px rgba(0,0,0,0.15)",
-},
+    flexDirection: "column",
 
-suggestionItem: {
-  padding: "10px",
+    gap: "10px",
+  },
 
-  cursor: "pointer",
+  editRow: {
+    display: "flex",
 
-  borderBottom: "1px solid #eee",
-},
+    alignItems: "center",
+
+    gap: "12px",
+  },
+
+  editInputContainer: {
+    position: "relative",
+
+    width: "100%",
+  },
+
+  modalInput: {
+    width: "100%",
+
+    padding: "14px",
+
+    borderRadius: "16px",
+
+    border:
+      "1px solid var(--border)",
+
+    background:
+      "rgba(255,255,255,0.06)",
+
+    color:
+      "var(--text-primary)",
+
+    fontSize: "16px",
+
+    outline: "none",
+  },
+
+  suggestions: {
+    position: "absolute",
+
+    top: "56px",
+
+    left: 0,
+
+    width: "100%",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    borderRadius: "16px",
+
+    zIndex: 9999,
+
+    maxHeight: "220px",
+
+    overflowY: "auto",
+
+    backdropFilter:
+      "blur(12px)",
+  },
+
+  suggestionItem: {
+    padding: "12px",
+
+    cursor: "pointer",
+
+    borderBottom:
+      "1px solid var(--border)",
+  },
+
+  modalButtons: {
+    display: "flex",
+
+    gap: "12px",
+
+    flexWrap: "wrap",
+  },
 
 };

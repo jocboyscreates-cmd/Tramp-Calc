@@ -28,7 +28,7 @@ export default function BingoGame() {
   };
 
   const [board, setBoard] =
-    useState(generateBoard);
+    useState(() => generateBoard());
 
   const [bingo, setBingo] =
     useState(false);
@@ -36,8 +36,8 @@ export default function BingoGame() {
   const [info, setInfo] =
     useState(null);
 
-    const [helpOpen, setHelpOpen] =
-  useState(false);
+  const [helpOpen, setHelpOpen] =
+    useState(false);
 
   const toggleSquare = (index) => {
 
@@ -181,8 +181,6 @@ export default function BingoGame() {
     setBingo(false);
   };
 
-
-  
   const resetBoard = () => {
 
     setBoard(generateBoard());
@@ -202,14 +200,14 @@ export default function BingoGame() {
       </Link>
 
       <button
-  style={styles.helpButton}
+        style={styles.helpButton}
 
-  onClick={() =>
-    setHelpOpen(true)
-  }
->
-  <CircleHelp size={22} />
-</button>
+        onClick={() =>
+          setHelpOpen(true)
+        }
+      >
+        <CircleHelp size={22} />
+      </button>
 
       <h1 style={styles.title}>
         Bingo
@@ -221,29 +219,29 @@ export default function BingoGame() {
 
       {bingo && (
 
-  <div style={styles.overlay}>
+        <div style={styles.overlay}>
 
-    <div style={styles.bingoPopup}>
+          <div style={styles.bingoPopup}>
 
-      <button
-        style={styles.bingoClose}
+            <button
+              style={styles.bingoClose}
 
-        onClick={() =>
-          setBingo(false)
-        }
-      >
-        ×
-      </button>
+              onClick={() =>
+                setBingo(false)
+              }
+            >
+              ×
+            </button>
 
-      <div style={styles.bingoText}>
-        BINGO!
-      </div>
+            <div style={styles.bingoText}>
+              BINGO!
+            </div>
 
-    </div>
+          </div>
 
-  </div>
+        </div>
 
-)}
+      )}
 
       <div style={styles.grid}>
 
@@ -270,29 +268,39 @@ export default function BingoGame() {
 
               onContextMenu={(e) => {
 
-  e.preventDefault();
+                e.preventDefault();
 
-  setInfo(challenge);
-}}
+                setInfo(challenge);
+              }}
 
-onPointerDown={() => {
+              onPointerDown={() => {
 
-  const timer = setTimeout(() => {
+                const timer =
+                  setTimeout(() => {
 
-    setInfo(challenge);
+                    setInfo(
+                      challenge
+                    );
 
-  }, 500);
+                  }, 500);
 
-  challenge.timer = timer;
-}}
+                challenge.timer =
+                  timer;
+              }}
 
-onPointerUp={() => {
-  clearTimeout(challenge.timer);
-}}
+              onPointerUp={() => {
 
-onPointerLeave={() => {
-  clearTimeout(challenge.timer);
-}}
+                clearTimeout(
+                  challenge.timer
+                );
+              }}
+
+              onPointerLeave={() => {
+
+                clearTimeout(
+                  challenge.timer
+                );
+              }}
             >
 
               {challenge.title}
@@ -346,55 +354,57 @@ onPointerLeave={() => {
 
       )}
 
-{helpOpen && (
+      {helpOpen && (
 
-  <div style={styles.overlay}>
+        <div style={styles.overlay}>
 
-    <div style={styles.modal}>
+          <div style={styles.modal}>
 
-      <h2>
-        How To Play
-      </h2>
+            <h2>
+              How To Play
+            </h2>
 
-      <p>
-        Tap a square to mark it
-        complete.
-      </p>
+            <p>
+              Tap a square to
+              mark it complete.
+            </p>
 
-      <p>
-        Hold down on mobile or
-        right click on desktop to
-        view the challenge
-        description.
-      </p>
+            <p>
+              Hold down on mobile
+              or right click on
+              desktop to view the
+              challenge description.
+            </p>
 
-      <p>
-        A fun way to play is with
-        multiple devices where
-        each player gets their own
-        random board.
-      </p>
+            <p>
+              A fun way to play
+              is with multiple
+              devices where each
+              player gets their
+              own random board.
+            </p>
 
-      <p>
-        The winner is the first
-        person to get bingo.
-      </p>
+            <p>
+              The winner is the
+              first person to
+              get bingo.
+            </p>
 
-      <button
-        style={styles.closeButton}
+            <button
+              style={styles.closeButton}
 
-        onClick={() =>
-          setHelpOpen(false)
-        }
-      >
-        Close
-      </button>
+              onClick={() =>
+                setHelpOpen(false)
+              }
+            >
+              Close
+            </button>
 
-    </div>
+          </div>
 
-  </div>
+        </div>
 
-)}
+      )}
 
     </div>
 
@@ -407,9 +417,10 @@ const styles = {
     minHeight: "100vh",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     display: "flex",
 
@@ -437,11 +448,16 @@ const styles = {
 
     justifyContent: "center",
 
-    background: "white",
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
 
     borderRadius: "14px",
 
-    color: "black",
+    color:
+      "var(--text-primary)",
 
     textDecoration: "none",
   },
@@ -455,25 +471,8 @@ const styles = {
   },
 
   subtitle: {
-    color: "#cbd5e1",
-
-    marginBottom: "30px",
-  },
-
-  bingoBanner: {
-    padding: "14px 28px",
-
-    borderRadius: "18px",
-
-    background:
-      "rgba(34,197,94,0.25)",
-
-    border:
-      "1px solid rgba(34,197,94,0.4)",
-
-    fontWeight: "bold",
-
-    fontSize: "28px",
+    color:
+      "var(--text-secondary)",
 
     marginBottom: "30px",
   },
@@ -495,12 +494,13 @@ const styles = {
     borderRadius: "22px",
 
     border:
-      "1px solid rgba(255,255,255,0.1)",
+      "1px solid var(--border)",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     fontWeight: "bold",
 
@@ -511,14 +511,17 @@ const styles = {
     cursor: "pointer",
 
     backdropFilter: "blur(10px)",
+
+    transition:
+      "all 0.2s ease",
   },
 
   completedSquare: {
     background:
-      "rgba(192,132,252,0.35)",
+      "var(--accent-glow)",
 
     border:
-      "1px solid rgba(192,132,252,0.5)",
+      "1px solid var(--accent)",
   },
 
   resetButton: {
@@ -528,12 +531,14 @@ const styles = {
 
     borderRadius: "18px",
 
-    border: "none",
+    border:
+      "1px solid var(--border)",
 
     background:
-      "rgba(255,255,255,0.1)",
+      "var(--card-bg)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     display: "flex",
 
@@ -567,7 +572,7 @@ const styles = {
     width: "min(500px, 92vw)",
 
     background:
-      "linear-gradient(135deg, #111827, #1e293b)",
+      "var(--card-bg)",
 
     borderRadius: "28px",
 
@@ -580,7 +585,7 @@ const styles = {
     gap: "20px",
 
     border:
-      "1px solid rgba(255,255,255,0.08)",
+      "1px solid var(--border)",
   },
 
   closeButton: {
@@ -588,103 +593,110 @@ const styles = {
 
     borderRadius: "14px",
 
-    border: "none",
+    border:
+      "1px solid var(--border)",
 
     background:
-      "rgba(255,255,255,0.1)",
+      "var(--card-bg)",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     cursor: "pointer",
   },
 
   helpButton: {
-  position: "absolute",
+    position: "absolute",
 
-  top: "30px",
-  right: "30px",
+    top: "30px",
+    right: "30px",
 
-  width: "46px",
-  height: "46px",
+    width: "46px",
+    height: "46px",
 
-  borderRadius: "14px",
+    borderRadius: "14px",
 
-  border: "none",
+    border:
+      "1px solid var(--border)",
 
-  background:
-    "rgba(255,255,255,0.1)",
+    background:
+      "var(--card-bg)",
 
-  color: "white",
+    color:
+      "var(--text-primary)",
 
-  display: "flex",
+    display: "flex",
 
-  alignItems: "center",
+    alignItems: "center",
 
-  justifyContent: "center",
+    justifyContent: "center",
 
-  cursor: "pointer",
+    cursor: "pointer",
 
-  backdropFilter: "blur(10px)",
-},
+    backdropFilter: "blur(10px)",
+  },
 
-bingoPopup: {
-  width: "min(500px, 90vw)",
+  bingoPopup: {
+    width: "min(500px, 90vw)",
 
-  background:
-    "linear-gradient(135deg, #111827, #1e293b)",
+    background:
+      "var(--card-bg)",
 
-  borderRadius: "34px",
+    borderRadius: "34px",
 
-  padding: "60px 30px",
+    padding: "60px 30px",
 
-  display: "flex",
+    display: "flex",
 
-  flexDirection: "column",
+    flexDirection: "column",
 
-  alignItems: "center",
+    alignItems: "center",
 
-  justifyContent: "center",
+    justifyContent: "center",
 
-  position: "relative",
+    position: "relative",
 
-  border:
-    "2px solid rgba(192,132,252,0.5)",
+    border:
+      "2px solid var(--accent)",
 
-  boxShadow:
-    "0 20px 80px rgba(0,0,0,0.5)",
-},
+    boxShadow:
+      "0 20px 80px var(--accent-glow)",
+  },
 
-bingoText: {
-  fontSize: "72px",
+  bingoText: {
+    fontSize: "72px",
 
-  fontWeight: "bold",
+    fontWeight: "bold",
 
-  color: "#c084fc",
+    color:
+      "var(--accent)",
 
-  textAlign: "center",
-},
+    textAlign: "center",
+  },
 
-bingoClose: {
-  position: "absolute",
+  bingoClose: {
+    position: "absolute",
 
-  top: "18px",
-  right: "18px",
+    top: "18px",
+    right: "18px",
 
-  width: "38px",
-  height: "38px",
+    width: "38px",
+    height: "38px",
 
-  borderRadius: "50%",
+    borderRadius: "50%",
 
-  border: "none",
+    border:
+      "1px solid var(--border)",
 
-  background:
-    "rgba(255,255,255,0.1)",
+    background:
+      "var(--card-bg)",
 
-  color: "white",
+    color:
+      "var(--text-primary)",
 
-  fontSize: "24px",
+    fontSize: "24px",
 
-  cursor: "pointer",
-},
+    cursor: "pointer",
+  },
 
 };

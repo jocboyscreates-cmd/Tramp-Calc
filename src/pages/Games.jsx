@@ -54,50 +54,50 @@ export default function Games() {
         </Link>
 
         <Link
-  to="/imposter-game"
-  style={styles.gameCard}
->
+          to="/imposter-game"
+          style={styles.gameCard}
+        >
 
-  <div style={styles.iconBox}>
-    <Users size={42} />
-  </div>
+          <div style={styles.iconBox}>
+            <Users size={42} />
+          </div>
 
-  <div>
+          <div>
 
-    <div style={styles.gameTitle}>
-      Imposter Game
-    </div>
+            <div style={styles.gameTitle}>
+              Imposter Game
+            </div>
 
-    <div style={styles.gameSubtitle}>
-      Find the fake routin
-    </div>
+            <div style={styles.gameSubtitle}>
+              Find the fake routine
+            </div>
 
-  </div>
+          </div>
 
-</Link>
+        </Link>
 
         <Link
-  to="/bingo-game"
-  style={styles.gameCard}
->
+          to="/bingo-game"
+          style={styles.gameCard}
+        >
 
-  <div style={styles.iconBox}>
-    <Grid3X3 size={42} />
-  </div>
+          <div style={styles.iconBox}>
+            <Grid3X3 size={42} />
+          </div>
 
-  <div>
+          <div>
 
-    <div style={styles.gameTitle}>
-      Bingo
-    </div>
+            <div style={styles.gameTitle}>
+              Bingo
+            </div>
 
-    <div style={styles.gameSubtitle}>
-      Complete trampoline challenges
-    </div>
+            <div style={styles.gameSubtitle}>
+              Complete trampoline challenges
+            </div>
 
-  </div>
+          </div>
 
-</Link>
+        </Link>
 
       </div>
 
@@ -108,33 +108,11 @@ export default function Games() {
 
 const styles = {
 
-  homeButton: {
-    position: "absolute",
-
-    top: "30px",
-    left: "30px",
-
-    width: "52px",
-    height: "52px",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-
-    background: "white",
-
-    borderRadius: "14px",
-
-    color: "black",
-
-    textDecoration: "none",
-  },
-
   container: {
     minHeight: "100vh",
 
     background:
-      "linear-gradient(135deg, #0f172a, #1e293b)",
+      "var(--bg-primary)",
 
     display: "flex",
 
@@ -142,25 +120,69 @@ const styles = {
 
     alignItems: "center",
 
-    paddingTop: "60px",
+    paddingTop: "70px",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
+  },
+
+  homeButton: {
+    position: "absolute",
+
+    top: "30px",
+    left: "30px",
+
+    width: "54px",
+    height: "54px",
+
+    display: "flex",
+
+    alignItems: "center",
+
+    justifyContent: "center",
+
+    background:
+      "var(--card-bg)",
+
+    border:
+      "1px solid var(--border)",
+
+    borderRadius: "16px",
+
+    color:
+      "var(--text-primary)",
+
+    textDecoration: "none",
+
+    backdropFilter:
+      "blur(10px)",
+
+    boxShadow:
+      "0 8px 24px rgba(0,0,0,0.18)",
+
+    transition:
+      "0.2s ease",
   },
 
   title: {
-    fontSize: "56px",
+    fontSize: "60px",
 
     fontWeight: "bold",
 
     marginBottom: "10px",
+
+    textAlign: "center",
   },
 
   subtitle: {
-    color: "#cbd5e1",
+    color:
+      "var(--text-secondary)",
 
-    fontSize: "18px",
+    fontSize: "19px",
 
-    marginBottom: "40px",
+    marginBottom: "50px",
+
+    textAlign: "center",
   },
 
   grid: {
@@ -168,25 +190,27 @@ const styles = {
 
     flexDirection: "column",
 
-    gap: "24px",
+    gap: "28px",
 
     width: "100%",
 
     alignItems: "center",
+
+    paddingBottom: "50px",
   },
 
   gameCard: {
-    width: "min(700px, 92vw)",
+    width: "min(760px, 92vw)",
 
-    padding: "26px",
+    padding: "28px",
 
-    borderRadius: "28px",
+    borderRadius: "30px",
 
     border:
-      "1px solid rgba(255,255,255,0.12)",
+      "1px solid var(--border)",
 
     background:
-      "rgba(255,255,255,0.08)",
+      "var(--card-bg)",
 
     display: "flex",
 
@@ -194,49 +218,28 @@ const styles = {
 
     gap: "24px",
 
-    color: "white",
+    color:
+      "var(--text-primary)",
 
     textDecoration: "none",
 
-    backdropFilter: "blur(10px)",
+    backdropFilter:
+      "blur(12px)",
 
     boxShadow:
-      "0 10px 30px rgba(0,0,0,0.25)",
+      "0 12px 34px rgba(0,0,0,0.22)",
 
-    transition: "0.2s",
-  },
+    transition:
+      "0.25s ease",
 
-  gameCardDisabled: {
-    width: "min(700px, 92vw)",
-
-    padding: "26px",
-
-    borderRadius: "28px",
-
-    border:
-      "1px solid rgba(255,255,255,0.08)",
-
-    background:
-      "rgba(255,255,255,0.05)",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    gap: "24px",
-
-    color: "white",
-
-    opacity: 0.8,
-
-    backdropFilter: "blur(10px)",
+    cursor: "pointer",
   },
 
   iconBox: {
-    width: "82px",
-    height: "82px",
+    width: "84px",
+    height: "84px",
 
-    borderRadius: "22px",
+    borderRadius: "24px",
 
     background:
       "rgba(255,255,255,0.08)",
@@ -248,10 +251,13 @@ const styles = {
     justifyContent: "center",
 
     flexShrink: 0,
+
+    color:
+      "var(--accent)",
   },
 
   gameTitle: {
-    fontSize: "28px",
+    fontSize: "30px",
 
     fontWeight: "bold",
 
@@ -259,9 +265,60 @@ const styles = {
   },
 
   gameSubtitle: {
-    color: "#cbd5e1",
+    color:
+      "var(--text-secondary)",
 
-    fontSize: "16px",
+    fontSize: "17px",
   },
 
 };
+
+document.addEventListener(
+  "mouseover",
+  (e) => {
+
+    const target =
+      e.target.closest("a");
+
+    if (
+      target &&
+      target.style.cursor ===
+        "pointer"
+    ) {
+
+      target.style.transform =
+        "translateY(-4px)";
+
+      target.style.border =
+        "1px solid var(--accent)";
+
+      target.style.boxShadow =
+        "0 0 25px rgba(252,175,69,0.25)";
+    }
+  }
+);
+
+document.addEventListener(
+  "mouseout",
+  (e) => {
+
+    const target =
+      e.target.closest("a");
+
+    if (
+      target &&
+      target.style.cursor ===
+        "pointer"
+    ) {
+
+      target.style.transform =
+        "translateY(0px)";
+
+      target.style.border =
+        "1px solid var(--border)";
+
+      target.style.boxShadow =
+        "0 12px 34px rgba(0,0,0,0.22)";
+    }
+  }
+);

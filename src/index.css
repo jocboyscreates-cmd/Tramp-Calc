@@ -19,3 +19,58 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+
+:root {
+
+  --bg-primary: #f8fafc;
+
+  --card-bg: rgba(255,255,255,0.85);
+
+  --text-primary: #0f172a;
+
+  --text-secondary: #475569;
+
+  --border: rgba(15,23,42,0.08);
+
+  --accent: #fcaf45;
+
+  --accent-glow: rgba(252,175,69,0.25);
+
+  --input-bg: #ffffff;
+}
+
+.dark {
+
+  --bg-primary: #0f172a;
+
+  --card-bg: rgba(255,255,255,0.08);
+
+  --text-primary: white;
+
+  --text-secondary: #cbd5e1;
+
+  --border: rgba(255,255,255,0.12);
+
+  --accent: #fcaf45;
+
+  --accent-glow: rgba(252,175,69,0.25);
+
+  --input-bg: #374151;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  background: var(--bg-primary);
+
+  color: var(--text-primary);
+
+  font-family:
+    Inter,
+    sans-serif;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
