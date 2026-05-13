@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import {
   House,
   Share2,
+  Pencil,
 } from "lucide-react";
 
 export default function SharedRoutine() {
@@ -104,18 +105,94 @@ export default function SharedRoutine() {
 
       </div>
 
+<button
+  style={styles.openButton}
+
+  onClick={() => {
+
+    localStorage.setItem(
+      "currentRoutine",
+      JSON.stringify(routine)
+    );
+
+    if (
+      routine.event ===
+      "trampoline"
+    ) {
+      window.location.href =
+        "/trampoline";
+    }
+
+    if (
+      routine.event ===
+      "doubleMini"
+    ) {
+      window.location.href =
+        "/double-mini";
+    }
+
+    if (
+      routine.event ===
+      "tumbling"
+    ) {
+      window.location.href =
+        "/tumbling";
+    }
+
+  }}
+>
+
+  <Pencil size={20} />
+
+  Open In Editor
+
+</button>
+
       <div style={styles.skills}>
 
-        {routine.skills &&
-          routine.skills.map(
-            (
-              skill,
-              index
-            ) => (
+  {routine.event === "trampoline" &&
+
+    routine.skills?.map(
+      (skill, index) => (
+
+        <div
+          key={index}
+          style={styles.skill}
+        >
+
+          <div style={styles.skillNumber}>
+            {index + 1}
+          </div>
+
+          <div style={styles.skillText}>
+            {skill}
+          </div>
+
+        </div>
+
+      )
+    )
+  }
+
+  {routine.event === "doubleMini" &&
+
+    routine.routines?.map(
+      (routineSkills, routineIndex) => (
+
+        <div
+          key={routineIndex}
+          style={styles.routineSection}
+        >
+
+          <h2 style={styles.routineTitle}>
+            Routine {routineIndex + 1}
+          </h2>
+
+          {routineSkills.map(
+            (skill, index) => (
 
               <div
                 key={index}
-
                 style={styles.skill}
               >
 
@@ -132,7 +209,56 @@ export default function SharedRoutine() {
             )
           )}
 
-      </div>
+        </div>
+
+      )
+    )
+  }
+
+  {routine.event === "tumbling" &&
+
+    Object.entries(
+      routine.passes || {}
+    ).map(
+      ([passName, passSkills]) => (
+
+        <div
+          key={passName}
+          style={styles.routineSection}
+        >
+
+          <h2 style={styles.routineTitle}>
+            {passName}
+          </h2>
+
+          {passSkills.map(
+            (skill, index) => (
+
+              <div
+                key={index}
+                style={styles.skill}
+              >
+
+                <div style={styles.skillNumber}>
+                  {index + 1}
+                </div>
+
+                <div style={styles.skillText}>
+                  {skill}
+                </div>
+
+              </div>
+
+            )
+          )}
+
+        </div>
+
+      )
+    )
+  }
+
+</div>
 
     </div>
 
@@ -414,5 +540,49 @@ const styles = {
 
     fontWeight: "600",
   },
+
+  openButton: {
+  marginTop: "16px",
+
+  padding: "16px 24px",
+
+  borderRadius: "18px",
+
+  border: "none",
+
+  background:
+    "var(--accent-glow)",
+
+  color:
+    "var(--accent)",
+
+  display: "flex",
+
+  alignItems: "center",
+
+  gap: "10px",
+
+  fontWeight: "bold",
+
+  fontSize: "16px",
+
+  cursor: "pointer",
+},
+
+routineSection: {
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "16px",
+},
+
+routineTitle: {
+  fontSize: "28px",
+
+  fontWeight: "bold",
+
+  marginBottom: "8px",
+},
 
 };
