@@ -446,7 +446,7 @@ const styles = {
   display: "grid",
 
   gridTemplateColumns:
-    "repeat(7, 60px)",
+    "repeat(7, clamp(38px, 11vw, 60px))",
 
   gap: "10px",
 
