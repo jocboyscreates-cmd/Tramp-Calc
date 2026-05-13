@@ -315,145 +315,144 @@ export default function SavedRoutines() {
 
             </div>
 
-            <div style={styles.skillsList}>
+           <div style={styles.skillsList}>
 
-              {editingRoutine?.skills &&
-                editingRoutine.skills.map(
-                  (
-                    skill,
-                    index
-                  ) => (
+  {editingRoutine?.event ===
+    "trampoline" &&
 
-                    <div
-                      key={index}
+    editingRoutine.skills?.map(
+      (
+        skill,
+        index
+      ) => (
 
-                      style={styles.editRow}
-                    >
+        <div
+          key={index}
+          style={styles.skillDisplay}
+        >
 
-                      <span>
-                        {index + 1}.
-                      </span>
+          <span style={styles.skillNumber}>
+            {index + 1}.
+          </span>
 
-                      <div
-                        style={
-                          styles.editInputContainer
-                        }
-                      >
+          <div style={styles.skillBox}>
+            {skill}
+          </div>
 
-                        <input
-                          value={skill}
+        </div>
 
-                          onFocus={() =>
-                            setActiveEditInput(
-                              index
-                            )
-                          }
+      )
+    )
+  }
 
-                          onChange={(e) => {
+  {editingRoutine?.event ===
+    "doubleMini" &&
 
-                            const updated = {
-                              ...editingRoutine,
-                            };
+    editingRoutine.routines?.map(
+      (
+        routine,
+        routineIndex
+      ) => (
 
-                            updated.skills[index] =
-                              e.target.value;
+        <div
+          key={routineIndex}
 
-                            setEditingRoutine(
-                              updated
-                            );
+          style={styles.routineSection}
+        >
 
-                          }}
+          <h3 style={styles.routineTitle}>
+            Routine {routineIndex + 1}
+          </h3>
 
-                          style={
-                            styles.modalInput
-                          }
-                        />
+          {routine.map(
+            (
+              skill,
+              index
+            ) => (
 
-                        {activeEditInput ===
-                          index &&
+              <div
+                key={index}
 
-                          skill.length > 0 && (
+                style={styles.skillDisplay}
+              >
 
-                          <div
-                            style={
-                              styles.suggestions
-                            }
-                          >
+                <span style={styles.skillNumber}>
+                  {index + 1}.
+                </span>
 
-                            {allSkills
-                              .filter(
-                                (item) => {
+                <div style={styles.skillBox}>
+                  {skill}
+                </div>
 
-                                  const search =
-                                    skill.toLowerCase();
+              </div>
 
-                                  return (
-                                    item.code
-                                      .toLowerCase()
-                                      .includes(
-                                        search
-                                      ) ||
+            )
+          )}
 
-                                    item.name
-                                      .toLowerCase()
-                                      .includes(
-                                        search
-                                      )
-                                  );
-                                }
-                              )
-                              .slice(0, 6)
-                              .map((item) => (
+        </div>
 
-                                <div
-                                  key={`${item.code}-${item.name}`}
+      )
+    )
+  }
 
-                                  style={
-                                    styles.suggestionItem
-                                  }
+  {editingRoutine?.event ===
+    "tumbling" &&
 
-                                  onMouseDown={() => {
+    Object.entries(
+      editingRoutine.passes || {}
+    ).map(
+      (
+        [
+          passName,
+          passSkills,
+        ],
+        passIndex
+      ) => (
 
-                                    const updated = {
-                                      ...editingRoutine,
-                                    };
+        <div
+          key={passIndex}
 
-                                    updated.skills[index] =
-                                      item.code;
+          style={styles.routineSection}
+        >
 
-                                    setEditingRoutine(
-                                      updated
-                                    );
+          <h3 style={styles.routineTitle}>
+            {passName}
+          </h3>
 
-                                    setActiveEditInput(
-                                      null
-                                    );
+          {passSkills.map(
+            (
+              skill,
+              index
+            ) => (
 
-                                  }}
-                                >
+              <div
+                key={index}
 
-                                  {item.name}
-                                  {" | "}
-                                  {item.code}
-                                  {" | "}
-                                  {item.dd}
+                style={styles.skillDisplay}
+              >
 
-                                </div>
+                <span style={styles.skillNumber}>
+                  {index + 1}.
+                </span>
 
-                              ))}
+                <div style={styles.skillBox}>
+                  {skill}
+                </div>
 
-                          </div>
+              </div>
 
-                        )}
+            )
+          )}
 
-                      </div>
+        </div>
 
-                    </div>
+      )
+    )
+  }
 
-                  )
-                )}
+</div>
 
-            </div>
+              
 
             <input
               type="text"
@@ -927,5 +926,43 @@ const styles = {
 
     flexWrap: "wrap",
   },
+
+  routineSection: {
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "14px",
+
+  marginBottom: "24px",
+},
+
+routineTitle: {
+  fontSize: "28px",
+
+  fontWeight: "bold",
+},
+
+skillDisplay: {
+  display: "flex",
+
+  alignItems: "center",
+
+  gap: "12px",
+},
+
+skillBox: {
+  flex: 1,
+
+  padding: "16px",
+
+  borderRadius: "18px",
+
+  background:
+    "rgba(255,255,255,0.06)",
+
+  border:
+    "1px solid var(--border)",
+},
 
 };
