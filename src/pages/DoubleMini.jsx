@@ -225,11 +225,23 @@ export default function DoubleMini() {
           ) => (
 
             <div
-              key={routineIndex}
-              style={
-                styles.routineBox
-              }
-            >
+  key={routineIndex}
+
+  style={{
+    ...styles.routineBox,
+
+    zIndex:
+
+      activeInput &&
+      activeInput.startsWith(
+        `${routineIndex}-`
+      )
+
+        ? 9999
+
+        : 1,
+  }}
+>
 
               <h2>
                 Routine{" "}
@@ -736,64 +748,80 @@ const styles = {
   },
 
   routineBox: {
-    width:
-      "min(900px, 95vw)",
+  width:
+    "min(900px, 95vw)",
 
-    background:
-      "var(--card-bg)",
+  background:
+    "var(--card-bg)",
 
-    border:
-      "1px solid var(--border)",
+  border:
+    "1px solid var(--border)",
 
-    borderRadius: "26px",
+  borderRadius: "26px",
 
-    padding: "28px",
+  padding: "28px",
 
-    display: "flex",
+  display: "flex",
 
-    flexDirection: "column",
+  flexDirection: "column",
 
-    gap: "16px",
+  gap: "16px",
 
-    backdropFilter:
-      "blur(12px)",
+  position: "relative",
 
-    boxShadow:
-      "0 10px 30px rgba(0,0,0,0.2)",
-  },
+  overflow: "visible",
+
+  backdropFilter:
+    "blur(10px)",
+},
 
   skillContainer: {
-    position: "relative",
-  },
+  position: "relative",
+},
 
   row: {
-    display: "flex",
+  display: "flex",
 
-    alignItems: "center",
+  alignItems: "center",
 
-    gap: "12px",
+  gap: "14px",
 
-    flexWrap: "wrap",
-  },
+  flexWrap: "wrap",
+
+  padding: "18px",
+
+  borderRadius: "24px",
+
+  background:
+    "var(--card-bg)",
+
+  border:
+    "1px solid var(--border)",
+
+  backdropFilter:
+    "blur(10px)",
+},
 
   input: {
-    width: "120px",
+  width: "120px",
 
-    padding: "12px",
+  padding: "14px",
 
-    fontSize: "18px",
+  borderRadius: "16px",
 
-    borderRadius: "12px",
+  border:
+    "1px solid var(--border)",
 
-    border:
-      "1px solid var(--border)",
+  background:
+    "rgba(255,255,255,0.06)",
 
-    background:
-      "rgba(255,255,255,0.08)",
+  color:
+    "var(--text-primary)",
 
-    color:
-      "var(--text-primary)",
-  },
+  fontSize: "18px",
+
+  outline: "none",
+},
 
   dropdown: {
   flex: 1,
@@ -835,34 +863,39 @@ const styles = {
   },
 
   suggestions: {
-    position: "absolute",
+  position: "absolute",
 
-    top: "58px",
-    left: "0",
+  top: "92px",
 
-    width:
-      "min(500px, 90vw)",
+  left: 0,
 
-    background:
-      "var(--card-bg)",
+  width: "100%",
 
-    border:
-      "1px solid var(--border)",
+  background:
+    "var(--suggestion-bg)",
 
-    borderRadius: "14px",
+  border:
+    "1px solid var(--border)",
 
-    zIndex: 1000,
+  borderRadius: "22px",
 
-    maxHeight: "240px",
+  overflow: "hidden",
 
-    overflowY: "auto",
+  zIndex: 9999,
 
-    boxShadow:
-      "0 12px 30px rgba(0,0,0,0.25)",
-  },
+  maxHeight: "320px",
+
+  overflowY: "auto",
+
+  backdropFilter:
+    "none",
+
+  boxShadow:
+    "0 14px 40px rgba(0,0,0,0.18)",
+},
 
   suggestionItem: {
-    padding: "12px",
+    padding: "16px",
 
     cursor: "pointer",
 
@@ -871,43 +904,6 @@ const styles = {
 
     transition:
       "0.15s ease",
-  },
-
-  ddText: {
-    color:
-      "var(--accent)",
-  },
-
-  totalText: {
-    fontSize: "34px",
-
-    color:
-      "var(--accent)",
-  },
-
-  saveButton: {
-    width: "58px",
-    height: "58px",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    justifyContent: "center",
-
-    borderRadius: "16px",
-
-    border: "none",
-
-    background:
-      "var(--accent-glow)",
-
-    color:
-      "var(--accent)",
-
-    cursor: "pointer",
-
-    marginTop: "10px",
   },
 
   modalOverlay: {
@@ -929,7 +925,7 @@ const styles = {
 
   modal: {
     background:
-      "var(--card-bg)",
+  "var(--card-bg)",
 
     color:
       "var(--text-primary)",

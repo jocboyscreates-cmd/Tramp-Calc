@@ -106,18 +106,28 @@ export default function Trampoline() {
     setSkills(updatedSkills);
   }
 
-  function getSkillDD(code) {
+  function getSkillDD(skillValue) {
 
-    const foundSkill =
-      allSkills.find(
-        (skill) =>
-          skill.code === code
-      );
+  if (!skillValue)
+    return 0;
 
-    return foundSkill
-      ? foundSkill.dd
-      : 0;
-  }
+  const parts =
+    skillValue.split("|||");
+
+  const name = parts[0];
+  const code = parts[1];
+
+  const foundSkill =
+    allSkills.find(
+      (skill) =>
+        skill.code === code &&
+        skill.name === name
+    );
+
+  return foundSkill
+    ? foundSkill.dd
+    : 0;
+}
 
   const totalDD =
     skills.reduce(
@@ -174,7 +184,9 @@ export default function Trampoline() {
                 .filter((item) => {
 
                   const search =
-                    skill.toLowerCase();
+  skill
+    .split("|||")[0]
+    .toLowerCase();
 
                   return (
 
@@ -191,18 +203,23 @@ export default function Trampoline() {
                     ||
 
                     (
-                      item.aliases &&
+  [
+    ...(item.aliases || []),
 
-                      item.aliases.some(
-                        (alias) =>
+    item.code.replaceAll(
+      "0",
+      "-"
+    )
+  ].some(
+    (alias) =>
 
-                          alias
-                            .toLowerCase()
-                            .includes(
-                              search
-                            )
-                      )
-                    )
+      alias
+        .toLowerCase()
+        .includes(
+          search
+        )
+  )
+)
 
                   );
 
@@ -234,7 +251,7 @@ export default function Trampoline() {
 
                     placeholder={`Skill ${index + 1}`}
 
-                    value={skill}
+                    value={skill.split("|||")[1] || skill}
 
                     onChange={(e) =>
                       updateSkill(
@@ -248,6 +265,53 @@ export default function Trampoline() {
                         index
                       )
                     }
+
+                    onKeyDown={(e) => {
+
+  if (e.key === "Enter") {
+
+    const search =
+      skill.toLowerCase();
+
+    const exactMatch =
+      allSkills.find(
+        (item) => {
+
+          const aliases = [
+
+            ...(item.aliases || []),
+
+            item.code.replaceAll(
+              "0",
+              "-"
+            ),
+
+            item.name,
+
+            item.code,
+          ];
+
+          return aliases.some(
+            (alias) =>
+
+              alias
+                .toLowerCase() ===
+              search
+          );
+        }
+      );
+
+    if (exactMatch) {
+
+      updateSkill(
+        index,
+        `${exactMatch.name}|||${exactMatch.code}`
+      );
+
+      setActiveInput(null);
+    }
+  }
+}}
 
                     style={styles.input}
                   />
@@ -288,10 +352,8 @@ export default function Trampoline() {
 
   style={styles.option}
 
-                                value={
-                                  item.code
-                                }
-                              >
+  value={`${item.name}|||${item.code}`}
+>
 
                                 {item.name}
                                 {" | "}
@@ -348,9 +410,9 @@ export default function Trampoline() {
                             e.preventDefault();
 
                             updateSkill(
-                              index,
-                              item.code
-                            );
+  index,
+  `${item.name}|||${item.code}`
+);
 
                             setActiveInput(
                               null
@@ -742,32 +804,36 @@ const styles = {
   },
 
   suggestions: {
-    position: "absolute",
+  position: "absolute",
 
-    top: "92px",
+  top: "92px",
 
-    left: 0,
+  left: 0,
 
-    width: "100%",
+  width: "100%",
 
-    background:
-      "var(--card-bg)",
+  background:
+    "var(--suggestion-bg)",
 
-    border:
-      "1px solid var(--border)",
+  border:
+    "1px solid var(--border)",
 
-    borderRadius: "22px",
+  borderRadius: "22px",
 
-    overflow: "hidden",
+  overflow: "hidden",
 
-    zIndex: 9999,
+  zIndex: 9999,
 
-    backdropFilter:
-      "blur(14px)",
+  maxHeight: "320px",
 
-    boxShadow:
-      "0 14px 40px rgba(0,0,0,0.18)",
-  },
+  overflowY: "auto",
+
+  backdropFilter:
+    "none",
+
+  boxShadow:
+    "0 14px 40px rgba(0,0,0,0.18)",
+},
 
   suggestionItem: {
     padding: "16px",

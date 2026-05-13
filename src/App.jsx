@@ -275,7 +275,7 @@ export default function App() {
                       </div>
 
                       <p style={styles.versionText}>
-                        Version 1.0
+                        Version 13.5.26
                       </p>
 
                       <button

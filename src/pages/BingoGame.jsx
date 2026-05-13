@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { Link } from "react-router-dom";
 
+import confetti from "canvas-confetti";
+
 import {
   House,
   RotateCcw,
@@ -94,7 +96,59 @@ export default function BingoGame() {
 
         setBingo(true);
 
-        return;
+const duration = 2500;
+
+const animationEnd =
+  Date.now() + duration;
+
+const defaults = {
+  startVelocity: 30,
+  spread: 360,
+  ticks: 60,
+  zIndex: 99999,
+};
+
+function randomInRange(min, max) {
+  return Math.random() *
+    (max - min) + min;
+}
+
+const interval = setInterval(() => {
+
+  const timeLeft =
+    animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    return;
+  }
+
+  const particleCount =
+    50 * (timeLeft / duration);
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.1, 0.3),
+      y: Math.random() - 0.2,
+    },
+  });
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.7, 0.9),
+      y: Math.random() - 0.2,
+    },
+  });
+
+}, 250);
+
+return;
       }
     }
 
@@ -125,7 +179,59 @@ export default function BingoGame() {
 
         setBingo(true);
 
-        return;
+const duration = 2500;
+
+const animationEnd =
+  Date.now() + duration;
+
+const defaults = {
+  startVelocity: 30,
+  spread: 360,
+  ticks: 60,
+  zIndex: 99999,
+};
+
+function randomInRange(min, max) {
+  return Math.random() *
+    (max - min) + min;
+}
+
+const interval = setInterval(() => {
+
+  const timeLeft =
+    animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    return;
+  }
+
+  const particleCount =
+    50 * (timeLeft / duration);
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.1, 0.3),
+      y: Math.random() - 0.2,
+    },
+  });
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.7, 0.9),
+      y: Math.random() - 0.2,
+    },
+  });
+
+}, 250);
+
+return;
       }
     }
 
@@ -150,7 +256,59 @@ export default function BingoGame() {
 
       setBingo(true);
 
-      return;
+const duration = 2500;
+
+const animationEnd =
+  Date.now() + duration;
+
+const defaults = {
+  startVelocity: 30,
+  spread: 360,
+  ticks: 60,
+  zIndex: 99999,
+};
+
+function randomInRange(min, max) {
+  return Math.random() *
+    (max - min) + min;
+}
+
+const interval = setInterval(() => {
+
+  const timeLeft =
+    animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    return;
+  }
+
+  const particleCount =
+    50 * (timeLeft / duration);
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.1, 0.3),
+      y: Math.random() - 0.2,
+    },
+  });
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.7, 0.9),
+      y: Math.random() - 0.2,
+    },
+  });
+
+}, 250);
+
+return;
     }
 
     let diagonal2 = true;
@@ -175,7 +333,59 @@ export default function BingoGame() {
 
       setBingo(true);
 
-      return;
+const duration = 2500;
+
+const animationEnd =
+  Date.now() + duration;
+
+const defaults = {
+  startVelocity: 30,
+  spread: 360,
+  ticks: 60,
+  zIndex: 99999,
+};
+
+function randomInRange(min, max) {
+  return Math.random() *
+    (max - min) + min;
+}
+
+const interval = setInterval(() => {
+
+  const timeLeft =
+    animationEnd - Date.now();
+
+  if (timeLeft <= 0) {
+    clearInterval(interval);
+    return;
+  }
+
+  const particleCount =
+    50 * (timeLeft / duration);
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.1, 0.3),
+      y: Math.random() - 0.2,
+    },
+  });
+
+  confetti({
+    ...defaults,
+    particleCount,
+
+    origin: {
+      x: randomInRange(0.7, 0.9),
+      y: Math.random() - 0.2,
+    },
+  });
+
+}, 250);
+
+return;
     }
 
     setBingo(false);
@@ -360,9 +570,9 @@ export default function BingoGame() {
 
           <div style={styles.modal}>
 
-            <h2>
-              How To Play
-            </h2>
+            <h2 style={styles.modalTitle}>
+  How To Play
+</h2>
 
             <p>
               Tap a square to
@@ -567,41 +777,52 @@ const styles = {
   },
 
   overlay: {
-    position: "fixed",
+  position: "fixed",
 
-    inset: 0,
+  inset: 0,
 
-    background:
-      "rgba(0,0,0,0.5)",
+  background:
+    "rgba(0,0,0,0.6)",
 
-    display: "flex",
+  display: "flex",
 
-    alignItems: "center",
+  alignItems: "center",
 
-    justifyContent: "center",
+  justifyContent: "center",
 
-    zIndex: 9999,
-  },
+  padding: "20px",
+
+  zIndex: 9999,
+
+  backdropFilter:
+    "blur(8px)",
+},
 
   modal: {
-    width: "min(500px, 92vw)",
+  width: "min(560px, 92vw)",
 
-    background:
-      "var(--card-bg)",
+  background:
+    "linear-gradient(135deg, rgba(30,41,59,0.98), rgba(15,23,42,0.98))",
 
-    borderRadius: "28px",
+  borderRadius: "32px",
 
-    padding: "30px",
+  padding: "34px",
 
-    display: "flex",
+  display: "flex",
 
-    flexDirection: "column",
+  flexDirection: "column",
 
-    gap: "20px",
+  gap: "24px",
 
-    border:
-      "1px solid var(--border)",
-  },
+  border:
+    "1px solid rgba(255,255,255,0.08)",
+
+  backdropFilter:
+    "blur(24px)",
+
+  boxShadow:
+    "0 20px 70px rgba(0,0,0,0.45)",
+},
 
   closeButton: {
     padding: "14px",
@@ -652,42 +873,52 @@ const styles = {
   },
 
   bingoPopup: {
-    width: "min(500px, 90vw)",
+  width: "min(520px, 92vw)",
 
-    background:
-      "var(--card-bg)",
+  minHeight: "240px",
 
-    borderRadius: "34px",
+  background:
+    "linear-gradient(135deg, rgba(30,41,59,0.96), rgba(15,23,42,0.96))",
 
-    padding: "60px 30px",
+  borderRadius: "36px",
 
-    display: "flex",
+  padding: "50px 30px",
 
-    flexDirection: "column",
+  display: "flex",
 
-    alignItems: "center",
+  flexDirection: "column",
 
-    justifyContent: "center",
+  alignItems: "center",
 
-    position: "relative",
+  justifyContent: "center",
 
-    border:
-      "2px solid var(--accent)",
+  position: "relative",
 
-    boxShadow:
-      "0 20px 80px var(--accent-glow)",
-  },
+  border:
+    "1px solid rgba(252,175,69,0.45)",
+
+  backdropFilter:
+    "blur(24px)",
+
+  boxShadow:
+    "0 25px 90px rgba(252,175,69,0.18)",
+},
 
   bingoText: {
   fontSize:
-    "clamp(42px, 12vw, 72px)",
+    "clamp(54px, 13vw, 96px)",
 
-  fontWeight: "bold",
+  fontWeight: "900",
+
+  letterSpacing: "-2px",
 
   color:
     "var(--accent)",
 
   textAlign: "center",
+
+  textShadow:
+    "0 0 30px rgba(252,175,69,0.35)",
 },
 
   bingoClose: {
@@ -714,5 +945,14 @@ const styles = {
 
     cursor: "pointer",
   },
+
+  modalTitle: {
+  fontSize: "42px",
+
+  fontWeight: "bold",
+
+  color:
+    "var(--text-primary)",
+},
 
 };

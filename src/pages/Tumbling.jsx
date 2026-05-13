@@ -291,7 +291,10 @@ export default function Tumbling() {
       <div style={styles.passWrapper}>
 
         {visiblePasses.map(
-          (passName) => {
+  (
+    passName,
+    passIndex
+  ) => {
 
             const passSkills =
               passes[passName];
@@ -299,10 +302,23 @@ export default function Tumbling() {
             return (
 
               <div
-                key={passName}
+  key={passIndex}
 
-                style={styles.passBox}
-              >
+  style={{
+    ...styles.passBox,
+
+    zIndex:
+
+      activeInput &&
+activeInput.startsWith(
+  `${passName}-`
+)
+
+        ? 9999
+
+        : 1,
+  }}
+>
 
                 <div
                   style={
@@ -398,12 +414,21 @@ export default function Tumbling() {
                     return (
 
                       <div
-                        key={skillIndex}
+  key={skillIndex}
 
-                        style={
-                          styles.skillContainer
-                        }
-                      >
+  style={{
+    ...styles.skillContainer,
+
+    zIndex:
+
+      activeInput ===
+      `${passName}-${skillIndex}`
+
+        ? 999999
+
+        : 1,
+  }}
+>
 
                         <div
                           style={
@@ -900,25 +925,29 @@ const styles = {
   },
 
   passBox: {
-    padding: "24px",
+  padding: "24px",
 
-    borderRadius: "30px",
+  borderRadius: "30px",
 
-    background:
-      "var(--card-bg)",
+  background:
+    "var(--card-bg)",
 
-    border:
-      "1px solid var(--border)",
+  border:
+    "1px solid var(--border)",
 
-    display: "flex",
+  display: "flex",
 
-    flexDirection: "column",
+  flexDirection: "column",
 
-    gap: "18px",
+  gap: "18px",
 
-    backdropFilter:
-      "blur(10px)",
-  },
+  overflow: "visible",
+
+  position: "relative",
+
+  backdropFilter:
+    "blur(10px)",
+},
 
   passHeader: {
     display: "flex",
@@ -956,28 +985,31 @@ const styles = {
   },
 
   skillContainer: {
-    position: "relative",
-  },
+  position: "relative",
+},
 
   row: {
-    display: "flex",
+  display: "flex",
 
-    alignItems: "center",
+  alignItems: "center",
 
-    gap: "14px",
+  gap: "14px",
 
-    flexWrap: "wrap",
+  flexWrap: "wrap",
 
-    padding: "18px",
+  padding: "18px",
 
-    borderRadius: "24px",
+  borderRadius: "24px",
 
-    background:
-      "rgba(255,255,255,0.04)",
+  background:
+  "var(--card-bg)",
 
-    border:
-      "1px solid var(--border)",
-  },
+  border:
+    "1px solid var(--border)",
+
+  backdropFilter:
+    "blur(10px)",
+},
 
   skillNumber: {
     width: "52px",
@@ -1073,29 +1105,36 @@ const styles = {
   },
 
   suggestions: {
-    position: "absolute",
+  position: "absolute",
 
-    top: "92px",
+  top: "92px",
 
-    left: 0,
+  left: 0,
 
-    width: "100%",
+  width: "100%",
 
-    background:
-      "var(--card-bg)",
+  background:
+    "var(--suggestion-bg)",
 
-    border:
-      "1px solid var(--border)",
+  border:
+    "1px solid var(--border)",
 
-    borderRadius: "22px",
+  borderRadius: "22px",
 
-    overflow: "hidden",
+  overflow: "hidden",
 
-    zIndex: 9999,
+  zIndex: 9999,
 
-    backdropFilter:
-      "blur(14px)",
-  },
+  maxHeight: "320px",
+
+  overflowY: "auto",
+
+  backdropFilter:
+    "none",
+
+  boxShadow:
+    "0 14px 40px rgba(0,0,0,0.18)",
+},
 
   suggestionItem: {
     padding: "16px",
@@ -1104,6 +1143,9 @@ const styles = {
 
     borderBottom:
       "1px solid var(--border)",
+
+      transition:
+        "0.15s ease",
   },
 
   saveButton: {
