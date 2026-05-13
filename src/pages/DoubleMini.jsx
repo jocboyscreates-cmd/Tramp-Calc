@@ -184,7 +184,20 @@ export default function DoubleMini() {
         Double Mini Calculator
       </h1>
 
-      <div style={styles.toggleContainer}>
+      <div style={styles.totalDDCard}>
+
+  <div style={styles.totalDDLabel}>
+    Total DD
+  </div>
+
+  <div style={styles.totalDDValue}>
+    {totalAllRoutines.toFixed(1)}
+  </div>
+
+</div>
+
+<div style={styles.toggleContainer}>
+
 
         <button
           style={
@@ -499,10 +512,8 @@ export default function DoubleMini() {
           )
         )}
 
-      <h2 style={styles.totalText}>
-        Total DD:{" "}
-        {totalAllRoutines.toFixed(1)}
-      </h2>
+    
+
 
       <button
         onClick={() =>
@@ -512,7 +523,10 @@ export default function DoubleMini() {
         style={styles.saveButton}
       >
 
-        <Save size={20} />
+        <>
+  <Save size={20} />
+  Save Routine
+</>
 
       </button>
 
@@ -1011,5 +1025,92 @@ const styles = {
 
     cursor: "pointer",
   },
+
+  totalDDCard: {
+  width: "170px",
+
+  height: "170px",
+
+  margin: "0 auto 40px",
+
+  borderRadius: "32px",
+
+  background:
+    "var(--card-bg)",
+
+  border:
+    "1px solid var(--border)",
+
+  backdropFilter:
+    "blur(14px)",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  boxShadow:
+    "0 10px 40px rgba(0,0,0,0.12)",
+},
+
+totalDDLabel: {
+  fontSize: "28px",
+
+  color:
+    "var(--text-secondary)",
+
+  marginBottom: "12px",
+},
+
+totalDDValue: {
+  fontSize: "72px",
+
+  fontWeight: "bold",
+
+  color:
+    "var(--accent)",
+
+  lineHeight: 1,
+},
+
+saveButton: {
+  marginTop: "34px",
+
+  padding: "18px 26px",
+
+  borderRadius: "20px",
+
+  border: "none",
+
+  background:
+    "var(--accent-glow)",
+
+  color:
+    "var(--accent)",
+
+  fontSize: "18px",
+
+  fontWeight: "bold",
+
+  display: "flex",
+
+  alignItems: "center",
+
+  gap: "12px",
+
+  cursor: "pointer",
+
+  backdropFilter:
+    "blur(10px)",
+
+  boxShadow:
+    "0 8px 24px rgba(0,0,0,0.18)",
+
+  transition:
+    "0.2s ease",
+},
 
 };
