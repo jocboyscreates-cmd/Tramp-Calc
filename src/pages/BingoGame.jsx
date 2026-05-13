@@ -463,12 +463,15 @@ const styles = {
   },
 
   title: {
-    fontSize: "56px",
+  fontSize:
+    "clamp(36px, 8vw, 56px)",
 
-    fontWeight: "bold",
+  fontWeight: "bold",
 
-    marginBottom: "10px",
-  },
+  marginBottom: "10px",
+
+  textAlign: "center",
+},
 
   subtitle: {
     color:
@@ -478,43 +481,55 @@ const styles = {
   },
 
   grid: {
-    width: "min(900px, 92vw)",
+  width: "min(900px, 96vw)",
 
-    display: "grid",
+  display: "grid",
 
-    gridTemplateColumns:
-      "repeat(5, 1fr)",
+  gridTemplateColumns:
+    "repeat(5, minmax(0, 1fr))",
 
-    gap: "18px",
-  },
+  gap:
+    "clamp(6px, 2vw, 18px)",
+},
 
   square: {
-    aspectRatio: "1 / 1",
+  aspectRatio: "1 / 1",
 
-    borderRadius: "22px",
+  minHeight: "70px",
 
-    border:
-      "1px solid var(--border)",
+  borderRadius:
+    "clamp(10px, 2vw, 22px)",
 
-    background:
-      "var(--card-bg)",
+  border:
+    "1px solid var(--border)",
 
-    color:
-      "var(--text-primary)",
+  background:
+    "var(--card-bg)",
 
-    fontWeight: "bold",
+  color:
+    "var(--text-primary)",
 
-    fontSize: "16px",
+  fontWeight: "bold",
 
-    padding: "14px",
+  fontSize:
+    "clamp(10px, 2vw, 16px)",
 
-    cursor: "pointer",
+  padding:
+    "clamp(4px, 1vw, 14px)",
 
-    backdropFilter: "blur(10px)",
+  cursor: "pointer",
 
-    transition:
-      "all 0.2s ease",
-  },
+  backdropFilter: "blur(10px)",
+
+  transition:
+    "all 0.2s ease",
+
+  overflow: "hidden",
+
+  wordBreak: "break-word",
+
+  lineHeight: "1.1",
+},
 
   completedSquare: {
     background:
@@ -664,15 +679,16 @@ const styles = {
   },
 
   bingoText: {
-    fontSize: "72px",
+  fontSize:
+    "clamp(42px, 12vw, 72px)",
 
-    fontWeight: "bold",
+  fontWeight: "bold",
 
-    color:
-      "var(--accent)",
+  color:
+    "var(--accent)",
 
-    textAlign: "center",
-  },
+  textAlign: "center",
+},
 
   bingoClose: {
     position: "absolute",
