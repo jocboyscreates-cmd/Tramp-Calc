@@ -5,6 +5,8 @@ import {
   Dice5,
   Users,
   Grid3X3,
+  Disc3,
+  Shuffle,
 } from "lucide-react";
 
 export default function Games() {
@@ -93,6 +95,52 @@ export default function Games() {
 
             <div style={styles.gameSubtitle}>
               Complete trampoline challenges
+            </div>
+
+          </div>
+
+        </Link>
+
+        <Link
+          to="/connections-game"
+          style={styles.gameCard}
+        >
+
+          <div style={styles.iconBox}>
+            <Disc3 size={42} />
+          </div>
+
+          <div>
+
+            <div style={styles.gameTitle}>
+              Connect 4
+            </div>
+
+            <div style={styles.gameSubtitle}>
+              Connect four trampoline challenges
+            </div>
+
+          </div>
+
+        </Link>
+
+        <Link
+          to="/random-routine-game"
+          style={styles.gameCard}
+        >
+
+          <div style={styles.iconBox}>
+            <Shuffle size={42} />
+          </div>
+
+          <div>
+
+            <div style={styles.gameTitle}>
+              Random Routine
+            </div>
+
+            <div style={styles.gameSubtitle}>
+              Build a routine from random skills
             </div>
 
           </div>

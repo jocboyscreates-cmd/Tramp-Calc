@@ -20,6 +20,8 @@ import DiceGame from "./pages/DiceGame";
 import ImposterGame from "./pages/ImposterGame";
 import BingoGame from "./pages/BingoGame";
 import SharedRoutine from "./pages/SharedRoutine";
+import RandomRoutineGame from "./pages/RandomRoutineGame";
+import ConnectionsGame from "./pages/ConnectionsGame";
 
 import {
   Trophy,
@@ -395,6 +397,16 @@ export default function App() {
         <Route
           path="/shared"
           element={<SharedRoutine />}
+        />
+
+        <Route
+          path="/connections-game"
+          element={<ConnectionsGame />}
+        />
+
+        <Route
+          path="/random-routine-game"
+          element={<RandomRoutineGame />}
         />
 
       </Routes>
