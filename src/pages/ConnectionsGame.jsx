@@ -1,5 +1,9 @@
 import { useState } from "react";
 
+import { Link } from "react-router-dom";
+
+import { House } from "lucide-react";
+
 const skillBank = [
   "Barani Straight",
   "Barani Pike",
@@ -209,6 +213,14 @@ export default function ConnectionsGame() {
   return (
 
     <div style={styles.page}>
+
+        <Link
+  to="/games"
+
+  style={styles.homeButton}
+>
+  <House size={28} />
+</Link>
 
       <h1 style={styles.title}>
         Connections
@@ -444,8 +456,8 @@ const styles = {
 },
 
   topButton: {
-    width: "54px",
-    height: "54px",
+  width: "clamp(34px, 10vw, 54px)",
+  height: "clamp(34px, 10vw, 54px)",
 
     borderRadius: "50%",
 
@@ -483,8 +495,8 @@ const styles = {
   },
 
   cell: {
-    width: "60px",
-    height: "60px",
+  width: "clamp(38px, 11vw, 60px)",
+  height: "clamp(38px, 11vw, 60px)",
 
     display: "flex",
 
@@ -494,8 +506,8 @@ const styles = {
   },
 
   piece: {
-    width: "52px",
-    height: "52px",
+  width: "clamp(32px, 9vw, 52px)",
+  height: "clamp(32px, 9vw, 52px)",
 
     borderRadius: "50%",
 
@@ -627,5 +639,39 @@ const styles = {
 
     cursor: "pointer",
   },
+
+  homeButton: {
+  position: "absolute",
+
+  top: "20px",
+  left: "20px",
+
+  width: "52px",
+  height: "52px",
+
+  borderRadius: "16px",
+
+  background:
+    "var(--card-bg)",
+
+  border:
+    "1px solid var(--border)",
+
+  display: "flex",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  color:
+    "var(--text-primary)",
+
+  textDecoration: "none",
+
+  backdropFilter:
+    "blur(12px)",
+
+  zIndex: 1000,
+},
 
 };
