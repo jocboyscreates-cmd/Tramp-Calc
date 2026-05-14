@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tramp-calc.vercel.app/sitemap.xml
+Sitemap: https://tramp-calc.vercel.app/sitemap_index.xml
