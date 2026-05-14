@@ -10,24 +10,24 @@ export default defineConfig({
 
     sitemap({
 
-  hostname:
-    "https://tramp-calc.vercel.app",
+      hostname:
+        "https://tramp-calc.vercel.app",
 
-  dynamicRoutes: [
-    "/",
-    "/trampoline",
-    "/double-mini",
-    "/tumbling",
-    "/games",
-    "/random-routine-game",
-    "/connections-game",
-  ],
+      dynamicRoutes: [
+        "/",
+        "/trampoline",
+        "/double-mini",
+        "/tumbling",
+        "/games",
+        "/random-routine-game",
+        "/connections-game",
+      ],
 
-  exclude: [
-    "/google36853433b248140f",
-  ],
+      exclude: [
+        "/google36853433b248140f",
+      ],
 
-}),
+    }),
 
   ],
 
