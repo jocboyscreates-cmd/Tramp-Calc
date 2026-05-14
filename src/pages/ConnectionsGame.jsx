@@ -4,17 +4,32 @@ import { Link } from "react-router-dom";
 
 import { House } from "lucide-react";
 
-const skillBank = [
-  "Barani Straight",
-  "Barani Pike",
-  "Barani Truck",
-  "Rudy",
-  "Back Full",
-  "Double Back Tuck",
-  "Half Out Tuck",
-  "Half Out Pike",
-  "Tuck Jump",
-];
+import Confetti from "react-confetti";
+
+const skillBanks = {
+
+  easy: [
+    "Tuck Jump",
+    "Barani Tuck",
+    "Barani Pike",
+    "Back Full",
+  ],
+
+  medium: [
+    "Rudy",
+    "Double Back Tuck",
+    "Half Out Tuck",
+    "Half Out Pike",
+  ],
+
+  hard: [
+    "Full Out",
+    "Randy",
+    "Miller",
+    "Triff",
+  ],
+
+};
 
 export default function ConnectionsGame() {
 
@@ -34,6 +49,12 @@ export default function ConnectionsGame() {
   const [currentPlayer, setCurrentPlayer] =
     useState("red");
 
+    const [droppingPiece, setDroppingPiece] =
+  useState(null);
+
+const [poofPiece, setPoofPiece] =
+  useState(null);
+
   const [selectedColumn, setSelectedColumn] =
     useState(null);
 
@@ -46,18 +67,33 @@ export default function ConnectionsGame() {
   const [pendingRow, setPendingRow] =
     useState(null);
 
+    const [gameOver, setGameOver] =
+  useState(false);
+
+    const [gameStarted, setGameStarted] =
+  useState(false);
+
+const [showHowTo, setShowHowTo] =
+  useState(false);
+
+const [difficulty, setDifficulty] =
+  useState("easy");
+
   const [winner, setWinner] =
     useState(null);
 
   const getRandomSkill = () => {
 
-    return skillBank[
-      Math.floor(
-        Math.random() *
-        skillBank.length
-      )
-    ];
-  };
+  const pool =
+    skillBanks[difficulty];
+
+  return pool[
+    Math.floor(
+      Math.random() *
+      pool.length
+    )
+  ];
+};
 
   const checkWinner = (
     boardToCheck,
@@ -130,6 +166,76 @@ export default function ConnectionsGame() {
       }
     }
 
+    // DIAGONAL ↘
+
+for (
+  let row = 0;
+  row < ROWS - 3;
+  row++
+) {
+
+  for (
+    let col = 0;
+    col < COLS - 3;
+    col++
+  ) {
+
+    if (
+
+      boardToCheck[row][col] ===
+        player &&
+
+      boardToCheck[row + 1][col + 1] ===
+        player &&
+
+      boardToCheck[row + 2][col + 2] ===
+        player &&
+
+      boardToCheck[row + 3][col + 3] ===
+        player
+
+    ) {
+
+      return true;
+    }
+  }
+}
+
+// DIAGONAL ↗
+
+for (
+  let row = 3;
+  row < ROWS;
+  row++
+) {
+
+  for (
+    let col = 0;
+    col < COLS - 3;
+    col++
+  ) {
+
+    if (
+
+      boardToCheck[row][col] ===
+        player &&
+
+      boardToCheck[row - 1][col + 1] ===
+        player &&
+
+      boardToCheck[row - 2][col + 2] ===
+        player &&
+
+      boardToCheck[row - 3][col + 3] ===
+        player
+
+    ) {
+
+      return true;
+    }
+  }
+}
+
     return false;
   };
 
@@ -164,10 +270,26 @@ export default function ConnectionsGame() {
 
     const newBoard = [...board];
 
+    setDroppingPiece({
+
+  row: pendingRow,
+
+  col: selectedColumn,
+
+  player: currentPlayer,
+
+});
+
     newBoard[pendingRow][selectedColumn] =
       currentPlayer;
 
-    setBoard(newBoard);
+    setTimeout(() => {
+
+  setBoard(newBoard);
+
+  setDroppingPiece(null);
+
+}, 350);
 
     if (
       checkWinner(
@@ -177,6 +299,8 @@ export default function ConnectionsGame() {
     ) {
 
       setWinner(currentPlayer);
+
+setGameOver(true);
 
     } else {
 
@@ -192,7 +316,23 @@ export default function ConnectionsGame() {
 
   const failSkill = () => {
 
+    setPoofPiece({
+
+  row: pendingRow,
+
+  col: selectedColumn,
+
+  player: currentPlayer,
+
+});
+
     setShowPopup(false);
+
+    setTimeout(() => {
+
+  setPoofPiece(null);
+
+}, 500);
 
     setCurrentPlayer(
       currentPlayer === "red"
@@ -208,11 +348,183 @@ export default function ConnectionsGame() {
     setWinner(null);
 
     setCurrentPlayer("red");
+    setGameOver(false);
   };
+
+  if (!gameStarted) {
 
   return (
 
     <div style={styles.page}>
+
+        
+
+      <Link
+        to="/games"
+        style={styles.homeButton}
+      >
+        <House size={28} />
+      </Link>
+
+      <h1 style={styles.title}>
+        Connections
+      </h1>
+
+      <p style={styles.subtitle}>
+        Land skills to claim spaces
+      </p>
+
+      <div style={styles.menuCard}>
+
+        <div style={styles.sectionTitle}>
+          Difficulty
+        </div>
+
+        <div style={styles.diffRow}>
+
+          {["easy", "medium", "hard"]
+            .map((level) => (
+
+              <button
+                key={level}
+
+                onClick={() =>
+                  setDifficulty(level)
+                }
+
+                style={{
+                  ...styles.diffButton,
+
+                  background:
+                    difficulty === level
+
+                      ? "var(--accent-glow)"
+
+                      : "rgba(255,255,255,0.08)",
+                }}
+              >
+
+                {level}
+
+              </button>
+
+            ))}
+
+        </div>
+
+        <button
+          onClick={() =>
+            setGameStarted(true)
+          }
+
+          style={styles.playButton}
+        >
+          Play
+        </button>
+
+        <button
+          onClick={() =>
+            setShowHowTo(
+              !showHowTo
+            )
+          }
+
+          style={styles.howButton}
+        >
+          How To Play
+        </button>
+
+        {showHowTo && (
+
+          <div style={styles.howText}>
+
+            Players take turns
+            selecting a column.
+
+            A random skill appears.
+
+            If the skill is landed,
+            the piece stays.
+
+            First to connect 4 wins.
+
+          </div>
+
+        )}
+
+      </div>
+
+    </div>
+
+  );
+}
+
+return (
+
+    <div
+  style={{
+    ...styles.page,
+
+    background: `
+      radial-gradient(
+        circle at top,
+
+        ${
+          currentPlayer === "red"
+
+            ? "rgba(239,68,68,0.18)"
+
+            : "rgba(250,204,21,0.18)"
+        },
+
+        transparent 55%
+      ),
+
+      var(--bg-primary)
+    `,
+  }}
+>
+
+        {gameOver && (
+
+  <Confetti
+
+  recycle={false}
+
+  numberOfPieces={250}
+
+  style={{
+    position: "fixed",
+
+    top: 0,
+    left: 0,
+
+    width: "100vw",
+    height: "100vh",
+
+    zIndex: 99999999,
+
+    pointerEvents: "none",
+  }}
+
+  colors={
+    winner === "red"
+
+      ? [
+          "#ef4444",
+          "#ff7b7b",
+          "#ffb3b3",
+        ]
+
+      : [
+          "#facc15",
+          "#fde047",
+          "#fff08a",
+        ]
+  }
+/>
+
+)}
 
         <Link
   to="/games"
@@ -226,40 +538,7 @@ export default function ConnectionsGame() {
         Connections
       </h1>
 
-      {!winner && (
-
-        <div
-          style={{
-            ...styles.turnBanner,
-
-            background:
-              currentPlayer === "red"
-                ? "#ef4444"
-                : "#facc15",
-          }}
-        >
-          {
-            currentPlayer === "red"
-              ? "Red Turn"
-              : "Yellow Turn"
-          }
-        </div>
-
-      )}
-
-      {winner && (
-
-        <div style={styles.winText}>
-
-          {
-            winner === "red"
-              ? "Red Wins!"
-              : "Yellow Wins!"
-          }
-
-        </div>
-
-      )}
+    
 
       {/* TOP CIRCLES */}
 
@@ -309,22 +588,59 @@ export default function ConnectionsGame() {
               >
 
                 <div
-                  style={{
-                    ...styles.piece,
+  style={{
 
-                    background:
-                      cell === "red"
+    ...styles.piece,
 
-                        ? "#ef4444"
+    background:
 
-                        : cell ===
-                          "yellow"
+      droppingPiece &&
+      droppingPiece.row === rowIndex &&
+      droppingPiece.col === colIndex
 
-                        ? "#facc15"
+        ? droppingPiece.player === "red"
+          ? "#ef4444"
+          : "#facc15"
 
-                        : "rgba(255,255,255,0.08)",
-                  }}
-                />
+      : poofPiece &&
+        poofPiece.row === rowIndex &&
+        poofPiece.col === colIndex
+
+        ? poofPiece.player === "red"
+          ? "#ef4444"
+          : "#facc15"
+
+      : cell === "red"
+
+        ? "#ef4444"
+
+      : cell === "yellow"
+
+        ? "#facc15"
+
+      : document.documentElement.classList.contains("dark")
+
+  ? "rgba(255,255,255,0.08)"
+
+  : "rgba(15,23,42,0.12)",
+
+    animation:
+
+      droppingPiece &&
+      droppingPiece.row === rowIndex &&
+      droppingPiece.col === colIndex
+
+        ? "dropPiece 0.35s ease"
+
+      : poofPiece &&
+        poofPiece.row === rowIndex &&
+        poofPiece.col === colIndex
+
+        ? "poof 0.5s ease forwards"
+
+      : "none",
+  }}
+/>
 
               </div>
 
@@ -382,32 +698,80 @@ export default function ConnectionsGame() {
 
         </div>
 
+        
+
       )}
+
+      {gameOver && (
+
+  <div style={styles.overlay}>
+
+    <div style={styles.popup}>
+
+      <h1 style={styles.endTitle}>
+
+        {
+          winner === "red"
+            ? "Red Wins!"
+            : "Yellow Wins!"
+        }
+
+      </h1>
+
+      <div style={styles.endSubtitle}>
+        Great sticks.
+      </div>
+
+      <div style={styles.popupButtons}>
+
+        <button
+          onClick={resetGame}
+          style={styles.stickButton}
+        >
+          Play Again
+        </button>
+
+        <button
+          onClick={() =>
+            setGameStarted(false)
+          }
+          style={styles.failButton}
+        >
+          Main Menu
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
 
     </div>
 
   );
 }
 
+
 const styles = {
 
   page: {
-    minHeight: "100vh",
+  minHeight: "100vh",
 
-    background:
-      "var(--bg-primary)",
+  position: "relative",
 
-    display: "flex",
+  display: "flex",
 
-    flexDirection: "column",
+  flexDirection: "column",
 
-    alignItems: "center",
+  alignItems: "center",
 
-    padding: "30px 12px",
+  padding: "30px 12px",
 
-    color:
-      "var(--text-primary)",
-  },
+  color:
+    "var(--text-primary)",
+},
 
   title: {
     fontSize: "56px",
@@ -481,7 +845,14 @@ const styles = {
     gap: "10px",
 
     background:
-      "rgba(255,255,255,0.06)",
+
+  document.documentElement
+    .classList
+    .contains("dark")
+
+    ? "rgba(255,255,255,0.06)"
+
+    : "rgba(15,23,42,0.08)",
 
     padding: "18px",
 
@@ -497,6 +868,17 @@ const styles = {
   cell: {
   width: "clamp(38px, 11vw, 60px)",
   height: "clamp(38px, 11vw, 60px)",
+
+  background:
+  document.documentElement
+    .classList
+    .contains("dark")
+
+    ? "rgba(255,255,255,0.04)"
+
+    : "rgba(15,23,42,0.04)",
+
+borderRadius: "50%",
 
     display: "flex",
 
@@ -515,7 +897,7 @@ const styles = {
       "0.25s ease",
 
     border:
-      "2px solid rgba(255,255,255,0.08)",
+  "2px solid rgba(255,255,255,0.22)",
   },
 
   resetButton: {
@@ -542,27 +924,38 @@ const styles = {
   },
 
   overlay: {
-    position: "fixed",
+  position: "fixed",
 
-    inset: 0,
+  top: 0,
+  left: 0,
 
-    background:
-      "rgba(0,0,0,0.55)",
+  width: "100vw",
+  height: "100vh",
 
-    display: "flex",
+  background:
+    "rgba(0,0,0,0.72)",
 
-    alignItems: "center",
+  display: "flex",
 
-    justifyContent: "center",
+  alignItems: "center",
 
-    zIndex: 9999,
-  },
+  justifyContent: "center",
+
+  zIndex: 999999,
+
+  backdropFilter:
+    "blur(6px)",
+},
 
   popup: {
     width: "min(420px, 92vw)",
 
     background:
       "var(--card-bg)",
+
+      position: "relative",
+
+zIndex: 1000000,
 
     border:
       "1px solid var(--border)",
@@ -672,6 +1065,131 @@ const styles = {
     "blur(12px)",
 
   zIndex: 1000,
+},
+
+subtitle: {
+  color:
+    "var(--text-secondary)",
+
+  marginBottom: "30px",
+
+  fontSize: "18px",
+},
+
+menuCard: {
+  width: "min(420px, 92vw)",
+
+  background:
+    "var(--card-bg)",
+
+  border:
+    "1px solid var(--border)",
+
+  borderRadius: "30px",
+
+  padding: "30px",
+
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "22px",
+
+  backdropFilter:
+    "blur(16px)",
+},
+
+sectionTitle: {
+  fontSize: "22px",
+
+  fontWeight: "bold",
+},
+
+diffRow: {
+  display: "flex",
+
+  gap: "12px",
+},
+
+diffButton: {
+  flex: 1,
+
+  padding: "14px",
+
+  borderRadius: "14px",
+
+  border: "none",
+
+  color:
+    "var(--text-primary)",
+
+  cursor: "pointer",
+
+  textTransform:
+    "capitalize",
+
+  fontWeight: "bold",
+},
+
+playButton: {
+  padding: "18px",
+
+  borderRadius: "18px",
+
+  border: "none",
+
+  background:
+    "var(--accent-glow)",
+
+  color:
+    "var(--accent)",
+
+  fontWeight: "bold",
+
+  fontSize: "20px",
+
+  cursor: "pointer",
+},
+
+howButton: {
+  padding: "14px",
+
+  borderRadius: "14px",
+
+  border: "none",
+
+  background:
+    "rgba(255,255,255,0.08)",
+
+  color:
+    "var(--text-primary)",
+
+  cursor: "pointer",
+},
+
+howText: {
+  color:
+    "var(--text-secondary)",
+
+  lineHeight: 1.5,
+},
+
+endTitle: {
+  fontSize: "42px",
+
+  fontWeight: "bold",
+
+  margin: 0,
+
+  color:
+    "var(--accent)",
+},
+
+endSubtitle: {
+  color:
+    "var(--text-secondary)",
+
+  fontSize: "18px",
 },
 
 };
