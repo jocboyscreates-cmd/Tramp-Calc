@@ -13,7 +13,7 @@ export default defineConfig({
       hostname:
         "https://tramp-calc.vercel.app",
 
-        filename: "sitemap_index",
+        filename: "sitemap_index.xml",
 
       dynamicRoutes: [
   "/trampoline",
