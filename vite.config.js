@@ -14,14 +14,13 @@ export default defineConfig({
         "https://tramp-calc.vercel.app",
 
       dynamicRoutes: [
-        "/",
-        "/trampoline",
-        "/double-mini",
-        "/tumbling",
-        "/games",
-        "/random-routine-game",
-        "/connections-game",
-      ],
+  "/trampoline",
+  "/double-mini",
+  "/tumbling",
+  "/games",
+  "/random-routine-game",
+  "/connections-game",
+],
 
       exclude: [
         "/google36853433b248140f",
