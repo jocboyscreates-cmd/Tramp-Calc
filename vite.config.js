@@ -13,6 +13,16 @@ export default defineConfig({
       hostname:
         "https://tramp-calc.vercel.app",
 
+      dynamicRoutes: [
+        "/",
+        "/trampoline",
+        "/double-mini",
+        "/tumbling",
+        "/games",
+        "/random-routine-game",
+        "/connections-game",
+      ],
+
     }),
 
   ],
