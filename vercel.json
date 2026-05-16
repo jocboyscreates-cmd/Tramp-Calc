@@ -1,19 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/((?!api|sitemap_index.xml|robots.txt).*)",
+      "source": "/((?!api|.*\\.xml|robots.txt|favicon.ico).*)",
       "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/sitemap_index.xml",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/xml"
-        }
-      ]
     }
   ]
 }
