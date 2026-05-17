@@ -11,6 +11,8 @@ import {
   Save,
 } from "lucide-react";
 
+import { Helmet } from "react-helmet-async";
+
 import { doubleMiniSkills }
 from "../data/doubleMiniSkills";
 
@@ -168,10 +170,30 @@ export default function DoubleMini() {
 
   return (
 
-    <div
-      ref={containerRef}
-      style={styles.container}
-    >
+    <>
+
+      <Helmet>
+
+        <title>
+          Double Mini DD Calculator | Tramp Calc
+        </title>
+
+        <meta
+          name="description"
+          content="Free double mini difficulty calculator for gymnastics athletes. Calculate DD scores, build routines, and practice double mini trampoline skills."
+        />
+
+        <meta
+          name="keywords"
+          content="double mini calculator, double mini DD, double mini trampoline calculator, gymnastics difficulty calculator, DMT scoring"
+        />
+
+      </Helmet>
+
+      <div
+        ref={containerRef}
+        style={styles.container}
+      >
 
       <Link
         to="/"
@@ -640,7 +662,10 @@ export default function DoubleMini() {
 
       )}
 
-    </div>
+        </div>
+
+    </>
+
   );
 }
 

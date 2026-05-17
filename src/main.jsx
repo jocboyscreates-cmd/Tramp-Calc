@@ -7,6 +7,8 @@ import "./index.css";
 
 import App from "./App.jsx";
 
+import { HelmetProvider } from "react-helmet-async";
+
 import { Analytics }
 from "@vercel/analytics/react";
 
@@ -20,10 +22,14 @@ createRoot(
 
   <StrictMode>
 
+  <HelmetProvider>
+
     <App />
 
     <Analytics />
 
-  </StrictMode>
+  </HelmetProvider>
+
+</StrictMode>
 
 );

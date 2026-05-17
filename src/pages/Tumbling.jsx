@@ -12,6 +12,8 @@ import {
   Save,
 } from "lucide-react";
 
+import { Helmet } from "react-helmet-async";
+
 import {
   tumblingSkills,
 } from "../data/tumblingSkills";
@@ -214,11 +216,31 @@ export default function Tumbling() {
 
   return (
 
-    <div
-      ref={containerRef}
+    <>
 
-      style={styles.container}
-    >
+      <Helmet>
+
+        <title>
+          Tumbling DD Calculator | Tramp Calc
+        </title>
+
+        <meta
+          name="description"
+          content="Free tumbling difficulty calculator for gymnastics athletes. Calculate tumbling DD scores, build passes, and practice competitive tumbling skills."
+        />
+
+        <meta
+          name="keywords"
+          content="tumbling calculator, tumbling DD, gymnastics tumbling calculator, tumbling scoring, tumbling difficulty calculator"
+        />
+
+      </Helmet>
+
+      <div
+        ref={containerRef}
+
+        style={styles.container}
+      >
 
       <Link
         to="/"
@@ -749,7 +771,9 @@ activeInput.startsWith(
 
       )}
 
-    </div>
+        </div>
+
+    </>
 
   );
 

@@ -10,6 +10,8 @@ import {
   Link,
 } from "react-router-dom";
 
+import { Helmet } from "react-helmet-async";
+
 import Trampoline from "./pages/Trampoline";
 import DoubleMini from "./pages/DoubleMini";
 import Tumbling from "./pages/Tumbling";
@@ -37,6 +39,12 @@ export default function App() {
 
   const [darkMode, setDarkMode] =
     useState(true);
+
+    const [faqOpen, setFaqOpen] =
+  useState(false);
+
+const [openQuestion, setOpenQuestion] =
+  useState(null);
 
   useEffect(() => {
 
@@ -91,7 +99,26 @@ export default function App() {
 
           element={
 
-            <div style={styles.container}>
+  <>
+    <Helmet>
+
+      <title>
+        Tramp Calc | Trampoline DD Calculator & Gymnastics Tools
+      </title>
+
+      <meta
+        name="description"
+        content="Trampoline DD calculator, double mini calculator, tumbling tools, routine builders, trampoline games, and gymnastics scoring tools."
+      />
+
+      <meta
+        name="keywords"
+        content="trampoline calculator, trampoline DD, double mini calculator, tumbling calculator, gymnastics difficulty calculator, trampoline scoring"
+      />
+
+    </Helmet>
+
+    <div style={styles.container}>
 
               <div style={styles.overlay} />
 
@@ -276,6 +303,91 @@ export default function App() {
 
                       </div>
 
+                      <button
+  onClick={() =>
+    setFaqOpen(!faqOpen)
+  }
+
+  style={styles.faqButton}
+>
+
+  {faqOpen
+    ? "Hide Questions"
+    : "Common Questions"}
+
+</button>
+
+{faqOpen && (
+
+  <div style={styles.faqContainer}>
+
+    {[
+      {
+        q: "What is trampoline DD?",
+        a: "DD stands for Degree of Difficulty. Each trampoline skill has a difficulty value based on flips, twists, and body position."
+      },
+
+      {
+        q: "How does the trampoline calculator work?",
+        a: "The calculator adds the difficulty values of each skill in your routine to calculate a total DD score."
+      },
+
+      {
+        q: "What is Double Mini?",
+        a: "Double Mini Trampoline is a gymnastics event where athletes perform two connected skills on a small trampoline runway."
+      },
+
+      {
+        q: "How is tumbling scored?",
+        a: "Tumbling scores are based on difficulty, execution, and completion of connected tumbling passes."
+      },
+
+      {
+        q: "Is this based on FIG rules?",
+        a: "The calculator uses FIG and Gymnastics Canada difficulty values and pathways where possible."
+      }
+
+    ].map((item, index) => (
+
+      <div
+        key={index}
+        style={styles.faqItem}
+      >
+
+        <button
+          onClick={() =>
+
+            setOpenQuestion(
+              openQuestion === index
+                ? null
+                : index
+            )
+
+          }
+
+          style={styles.faqQuestion}
+        >
+
+          {item.q}
+
+        </button>
+
+        {openQuestion === index && (
+
+          <p style={styles.faqAnswer}>
+            {item.a}
+          </p>
+
+        )}
+
+      </div>
+
+    ))}
+
+  </div>
+
+)}
+
                       <p style={styles.versionText}>
                         Version 13.5.26
                       </p>
@@ -344,9 +456,11 @@ export default function App() {
 
               </div>
 
-            </div>
+           </div>
 
-          }
+</>
+
+}
         />
 
         <Route
@@ -629,6 +743,9 @@ const styles = {
   settingsModal: {
     width: "min(430px, 92vw)",
 
+    maxHeight: "85vh",
+overflowY: "auto",
+
     background:
       "var(--card-bg)",
 
@@ -745,5 +862,47 @@ const styles = {
 
     marginTop: "8px",
   },
+
+  faqButton: {
+  padding: "14px",
+  borderRadius: "14px",
+  width: "100%",
+  border: "none",
+  background: "rgba(255,255,255,0.08)",
+  color: "var(--text-primary)",
+  cursor: "pointer",
+  fontWeight: "bold",
+},
+
+faqContainer: {
+  display: "flex",
+  flexDirection: "column",
+  gap: "12px",
+},
+
+faqItem: {
+  background: "rgba(255,255,255,0.04)",
+  borderRadius: "16px",
+  overflow: "hidden",
+},
+
+faqQuestion: {
+  width: "100%",
+  padding: "16px",
+  background: "transparent",
+  border: "none",
+  color: "var(--text-primary)",
+  textAlign: "left",
+  fontWeight: "bold",
+  cursor: "pointer",
+  fontSize: "16px",
+},
+
+faqAnswer: {
+  padding: "0 16px 16px",
+  color: "var(--text-secondary)",
+  lineHeight: 1.5,
+  fontSize: "15px",
+},
 
 };

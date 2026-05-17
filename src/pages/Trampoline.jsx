@@ -13,6 +13,8 @@ import {
   Save,
 } from "lucide-react";
 
+import { Helmet } from "react-helmet-async";
+
 import { Link }
 from "react-router-dom";
 
@@ -144,11 +146,31 @@ export default function Trampoline() {
 
   return (
 
-    <div
-      ref={containerRef}
+    <>
 
-      style={styles.container}
-    >
+      <Helmet>
+
+        <title>
+          Trampoline DD Calculator | Tramp Calc
+        </title>
+
+        <meta
+          name="description"
+          content="Free trampoline difficulty calculator for competitive trampoline gymnastics. Build routines, calculate DD scores, and practice trampoline skills."
+        />
+
+        <meta
+          name="keywords"
+          content="trampoline calculator, trampoline DD, trampoline difficulty calculator, gymnastics trampoline scoring, trampoline routine builder"
+        />
+
+      </Helmet>
+
+      <div
+        ref={containerRef}
+
+        style={styles.container}
+      >
 
       <Link
         to="/"
@@ -563,7 +585,9 @@ export default function Trampoline() {
 
       )}
 
-    </div>
+        </div>
+
+    </>
 
   );
 }
