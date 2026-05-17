@@ -9,7 +9,6 @@
   "headers": [
     {
       "source": "/sitemap.xml",
-
       "headers": [
         {
           "key": "Content-Type",
