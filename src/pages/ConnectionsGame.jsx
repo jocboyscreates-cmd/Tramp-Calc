@@ -12,20 +12,37 @@ const skillBanks = {
     "Tuck Jump",
     "Barani Tuck",
     "Barani Pike",
+    "Barani Straight",
+    "Back Tuck",
+    "Back Pike",
+    "Back Straight",
+    "Rudy",
     "Back Full",
+    "Back Half",
+    "Full Twist",
+    "Half Twist",
+    "Front Full",
+    "Randy",
   ],
 
   medium: [
-    "Rudy",
+
     "Double Back Tuck",
     "Half Out Tuck",
     "Half Out Pike",
+    "Double Full",
+    "Rudy out",
+
   ],
 
   hard: [
-    "Full Out",
-    "Randy",
-    "Miller",
+    "Full Out Tuck",
+    "Full Out Straight",
+    "Rudy Out Tuck",
+    "Rudy Out Pike",
+    "Half in Tuck",
+    "Adolph",
+    "Full in Tuck",
     "Triff",
   ],
 
@@ -84,13 +101,30 @@ const [difficulty, setDifficulty] =
 
   const getRandomSkill = () => {
 
-  const pool =
-    skillBanks[difficulty];
+  let pool = [];
+
+  if (difficulty === "easy") {
+    pool = skillBanks.easy;
+  }
+
+  if (difficulty === "medium") {
+    pool = [
+      ...skillBanks.easy,
+      ...skillBanks.medium,
+    ];
+  }
+
+  if (difficulty === "hard") {
+    pool = [
+      ...skillBanks.easy,
+      ...skillBanks.medium,
+      ...skillBanks.hard,
+    ];
+  }
 
   return pool[
     Math.floor(
-      Math.random() *
-      pool.length
+      Math.random() * pool.length
     )
   ];
 };
