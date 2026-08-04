@@ -24,6 +24,7 @@ import BingoGame from "./pages/BingoGame";
 import SharedRoutine from "./pages/SharedRoutine";
 import RandomRoutineGame from "./pages/RandomRoutineGame";
 import ConnectionsGame from "./pages/ConnectionsGame";
+import SnakeLadders from "./pages/SnakeLadders";
 
 import {
   Trophy,
@@ -471,6 +472,11 @@ const [openQuestion, setOpenQuestion] =
         <Route
           path="/double-mini"
           element={<DoubleMini />}
+        />
+
+        <Route
+          path="/snake-ladders"
+          element={<SnakeLadders />}
         />
 
         <Route

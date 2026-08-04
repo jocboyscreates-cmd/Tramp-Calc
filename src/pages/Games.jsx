@@ -7,6 +7,7 @@ import {
   Grid3X3,
   Disc3,
   Shuffle,
+  Map,
 } from "lucide-react";
 
 export default function Games() {
@@ -101,6 +102,7 @@ export default function Games() {
 
         </Link>
 
+        
         <Link
           to="/connections-game"
           style={styles.gameCard}
@@ -118,6 +120,29 @@ export default function Games() {
 
             <div style={styles.gameSubtitle}>
               Connect four trampoline challenges
+            </div>
+
+          </div>
+
+        </Link>
+
+        <Link
+          to="/snake-ladders"
+          style={styles.gameCard}
+        >
+
+          <div style={styles.iconBox}>
+            <Map size={42} />
+          </div>
+
+          <div>
+
+            <div style={styles.gameTitle}>
+              Skill Race
+            </div>
+
+            <div style={styles.gameSubtitle}>
+              Snakes & ladders with trampoline skills
             </div>
 
           </div>
@@ -146,7 +171,6 @@ export default function Games() {
           </div>
 
         </Link>
-
       </div>
 
     </div>

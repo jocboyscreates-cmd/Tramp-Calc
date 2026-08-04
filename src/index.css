@@ -86,3 +86,37 @@ body {
     background 0.25s ease,
     color 0.25s ease;
 }
+
+@keyframes dropPiece {
+
+  0% {
+    transform:
+      translateY(-250px)
+      scale(0.8);
+  }
+
+  70% {
+    transform:
+      translateY(0px)
+      scale(1.05);
+  }
+
+  100% {
+    transform:
+      translateY(0px)
+      scale(1);
+  }
+}
+
+@keyframes poof {
+
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}

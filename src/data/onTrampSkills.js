@@ -1,27 +1,63 @@
 export const onTrampSkills = [
 
+  "Seat Drop",
+
+  "Half Seat",
+
+  "Seat Full",
+
+  "Front Drop",
+
+  "Front Half",
+
+  "Front Full",
+
+  "Back Drop",
+
+  "Back Half",
+
   "Back Full",
 
-  "Barani",
+  "Doggy Drop",
 
-  "Rudy",
+  "Doggy Half",
 
-  "Full In Full Out",
+  "Doggy Full",
 
-  "Double Full",
+  "Swivel Hips",
 
-  "Half Out",
+  "Turntable",
 
-  "Randy",
+  "Cradle",
 
-  "Fliffus",
+  "Cody",
 
-  "Full Rudy",
+  "Half Cody",
 
-  "Double Pike",
+  "Full Cody",
 
-  "Full Back",
+  "Double Cody",
 
-  "Arabian",
+  "Ball Out",
+
+  "Half Ball Out",
+
+  "Barani Ball Out",
+
+  "Rudy Ball Out",
+
+  "Kaboom",
+
+  "Kaboom Full",
+
+  "Kaboom Rudy",
+
+  "Ball X Out",
+
+  "Crash Dive",
+
+  "Lazy Back",
+
+  "Seat Barani",
 
 ];
