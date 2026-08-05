@@ -686,7 +686,24 @@ if (!gameStarted) {
 
         {/* BOARD */}
 
-  <div style={styles.boardCard}>
+  <div
+
+  style={{
+
+    ...styles.boardCard,
+
+    border: `3px solid ${playerColours[currentPlayer]}`,
+
+    boxShadow: `
+      0 0 20px ${playerColours[currentPlayer]},
+      0 0 40px ${playerColours[currentPlayer]}66
+    `,
+
+    transition: "0.3s",
+
+  }}
+
+>
 
   <svg
   viewBox="0 0 650 650"
@@ -874,43 +891,9 @@ if (!gameStarted) {
 
         <div style={styles.sidebar}>
 
-          <div style={styles.card}>
+          
 
-            <h3 style={styles.cardTitle}>
-              Current Player
-            </h3>
 
-            <div
-  style={{
-    width: 42,
-    height: 42,
-    borderRadius: "50%",
-    background: playerColours[currentPlayer],
-    boxShadow: `0 0 20px ${playerColours[currentPlayer]}`,
-    marginBottom: 12,
-  }}
-/>
-
-<div>
-
-  Player {currentPlayer + 1}
-
-</div>
-
-<div
-  style={{
-    marginTop: 10,
-    color: "var(--text-secondary)"
-  }}
->
-
-  {positions[currentPlayer] === 0
-    ? "Home"
-    : `Square ${positions[currentPlayer]}`}
-
-</div>
-
-          </div>
 
           <div style={styles.card}>
 
@@ -1119,9 +1102,11 @@ const styles = {
   },
 
 
-  boardCard: {
+ boardCard: {
 
   position: "relative",
+
+  width: "min(95vw, 680px)",
 
   background: "var(--card-bg)",
 
@@ -1150,16 +1135,25 @@ const styles = {
 },
 
   board: {
-    display: "grid",
-    gridTemplateColumns: "repeat(10, 60px)",
-    gap: 5
-  },
+
+  display: "grid",
+
+  gridTemplateColumns:
+    "repeat(10, minmax(28px, 1fr))",
+
+  gap: 4,
+
+  width: "min(95vw, 650px)",
+
+  aspectRatio: "1",
+
+},
 
   square: {
 
-  width: 60,
+  width: "100%",
 
-  height: 60,
+aspectRatio: "1",
 
   borderRadius: 10,
 
