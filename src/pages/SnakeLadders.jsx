@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { House } from "lucide-react"
+import { Check } from "lucide-react"
+import { X } from "lucide-react"
 import Confetti from "react-confetti"
 
 export default function SnakeLadders() {
@@ -626,437 +628,483 @@ if (!gameStarted) {
 
 }
 
-  return (
+ return (
 
-    <div style={styles.page}>
+  <div style={styles.page}>
 
-      <Link
-        to="/games"
-        style={styles.homeButton}
-      >
-        <House size={28} />
-      </Link>
+    <Link
+      to="/games"
+      style={styles.homeButton}
+    >
+      <House size={28} />
+    </Link>
 
-      <h1 style={styles.title}>
-        Skill Race
-      </h1>
+    <h1 style={styles.title}>
+      Skill Race
+    </h1>
 
-      <p style={styles.subtitle}>
-        Stick skills to race across the board!
-      </p>
+    <p style={styles.subtitle}>
+      Stick skills to race across the board!
+    </p>
 
-      <div style={styles.layout}>
+    <div style={styles.gameBar}>
 
+      {!waitingForAnswer ? (
 
+        <button
 
-        {/* BOARD */}
+          style={styles.topRollButton}
 
-  <div
+          disabled={rolling}
 
-  style={{
+          onClick={rollDice}
 
-    ...styles.boardCard,
+        >
 
-    border: `3px solid ${playerColours[currentPlayer]}`,
+          {rolling
+            ? "🎲 Rolling..."
+            : "🎲 Roll Dice"}
 
-    boxShadow: `
-      0 0 20px ${playerColours[currentPlayer]},
-      0 0 40px ${playerColours[currentPlayer]}66
-    `,
+        </button>
 
-    transition: "0.3s",
+      ) : (
 
-  }}
+        <div style={styles.rollResult}>
+
+        <div style={styles.rollDice}>
+
+  <span style={styles.diceEmoji}>
+    🎲
+  </span>
+
+  <span style={styles.rollNumber}>
+    {dice}
+  </span>
+
+</div>
+
+          <div style={styles.rollSkill}>
+
+            {currentSkill}
+
+          </div>
+
+         <button
+
+  style={styles.smallStick}
+
+  onClick={stickSkill}
 
 >
+
+  <Check
+
+    size={34}
+
+    strokeWidth={3.5}
+
+  />
+
+</button>
+
+          <button
+
+  style={styles.smallMiss}
+
+  onClick={missSkill}
+
+>
+
+  <X
+
+    size={34}
+
+    strokeWidth={3.5}
+
+  />
+
+</button>
+
+        </div>
+
+      )}
+
+    </div>
+
+    <div style={styles.layout}>
+
+      <div
+
+        style={{
+
+          ...styles.boardCard,
+
+          border: `3px solid ${playerColours[currentPlayer]}`,
+
+          boxShadow: `
+            0 0 20px ${playerColours[currentPlayer]},
+            0 0 45px ${playerColours[currentPlayer]},
+            0 0 80px ${playerColours[currentPlayer]}66
+          `,
+
+          transition: "0.3s",
+
+        }}
+
+      >
+
+        <svg
+
+          viewBox="0 0 650 650"
+
+          style={styles.boardOverlay}
+
+        >
+
+
+
+        </svg>
 
   <svg
   viewBox="0 0 650 650"
   style={styles.boardOverlay}
 >
 
-  {ladders.map((ladder, index) => {
+              {ladders.map((ladder, index) => {
 
-    const start =
-      squareToPosition(ladder.start)
+            const start =
+              squareToPosition(ladder.start)
 
-    const end =
-      squareToPosition(ladder.end)
+            const end =
+              squareToPosition(ladder.end)
 
-    return (
+            return (
 
-      <g key={index}>
+              <g key={index}>
 
-        <line
+                <line
 
-          x1={start.x}
-          y1={start.y}
+                  x1={start.x}
+                  y1={start.y}
 
-          x2={end.x}
-          y2={end.y}
+                  x2={end.x}
+                  y2={end.y}
 
-          stroke="rgba(181,101,29,.55)"
+                  stroke="rgba(181,101,29,.55)"
 
-          strokeWidth="12"
+                  strokeWidth="12"
 
-          strokeLinecap="round"
+                  strokeLinecap="round"
 
-        />
+                />
 
-        <circle
+                <circle
 
-          cx={start.x}
+                  cx={start.x}
 
-          cy={start.y}
+                  cy={start.y}
 
-          r="11"
+                  r="11"
 
-          fill="rgba(120,70,20,.9)"
+                  fill="rgba(120,70,20,.9)"
 
-        />
+                />
 
-      </g>
+              </g>
 
-    )
+            )
 
-  })}
+          })}
 
-    {snakes.map((snake, index) => {
+          {snakes.map((snake, index) => {
 
-    const start =
-      squareToPosition(snake.start)
+            const start =
+              squareToPosition(snake.start)
 
-    const end =
-      squareToPosition(snake.end)
+            const end =
+              squareToPosition(snake.end)
 
-    const midX =
-      (start.x + end.x) / 2
+            const midX =
+              (start.x + end.x) / 2
 
-    const midY =
-      (start.y + end.y) / 2
+            const midY =
+              (start.y + end.y) / 2
 
-    const curve =
-  index % 2 === 0
-    ? 60
-    : -60
+            const curve =
+              index % 2 === 0
+                ? 60
+                : -60
 
-    return (
+            return (
 
-      <g key={index}>
+              <g key={index}>
 
-        <path
+                <path
 
-          d={`
-            M ${start.x} ${start.y}
-            Q ${midX + curve} ${midY}
-            ${end.x} ${end.y}
-          `}
+                  d={`
+                    M ${start.x} ${start.y}
+                    Q ${midX + curve} ${midY}
+                    ${end.x} ${end.y}
+                  `}
 
-          fill="none"
+                  fill="none"
 
-          stroke="rgba(34,197,94,.45)"
+                  stroke="rgba(34,197,94,.45)"
 
-          strokeWidth="14"
+                  strokeWidth="14"
 
-          strokeLinecap="round"
+                  strokeLinecap="round"
 
-        />
+                />
 
-        <circle
+                <circle
 
-          cx={start.x}
+                  cx={start.x}
 
-          cy={start.y}
+                  cy={start.y}
 
-          r="12"
+                  r="12"
 
-          fill="rgba(34,197,94,.65)"
+                  fill="rgba(34,197,94,.65)"
 
-        />
+                />
 
-      </g>
+              </g>
 
-    )
+            )
 
-  })}
+          })}
 
-</svg>
+        </svg>
 
-          <div style={styles.board}>
+        <div style={styles.board}>
 
-           {Array.from({ length: 10 }).map((_, row) => {
+          {Array.from({ length: 10 }).map((_, row) => {
 
-  const start = (9 - row) * 10 + 1
+            const start = (9 - row) * 10 + 1
 
-  let numbers = Array.from(
-    { length: 10 },
-    (_, i) => start + i
-  )
+            let numbers = Array.from(
+              { length: 10 },
+              (_, i) => start + i
+            )
 
-  if (row % 2 === 0) {
-    numbers.reverse()
-  }
+            if (row % 2 === 0) {
 
-  return numbers.map(number => (
+              numbers.reverse()
 
-  <div
-    key={number}
-    style={styles.square}
-  >
+            }
 
-    <div style={styles.squareNumber}>
-      {number}
-    </div>
+            return numbers.map(number => (
 
-    <div
-  style={{
-    display: "flex",
-    flexWrap: "wrap",
-    gap: 2,
-    marginTop: "auto",
-    justifyContent: "center",
-  }}
->
+              <div
 
-  {positions.map((position, player) => (
+                key={number}
 
-    position === number && (
+                style={styles.square}
 
-      <div
+              >
 
-        key={player}
+                <div style={styles.squareNumber}>
 
-        style={{
-          width: 16,
-          height: 16,
-          borderRadius: "50%",
-          background: playerColours[player],
-          border: "2px solid white",
-        }}
+                  {number}
 
-      />
+                </div>
 
-    )
+                <div
 
-  ))}
+                  style={{
 
-</div>
+                    display: "flex",
 
-  </div>
+                    flexWrap: "wrap",
 
-))
+                    justifyContent: "center",
 
-})}
+                    gap: 2,
 
-          </div>
+                    marginTop: "auto",
 
-        </div>
+                  }}
 
-        {/* SIDEBAR */}
+                >
 
-        <div style={styles.sidebar}>
+                  {positions.map((position, player) => (
 
-          
+                    position === number && (
 
-<div style={styles.card}>
+                      <div
 
-  <h3 style={styles.cardTitle}>
+                        key={player}
 
-    🏠 Home
+                        style={{
 
-  </h3>
+                          width: 16,
 
-  <div style={styles.homeTokens}>
+                          height: 16,
 
-    {positions
-      .slice(0, players)
-      .map((position, index) =>
+                          borderRadius: "50%",
 
-        position === 0 && (
+                          background:
+                            playerColours[player],
 
-          <div
+                          border: "2px solid white",
 
-            key={index}
+                        }}
 
-            style={{
+                      />
 
-              ...styles.homeToken,
+                    )
 
-              background:
-                playerColours[index],
+                  ))}
 
-            }}
+                </div>
 
-          />
+              </div>
 
-        )
+            ))
 
-      )}
-
-  </div>
-
-</div>
-
-          <div style={styles.card}>
-
-            <h3 style={styles.cardTitle}>
-              Dice
-            </h3>
-
-            <div style={styles.dice}>
-
-  {rolling
-    ? "🎲"
-    : dice ?? "🎲"}
-
-</div>
-
-            <button
-
-  style={{
-    ...styles.rollButton,
-
-    opacity:
-      waitingForAnswer
-        ? 0.5
-        : 1
-  }}
-
-  disabled={waitingForAnswer}
-
-  onClick={rollDice}
-
->
-
-  {rolling
-    ? "Rolling..."
-    : "Roll Dice"}
-
-</button>
-
-{waitingForAnswer && (
-
-  <>
-
-    <div style={styles.skillTitle}>
-      Skill
-    </div>
-
-    <div style={styles.skillBox}>
-      {currentSkill}
-    </div>
-
-    <div style={styles.answerButtons}>
-
-     <button
-
-        onClick={stickSkill}
-
-        style={styles.stickButton}
-
-      >
-        ✅ Stuck It
-      </button>
-
-      <button
-
-        onClick={missSkill}
-
-        style={styles.missButton}
-
-      >
-        ❌ Didn't Stick
-      </button>
-
-    </div>
-
-  </>
-
-)}
-
-          </div>
-
-         
-
-       
+          })}
 
         </div>
 
       </div>
 
-      {winner !== null && (
+    </div>
 
-  <div style={styles.popupBackground}>
+          <div
 
-    <div style={styles.popup}>
+        style={{
 
-      <div
+          display: "flex",
 
-       style={{
-  ...styles.popupToken,
+          justifyContent: "center",
 
-  background: playerColours[winner],
-
-  boxShadow: `
-    0 0 20px ${playerColours[winner]},
-    0 0 40px ${playerColours[winner]},
-    0 0 70px ${playerColours[winner]}
-  `,
-}}
-
-      />
-
-     <h2
-  style={{
-    color: playerColours[winner],
-    marginBottom: 10,
-  }}
->
-
-  {playerNames[winner]} Wins!
-
-</h2>
-
-     <p
-  style={{
-    color: "var(--text-secondary)",
-    marginBottom: 30,
-  }}
->
-
-  You reached square 100!
-
-</p>
-
-      <button
-
-        style={styles.playButton}
-
-        onClick={() => {
-
-          setWinner(null)
-
-          resetGame()
+          marginTop: 20,
 
         }}
 
       >
 
-        New Game
+        <button
 
-      </button>
+          style={styles.newGameButton}
 
-    </div>
+          onClick={() => {
 
-  </div>
+            if (
+              window.confirm(
+                "Start a new game?"
+              )
+            ) {
 
-)}
+              resetGame()
+
+            }
+
+          }}
+
+        >
+
+          🎮 New Game
+
+        </button>
+
+      </div>
+
+      {winner !== null && (
+
+        <div style={styles.popupBackground}>
+
+          <Confetti
+            recycle={false}
+            numberOfPieces={350}
+          />
+
+          <div style={styles.popup}>
+
+            <div
+
+              style={{
+
+                ...styles.popupToken,
+
+                background:
+                  playerColours[winner],
+
+                boxShadow: `
+                  0 0 20px ${playerColours[winner]},
+                  0 0 40px ${playerColours[winner]},
+                  0 0 70px ${playerColours[winner]}
+                `,
+
+              }}
+
+            />
+
+            <h2
+
+              style={{
+
+                color:
+                  playerColours[winner],
+
+                marginBottom: 10,
+
+              }}
+
+            >
+
+              {playerNames[winner]} Wins!
+
+            </h2>
+
+            <p
+
+              style={{
+
+                color:
+                  "var(--text-secondary)",
+
+                marginBottom: 30,
+
+              }}
+
+            >
+
+              You reached square 100!
+
+            </p>
+
+            <button
+
+              style={styles.playButton}
+
+              onClick={() => {
+
+                setWinner(null)
+
+                resetGame()
+
+              }}
+
+            >
+
+              Play Again
+
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
 
   )
 
 }
+
 
 const styles = {
 
@@ -1100,12 +1148,6 @@ const styles = {
   display: "flex",
 
   justifyContent: "center",
-
-  alignItems: "flex-start",
-
-  gap: 25,
-
-  flexWrap: "wrap",
 
 },
 
@@ -1461,6 +1503,144 @@ homeToken: {
   borderRadius: "50%",
 
   border: "2px solid white",
+
+},
+
+gameBar: {
+
+  width: "min(calc(100vw - 40px),680px)",
+
+  margin: "0 auto 20px",
+
+},
+
+topRollButton: {
+
+  width: "100%",
+
+  padding: 22,
+
+  borderRadius: 18,
+
+  border: "none",
+
+  background: "var(--accent-glow)",
+
+  color: "var(--accent)",
+
+  fontSize: 26,
+
+  fontWeight: "bold",
+
+  cursor: "pointer",
+
+},
+
+rollResult: {
+
+  display: "grid",
+
+  gridTemplateColumns: "120px 1fr 80px 80px",
+
+  alignItems: "center",
+
+  gap: 15,
+
+  background: "var(--card-bg)",
+
+  border: "1px solid var(--border)",
+
+  borderRadius: 18,
+
+  padding: 18,
+
+},
+
+rollDice: {
+
+  display: "flex",
+
+  alignItems: "center",
+
+  gap: 14,
+
+},
+
+diceEmoji: {
+
+  fontSize: 46,
+
+},
+
+rollNumber: {
+
+  fontSize: 54,
+
+  fontWeight: "bold",
+
+  lineHeight: 1,
+
+},
+
+rollSkill: {
+
+  fontSize: 24,
+
+  fontWeight: "bold",
+
+  color: "var(--accent)",
+
+},
+
+smallStick: {
+
+  width: 70,
+
+  height: 70,
+
+  display: "flex",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  border: "none",
+
+  borderRadius: 18,
+
+  background: "#22c55e",
+
+  color: "white",
+
+  boxShadow: "0 0 20px rgba(34,197,94,.6)",
+
+  cursor: "pointer",
+
+},
+
+smallMiss: {
+
+  width: 70,
+
+  height: 70,
+
+  display: "flex",
+
+  alignItems: "center",
+
+  justifyContent: "center",
+
+  border: "none",
+
+  borderRadius: 18,
+
+  background: "#ef4444",
+
+  color: "white",
+
+  boxShadow: "0 0 20px rgba(239,68,68,.6)",
+
+  cursor: "pointer",
 
 },
 
