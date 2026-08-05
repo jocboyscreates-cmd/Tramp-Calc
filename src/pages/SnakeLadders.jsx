@@ -647,42 +647,7 @@ if (!gameStarted) {
 
       <div style={styles.layout}>
 
-<div style={styles.homeArea}>
 
-  <div style={styles.homeTitle}>
-    HOME
-  </div>
-
-  {Array.from({ length: players }).map((_, player) => (
-
-    positions[player] === 0 && (
-
-      <div
-        key={player}
-        style={styles.homePlayer}
-      >
-
-        <div
-          style={{
-            ...styles.homeToken,
-            background:
-              playerColours[player]
-          }}
-        />
-
-        <div>
-
-          Player {player + 1}
-
-        </div>
-
-      </div>
-
-    )
-
-  ))}
-
-</div>
 
         {/* BOARD */}
 
@@ -893,7 +858,44 @@ if (!gameStarted) {
 
           
 
+<div style={styles.card}>
 
+  <h3 style={styles.cardTitle}>
+
+    🏠 Home
+
+  </h3>
+
+  <div style={styles.homeTokens}>
+
+    {positions
+      .slice(0, players)
+      .map((position, index) =>
+
+        position === 0 && (
+
+          <div
+
+            key={index}
+
+            style={{
+
+              ...styles.homeToken,
+
+              background:
+                playerColours[index],
+
+            }}
+
+          />
+
+        )
+
+      )}
+
+  </div>
+
+</div>
 
           <div style={styles.card}>
 
@@ -1094,19 +1096,24 @@ const styles = {
   },
 
   layout: {
-    display: "flex",
-    gap: 25,
-    alignItems: "flex-start",
-    justifyContent: "center",
-    flexWrap: "wrap"
-  },
 
+  display: "flex",
+
+  justifyContent: "center",
+
+  alignItems: "flex-start",
+
+  gap: 25,
+
+  flexWrap: "wrap",
+
+},
 
  boardCard: {
 
   position: "relative",
 
-  width: "min(95vw, 680px)",
+  width: "min(calc(100vw - 40px), 680px)",
 
   background: "var(--card-bg)",
 
@@ -1134,16 +1141,15 @@ const styles = {
 
 },
 
-  board: {
+ board: {
 
   display: "grid",
 
-  gridTemplateColumns:
-    "repeat(10, minmax(28px, 1fr))",
+  gridTemplateColumns: "repeat(10, 1fr)",
 
   gap: 4,
 
-  width: "min(95vw, 650px)",
+  width: "100%",
 
   aspectRatio: "1",
 
@@ -1432,6 +1438,30 @@ popupToken: {
 
   margin: "0 auto 25px",
 
-}
+},
+
+homeTokens: {
+
+  display: "flex",
+
+  justifyContent: "center",
+
+  flexWrap: "wrap",
+
+  gap: 12,
+
+},
+
+homeToken: {
+
+  width: 22,
+
+  height: 22,
+
+  borderRadius: "50%",
+
+  border: "2px solid white",
+
+},
 
 }
