@@ -344,7 +344,7 @@ const rollDice = () => {
   setTimeout(() => {
 
     const roll =
-      Math.floor(Math.random() * 6) + 1
+      Math.floor(Math.random() * 10) + 1
 
     setDice(roll)
 
