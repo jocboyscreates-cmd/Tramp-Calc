@@ -400,16 +400,21 @@ return;
 
   return (
 
-    <div style={styles.container}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.container}
+    >
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={30} />
       </Link>
 
       <button
+        className="game-page-info-button"
         style={styles.helpButton}
 
         onClick={() =>
@@ -418,6 +423,23 @@ return;
       >
         <CircleHelp size={22} />
       </button>
+
+      <div className="game-floating-actions">
+        <Link to="/games">
+          <House size={20} />
+          Games
+        </Link>
+
+        <button
+          type="button"
+          onClick={() =>
+            setHelpOpen(true)
+          }
+        >
+          <CircleHelp size={20} />
+          Info
+        </button>
+      </div>
 
       <h1 style={styles.title}>
         Bingo

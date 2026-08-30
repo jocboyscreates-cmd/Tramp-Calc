@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 
 import { House } from "lucide-react";
 
+import GameInfo from "../components/GameInfo";
+
 import {
   randomRoutineSkills
 } from "../data/randomRoutineSkills";
@@ -151,14 +153,22 @@ do {
 
   return (
 
-    <div style={styles.container}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.container}
+    >
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={28} />
       </Link>
+
+      <GameInfo title="Random Routine">
+        Pick a difficulty and place each random skill into one of the 10 routine slots. Skips are optional, and the total DD updates as the routine fills.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Random Routine

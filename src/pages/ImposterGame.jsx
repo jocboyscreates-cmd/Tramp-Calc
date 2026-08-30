@@ -7,6 +7,8 @@ import {
   Users,
 } from "lucide-react";
 
+import GameInfo from "../components/GameInfo";
+
 import { onTrampSkills }
 from "../data/onTrampSkills";
 
@@ -142,14 +144,22 @@ export default function ImposterGame() {
 
   return (
 
-    <div style={styles.container}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.container}
+    >
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={28} />
       </Link>
+
+      <GameInfo title="Imposter Game">
+        Choose player count, max imposters, and skill type. Each player holds to reveal privately, then the group tries to figure out who saw a different word.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Imposter Game

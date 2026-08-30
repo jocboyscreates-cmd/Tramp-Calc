@@ -4,6 +4,7 @@ import { House } from "lucide-react"
 import { Check } from "lucide-react"
 import { X } from "lucide-react"
 import Confetti from "react-confetti"
+import GameInfo from "../components/GameInfo"
 
 export default function SnakeLadders() {
 
@@ -518,7 +519,10 @@ if (!gameStarted) {
 
   return (
 
-    <div style={styles.page}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.page}
+    >
 
         {winner !== null && (
 
@@ -531,10 +535,15 @@ if (!gameStarted) {
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={28} />
       </Link>
+
+      <GameInfo title="Skill Race">
+        Choose how many players are racing. Roll the dice, try the given skill, and move forward if you stick it or backward if you miss it.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Skill Race
@@ -630,14 +639,22 @@ if (!gameStarted) {
 
  return (
 
-  <div style={styles.page}>
+  <div
+    className="game-page-with-mobile-actions"
+    style={styles.page}
+  >
 
     <Link
       to="/games"
+      className="desktop-game-nav"
       style={styles.homeButton}
     >
       <House size={28} />
     </Link>
+
+    <GameInfo title="Skill Race">
+      Roll the dice, attempt the skill, and use the check or X buttons to move. Ladders move you up, snakes move you down, and square 100 wins.
+    </GameInfo>
 
     <h1 style={styles.title}>
       Skill Race
@@ -752,18 +769,6 @@ if (!gameStarted) {
         }}
 
       >
-
-        <svg
-
-          viewBox="0 0 650 650"
-
-          style={styles.boardOverlay}
-
-        >
-
-
-
-        </svg>
 
   <svg
   viewBox="0 0 650 650"
@@ -938,9 +943,9 @@ if (!gameStarted) {
 
                         style={{
 
-                          width: 16,
+                          width: "clamp(7px, 3.3vw, 16px)",
 
-                          height: 16,
+                          height: "clamp(7px, 3.3vw, 16px)",
 
                           borderRadius: "50%",
 
@@ -1155,7 +1160,7 @@ const styles = {
 
   position: "relative",
 
-  width: "min(calc(100vw - 40px), 680px)",
+  width: "min(calc(100vw - 24px), 680px)",
 
   background: "var(--card-bg)",
 
@@ -1163,7 +1168,9 @@ const styles = {
 
   borderRadius: 24,
 
-  padding: 15,
+  padding: "clamp(6px, 2vw, 15px)",
+
+  overflow: "hidden",
 
 },
 
@@ -1171,11 +1178,11 @@ const styles = {
 
   position: "absolute",
 
-  inset: 15,
+  inset: "clamp(6px, 2vw, 15px)",
 
-  width: "calc(100% - 30px)",
+  width: "auto",
 
-  height: "calc(100% - 30px)",
+  height: "auto",
 
   pointerEvents: "none",
 
@@ -1189,7 +1196,7 @@ const styles = {
 
   gridTemplateColumns: "repeat(10, 1fr)",
 
-  gap: 4,
+  gap: 0,
 
   width: "100%",
 
@@ -1203,7 +1210,7 @@ const styles = {
 
 aspectRatio: "1",
 
-  borderRadius: 10,
+  borderRadius: "clamp(3px, 1.8vw, 10px)",
 
   background: "rgba(255,255,255,0.05)",
 
@@ -1213,14 +1220,14 @@ aspectRatio: "1",
 
   flexDirection: "column",
 
-  padding: 5,
+  padding: "clamp(2px, 1vw, 5px)",
 
   boxSizing: "border-box",
 
 },
 
   squareNumber: {
-    fontSize: 12,
+    fontSize: "clamp(8px, 2.4vw, 12px)",
     color: "var(--text-secondary)"
   },
 
@@ -1331,7 +1338,7 @@ homeToken: {
   },
 
   menuCard: {
-  width: 450,
+  width: "min(calc(100vw - 24px), 450px)",
   margin: "auto",
   background: "var(--card-bg)",
   border: "1px solid var(--border)",
@@ -1508,7 +1515,7 @@ homeToken: {
 
 gameBar: {
 
-  width: "min(calc(100vw - 40px),680px)",
+  width: "min(calc(100vw - 24px),680px)",
 
   margin: "0 auto 20px",
 
@@ -1540,11 +1547,11 @@ rollResult: {
 
   display: "grid",
 
-  gridTemplateColumns: "120px 1fr 80px 80px",
+  gridTemplateColumns: "minmax(64px, 120px) minmax(0, 1fr) clamp(48px, 15vw, 70px) clamp(48px, 15vw, 70px)",
 
   alignItems: "center",
 
-  gap: 15,
+  gap: "clamp(8px, 2vw, 15px)",
 
   background: "var(--card-bg)",
 
@@ -1552,7 +1559,7 @@ rollResult: {
 
   borderRadius: 18,
 
-  padding: 18,
+  padding: "clamp(10px, 2.6vw, 18px)",
 
 },
 
@@ -1568,13 +1575,13 @@ rollDice: {
 
 diceEmoji: {
 
-  fontSize: 46,
+  fontSize: "clamp(28px, 8vw, 46px)",
 
 },
 
 rollNumber: {
 
-  fontSize: 54,
+  fontSize: "clamp(32px, 9vw, 54px)",
 
   fontWeight: "bold",
 
@@ -1584,19 +1591,23 @@ rollNumber: {
 
 rollSkill: {
 
-  fontSize: 24,
+  minWidth: 0,
+
+  fontSize: "clamp(15px, 4vw, 24px)",
 
   fontWeight: "bold",
 
   color: "var(--accent)",
 
+  overflowWrap: "anywhere",
+
 },
 
 smallStick: {
 
-  width: 70,
+  width: "clamp(48px, 15vw, 70px)",
 
-  height: 70,
+  height: "clamp(48px, 15vw, 70px)",
 
   display: "flex",
 
@@ -1620,9 +1631,9 @@ smallStick: {
 
 smallMiss: {
 
-  width: 70,
+  width: "clamp(48px, 15vw, 70px)",
 
-  height: 70,
+  height: "clamp(48px, 15vw, 70px)",
 
   display: "flex",
 

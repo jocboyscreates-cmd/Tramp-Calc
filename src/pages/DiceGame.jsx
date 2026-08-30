@@ -7,6 +7,8 @@ import {
   Dice5,
 } from "lucide-react";
 
+import GameInfo from "../components/GameInfo";
+
 export default function DiceGame() {
 
   const [maxTwists, setMaxTwists] =
@@ -111,14 +113,22 @@ export default function DiceGame() {
 
   return (
 
-    <div style={styles.container}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.container}
+    >
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={30} />
       </Link>
+
+      <GameInfo title="Dice Skills">
+        Set max flips, twists, and positions, then roll a random skill. Use it for fast practice turns or as a quick challenge picker.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Dice Routine Generator

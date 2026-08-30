@@ -6,47 +6,72 @@ import { House } from "lucide-react";
 
 import Confetti from "react-confetti";
 
-const skillBanks = {
+import GameInfo from "../components/GameInfo";
 
-  easy: [
-    "Tuck Jump",
-    "Barani Tuck",
-    "Barani Pike",
-    "Barani Straight",
-    "Back Tuck",
-    "Back Pike",
-    "Back Straight",
-    "Rudy",
-    "Back Full",
-    "Back Half",
-    "Full Twist",
-    "Half Twist",
-    "Front Full",
-    "Randy",
-  ],
+const defaultSkillOptions = [
+  "Tuck Jump",
+  "Straddle Jump",
+  "Pike Jump",
+  "Half Turn",
+  "Full Turn",
+  "Tuck Half Turn",
+  "1 1/2 Turn",
+  "Pike Half Turn",
+  "Tuck Full Turn",
+  "Barani Tuck",
+  "Barani Pike",
+  "Barani Straight",
+  "Front Tuck",
+  "Front Pike",
+  "Front Straight",
+  "Back Tuck",
+  "Back Pike",
+  "Back Straight",
+  "Back Full",
+  "Rudy",
+  "Back Half",
+  "Double Full Twist",
+  "Half Out Tuck",
+  "Half Out Pike",
+];
 
-  medium: [
+const harderSkillOptions = [
+  "Front Full",
+  "Randy",
+  "Double Back Tuck",
+  "Double Full",
+  "Rudy Out",
+  "Full Out Tuck",
+  "Full Out Straight",
+  "Rudy Out Tuck",
+  "Rudy Out Pike",
+  "Half In Tuck",
+  "Adolph",
+  "Full In Tuck",
+  "Triff",
+];
 
-    "Double Back Tuck",
-    "Half Out Tuck",
-    "Half Out Pike",
-    "Double Full",
-    "Rudy out",
+const defaultSelectedSkills = defaultSkillOptions;
 
-  ],
+const skillGroups = [
+  {
+    title: "Skill Race skills",
+    skills: defaultSkillOptions,
+  },
+  {
+    title: "Harder skills",
+    note: "Off by default",
+    skills: harderSkillOptions,
+  },
+];
 
-  hard: [
-    "Full Out Tuck",
-    "Full Out Straight",
-    "Rudy Out Tuck",
-    "Rudy Out Pike",
-    "Half in Tuck",
-    "Adolph",
-    "Full in Tuck",
-    "Triff",
-  ],
-
-};
+const pickRandomSkill = (skills) =>
+  skills[
+    Math.floor(
+      Math.random() *
+      skills.length
+    )
+  ];
 
 export default function ConnectionsGame() {
 
@@ -93,40 +118,61 @@ const [poofPiece, setPoofPiece] =
 const [showHowTo, setShowHowTo] =
   useState(false);
 
-const [difficulty, setDifficulty] =
-  useState("easy");
+const [selectedSkills, setSelectedSkills] =
+  useState(defaultSelectedSkills);
 
   const [winner, setWinner] =
     useState(null);
 
+const selectedSkillCount =
+  selectedSkills.length;
+
+const toggleSkill = (skill) => {
+
+  setSelectedSkills((currentSkills) => {
+
+    if (
+      currentSkills.includes(skill)
+    ) {
+
+      return currentSkills.filter(
+        (currentSkill) =>
+          currentSkill !== skill
+      );
+    }
+
+    return [
+      ...currentSkills,
+      skill,
+    ];
+  });
+};
+
+const resetSkillSelection = () => {
+
+  setSelectedSkills(
+    defaultSelectedSkills
+  );
+};
+
+const selectAllSkills = () => {
+
+  setSelectedSkills([
+    ...defaultSkillOptions,
+    ...harderSkillOptions,
+  ]);
+};
+
   const getRandomSkill = () => {
 
-  let pool = [];
+  if (selectedSkills.length === 0) {
 
-  if (difficulty === "easy") {
-    pool = skillBanks.easy;
+    return "";
   }
 
-  if (difficulty === "medium") {
-    pool = [
-      ...skillBanks.easy,
-      ...skillBanks.medium,
-    ];
-  }
-
-  if (difficulty === "hard") {
-    pool = [
-      ...skillBanks.easy,
-      ...skillBanks.medium,
-      ...skillBanks.hard,
-    ];
-  }
-
-  return pool[
-    Math.floor(
-      Math.random() * pool.length
-    )
-  ];
+  return pickRandomSkill(
+    selectedSkills
+  );
 };
 
   const checkWinner = (
@@ -389,16 +435,24 @@ setGameOver(true);
 
   return (
 
-    <div style={styles.page}>
+    <div
+      className="game-page-with-mobile-actions"
+      style={styles.page}
+    >
 
         
 
       <Link
         to="/games"
+        className="desktop-game-nav"
         style={styles.homeButton}
       >
         <House size={28} />
       </Link>
+
+      <GameInfo title="Connect 4">
+        Pick which skills are in play, then take turns choosing columns. A random skill appears each move. If it is landed, the piece stays; if it is missed, the turn passes.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Connections
@@ -410,39 +464,111 @@ setGameOver(true);
 
       <div style={styles.menuCard}>
 
-        <div style={styles.sectionTitle}>
-          Difficulty
+        <div style={styles.skillHeader}>
+
+          <div>
+
+            <div style={styles.sectionTitle}>
+              Skills
+            </div>
+
+            <div style={styles.skillCount}>
+              {selectedSkillCount} selected
+            </div>
+
+          </div>
+
+          <div style={styles.skillActions}>
+
+            <button
+              onClick={resetSkillSelection}
+              style={styles.skillActionButton}
+            >
+              Defaults
+            </button>
+
+            <button
+              onClick={selectAllSkills}
+              style={styles.skillActionButton}
+            >
+              All
+            </button>
+
+          </div>
+
         </div>
 
-        <div style={styles.diffRow}>
+        <div style={styles.skillGroups}>
 
-          {["easy", "medium", "hard"]
-            .map((level) => (
+          {skillGroups.map((group) => (
 
-              <button
-                key={level}
+            <div
+              key={group.title}
+              style={styles.skillGroup}
+            >
 
-                onClick={() =>
-                  setDifficulty(level)
-                }
+              <div style={styles.skillGroupHeader}>
 
-                style={{
-                  ...styles.diffButton,
+                <span>
+                  {group.title}
+                </span>
 
-                  background:
-                    difficulty === level
+                {group.note && (
 
-                      ? "var(--accent-glow)"
+                  <span style={styles.skillGroupNote}>
+                    {group.note}
+                  </span>
 
-                      : "rgba(255,255,255,0.08)",
-                }}
-              >
+                )}
 
-                {level}
+              </div>
 
-              </button>
+              <div style={styles.skillGrid}>
 
-            ))}
+                {group.skills.map((skill) => {
+
+                  const isSelected =
+                    selectedSkills.includes(skill);
+
+                  return (
+
+                    <label
+                      key={skill}
+                      style={{
+                        ...styles.skillOption,
+
+                        background: isSelected
+                          ? "var(--accent-glow)"
+                          : "rgba(255,255,255,0.08)",
+
+                        borderColor: isSelected
+                          ? "var(--accent)"
+                          : "var(--border)",
+                      }}
+                    >
+
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() =>
+                          toggleSkill(skill)
+                        }
+                        style={styles.skillCheckbox}
+                      />
+
+                      <span>
+                        {skill}
+                      </span>
+
+                    </label>
+                  );
+                })}
+
+              </div>
+
+            </div>
+
+          ))}
 
         </div>
 
@@ -450,8 +576,23 @@ setGameOver(true);
           onClick={() =>
             setGameStarted(true)
           }
+          disabled={
+            selectedSkillCount === 0
+          }
 
-          style={styles.playButton}
+          style={{
+            ...styles.playButton,
+
+            opacity:
+              selectedSkillCount === 0
+                ? 0.45
+                : 1,
+
+            cursor:
+              selectedSkillCount === 0
+                ? "not-allowed"
+                : "pointer",
+          }}
         >
           Play
         </button>
@@ -496,6 +637,7 @@ setGameOver(true);
 return (
 
     <div
+  className="game-page-with-mobile-actions"
   style={{
     ...styles.page,
 
@@ -563,10 +705,16 @@ return (
         <Link
   to="/games"
 
+  className="desktop-game-nav"
+
   style={styles.homeButton}
 >
   <House size={28} />
 </Link>
+
+      <GameInfo title="Connect 4">
+        Pick a column, attempt the skill, and choose Stuck It or Missed. The first player to connect four pieces wins.
+      </GameInfo>
 
       <h1 style={styles.title}>
         Connections
@@ -1111,7 +1259,7 @@ subtitle: {
 },
 
 menuCard: {
-  width: "min(420px, 92vw)",
+  width: "min(680px, 92vw)",
 
   background:
     "var(--card-bg)",
@@ -1139,30 +1287,140 @@ sectionTitle: {
   fontWeight: "bold",
 },
 
-diffRow: {
+skillHeader: {
   display: "flex",
 
-  gap: "12px",
+  alignItems: "center",
+
+  justifyContent: "space-between",
+
+  gap: "16px",
 },
 
-diffButton: {
-  flex: 1,
+skillCount: {
+  marginTop: "6px",
 
-  padding: "14px",
+  color:
+    "var(--text-secondary)",
 
-  borderRadius: "14px",
+  fontSize: "14px",
+},
 
-  border: "none",
+skillActions: {
+  display: "flex",
+
+  gap: "8px",
+},
+
+skillActionButton: {
+  padding: "10px 12px",
+
+  borderRadius: "12px",
+
+  border:
+    "1px solid var(--border)",
+
+  background:
+    "rgba(255,255,255,0.08)",
 
   color:
     "var(--text-primary)",
 
   cursor: "pointer",
 
-  textTransform:
-    "capitalize",
+  fontWeight: "bold",
+},
+
+skillGroups: {
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "18px",
+
+  maxHeight: "min(48vh, 460px)",
+
+  overflowY: "auto",
+
+  paddingRight: "4px",
+},
+
+skillGroup: {
+  display: "flex",
+
+  flexDirection: "column",
+
+  gap: "10px",
+},
+
+skillGroupHeader: {
+  display: "flex",
+
+  justifyContent: "space-between",
+
+  gap: "12px",
+
+  color:
+    "var(--text-primary)",
 
   fontWeight: "bold",
+},
+
+skillGroupNote: {
+  color:
+    "var(--text-secondary)",
+
+  fontSize: "13px",
+
+  fontWeight: "normal",
+},
+
+skillGrid: {
+  display: "grid",
+
+  gridTemplateColumns:
+    "repeat(auto-fit, minmax(150px, 1fr))",
+
+  gap: "10px",
+},
+
+skillOption: {
+  minHeight: "46px",
+
+  padding: "10px 12px",
+
+  borderRadius: "14px",
+
+  border:
+    "1px solid var(--border)",
+
+  display: "flex",
+
+  alignItems: "center",
+
+  gap: "9px",
+
+  color:
+    "var(--text-primary)",
+
+  cursor: "pointer",
+
+  lineHeight: 1.2,
+
+  fontWeight: "bold",
+
+  fontSize: "14px",
+},
+
+skillCheckbox: {
+  flex: "0 0 auto",
+
+  width: "16px",
+
+  height: "16px",
+
+  accentColor:
+    "var(--accent)",
 },
 
 playButton: {

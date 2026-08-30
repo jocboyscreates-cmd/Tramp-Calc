@@ -1,396 +1,187 @@
+import { useState } from "react";
+
 import { Link } from "react-router-dom";
 
 import {
-  House,
+  CircleHelp,
   Dice5,
-  Users,
-  Grid3X3,
   Disc3,
-  Shuffle,
+  Grid3X3,
+  House,
   Map,
+  Shuffle,
+  Users,
+  X,
 } from "lucide-react";
 
+const games = [
+  {
+    title: "Dice Skills",
+    subtitle: "Random trampoline skills",
+    details:
+      "Set your max flips, twists, and positions, then roll a random skill prompt for quick turns at practice.",
+    to: "/dice-game",
+    icon: Dice5,
+  },
+  {
+    title: "Imposter Game",
+    subtitle: "Find the fake routine",
+    details:
+      "Each player privately reveals their word. Most players get the same skill, imposters do not, and the group tries to spot them.",
+    to: "/imposter-game",
+    icon: Users,
+  },
+  {
+    title: "Bingo",
+    subtitle: "Complete trampoline challenges",
+    details:
+      "Tap squares as you finish challenges. Hold a square on mobile or right click on desktop for the challenge description.",
+    to: "/bingo-game",
+    icon: Grid3X3,
+  },
+  {
+    title: "Connect 4",
+    subtitle: "Connect four trampoline challenges",
+    details:
+      "Pick a column, attempt the random skill, and keep the piece only when you stick it. First player to connect four wins.",
+    to: "/connections-game",
+    icon: Disc3,
+  },
+  {
+    title: "Skill Race",
+    subtitle: "Snakes and ladders with trampoline skills",
+    details:
+      "Roll, attempt the skill, and move across the board. Stuck skills move you forward, missed skills move you back.",
+    to: "/snake-ladders",
+    icon: Map,
+  },
+  {
+    title: "Random Routine",
+    subtitle: "Build a routine from random skills",
+    details:
+      "Choose a difficulty, place random skills into 10 routine slots, and try to build the best routine with limited skips.",
+    to: "/random-routine-game",
+    icon: Shuffle,
+  },
+];
+
 export default function Games() {
+  const [selectedGame, setSelectedGame] =
+    useState(null);
 
   return (
-
-    <div style={styles.container}>
-
+    <div className="games-hub-shell">
       <Link
         to="/"
-        style={styles.homeButton}
+        className="desktop-game-nav games-hub-home"
+        aria-label="Home"
       >
-        <House size={30} />
+        <House size={28} />
       </Link>
 
-      <h1 style={styles.title}>
-        Games
-      </h1>
+      <div className="games-hub-header">
+        <div className="home-kicker">
+          Practice
+        </div>
 
-      <p style={styles.subtitle}>
-        Mini games and challenges
-      </p>
+        <h1>
+          Games
+        </h1>
 
-      <div style={styles.grid}>
-
-        <Link
-          to="/dice-game"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Dice5 size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Dice Skills
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Random trampoline skills
-            </div>
-
-          </div>
-
-        </Link>
-
-        <Link
-          to="/imposter-game"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Users size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Imposter Game
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Find the fake routine
-            </div>
-
-          </div>
-
-        </Link>
-
-        <Link
-          to="/bingo-game"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Grid3X3 size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Bingo
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Complete trampoline challenges
-            </div>
-
-          </div>
-
-        </Link>
-
-        
-        <Link
-          to="/connections-game"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Disc3 size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Connect 4
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Connect four trampoline challenges
-            </div>
-
-          </div>
-
-        </Link>
-
-        <Link
-          to="/snake-ladders"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Map size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Skill Race
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Snakes & ladders with trampoline skills
-            </div>
-
-          </div>
-
-        </Link>
-
-        <Link
-          to="/random-routine-game"
-          style={styles.gameCard}
-        >
-
-          <div style={styles.iconBox}>
-            <Shuffle size={42} />
-          </div>
-
-          <div>
-
-            <div style={styles.gameTitle}>
-              Random Routine
-            </div>
-
-            <div style={styles.gameSubtitle}>
-              Build a routine from random skills
-            </div>
-
-          </div>
-
-        </Link>
+        <p>
+          Quick gym games with clearer rules, better touch targets, and info one tap away.
+        </p>
       </div>
 
-    </div>
+      <div className="games-hub-grid">
+        {games.map((game) => {
+          const Icon = game.icon;
 
+          return (
+            <div
+              className="games-hub-card"
+              key={game.title}
+            >
+              <Link
+                to={game.to}
+                className="games-hub-link"
+              >
+                <div className="games-hub-icon">
+                  <Icon size={32} />
+                </div>
+
+                <div>
+                  <div className="games-hub-title">
+                    {game.title}
+                  </div>
+
+                  <div className="games-hub-subtitle">
+                    {game.subtitle}
+                  </div>
+                </div>
+              </Link>
+
+              <button
+                className="home-info-button"
+                type="button"
+                onClick={() =>
+                  setSelectedGame(game)
+                }
+                aria-label={`Information about ${game.title}`}
+                title={`Information about ${game.title}`}
+              >
+                <CircleHelp size={19} />
+              </button>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="game-floating-actions">
+        <Link to="/">
+          <House size={20} />
+          Home
+        </Link>
+
+        <button
+          type="button"
+          onClick={() =>
+            setSelectedGame({
+              title: "Games",
+              details:
+                "Pick a game card to start. Use the small info button on any game for a quick rule summary before you play.",
+            })
+          }
+        >
+          <CircleHelp size={20} />
+          Info
+        </button>
+      </div>
+
+      {selectedGame && (
+        <div className="app-modal-overlay">
+          <div className="game-help-modal">
+            <button
+              className="app-modal-icon-button"
+              onClick={() =>
+                setSelectedGame(null)
+              }
+              type="button"
+              aria-label="Close information"
+            >
+              <X size={20} />
+            </button>
+
+            <h2>
+              {selectedGame.title}
+            </h2>
+
+            <p>
+              {selectedGame.details}
+            </p>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
-
-const styles = {
-
-  container: {
-    minHeight: "100vh",
-
-    background:
-      "var(--bg-primary)",
-
-    display: "flex",
-
-    flexDirection: "column",
-
-    alignItems: "center",
-
-    paddingTop: "70px",
-
-    color:
-      "var(--text-primary)",
-  },
-
-  homeButton: {
-    position: "absolute",
-
-    top: "30px",
-    left: "30px",
-
-    width: "54px",
-    height: "54px",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    justifyContent: "center",
-
-    background:
-      "var(--card-bg)",
-
-    border:
-      "1px solid var(--border)",
-
-    borderRadius: "16px",
-
-    color:
-      "var(--text-primary)",
-
-    textDecoration: "none",
-
-    backdropFilter:
-      "blur(10px)",
-
-    boxShadow:
-      "0 8px 24px rgba(0,0,0,0.18)",
-
-    transition:
-      "0.2s ease",
-  },
-
-  title: {
-    fontSize: "60px",
-
-    fontWeight: "bold",
-
-    marginBottom: "10px",
-
-    textAlign: "center",
-  },
-
-  subtitle: {
-    color:
-      "var(--text-secondary)",
-
-    fontSize: "19px",
-
-    marginBottom: "50px",
-
-    textAlign: "center",
-  },
-
-  grid: {
-    display: "flex",
-
-    flexDirection: "column",
-
-    gap: "28px",
-
-    width: "100%",
-
-    alignItems: "center",
-
-    paddingBottom: "50px",
-  },
-
-  gameCard: {
-    width: "min(760px, 92vw)",
-
-    padding: "28px",
-
-    borderRadius: "30px",
-
-    border:
-      "1px solid var(--border)",
-
-    background:
-      "var(--card-bg)",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    gap: "24px",
-
-    color:
-      "var(--text-primary)",
-
-    textDecoration: "none",
-
-    backdropFilter:
-      "blur(12px)",
-
-    boxShadow:
-      "0 12px 34px rgba(0,0,0,0.22)",
-
-    transition:
-      "0.25s ease",
-
-    cursor: "pointer",
-  },
-
-  iconBox: {
-    width: "84px",
-    height: "84px",
-
-    borderRadius: "24px",
-
-    background:
-      "rgba(255,255,255,0.08)",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    justifyContent: "center",
-
-    flexShrink: 0,
-
-    color:
-      "var(--accent)",
-  },
-
-  gameTitle: {
-    fontSize: "30px",
-
-    fontWeight: "bold",
-
-    marginBottom: "6px",
-  },
-
-  gameSubtitle: {
-    color:
-      "var(--text-secondary)",
-
-    fontSize: "17px",
-  },
-
-};
-
-document.addEventListener(
-  "mouseover",
-  (e) => {
-
-    const target =
-      e.target.closest("a");
-
-    if (
-      target &&
-      target.style.cursor ===
-        "pointer"
-    ) {
-
-      target.style.transform =
-        "translateY(-4px)";
-
-      target.style.border =
-        "1px solid var(--accent)";
-
-      target.style.boxShadow =
-        "0 0 25px rgba(252,175,69,0.25)";
-    }
-  }
-);
-
-document.addEventListener(
-  "mouseout",
-  (e) => {
-
-    const target =
-      e.target.closest("a");
-
-    if (
-      target &&
-      target.style.cursor ===
-        "pointer"
-    ) {
-
-      target.style.transform =
-        "translateY(0px)";
-
-      target.style.border =
-        "1px solid var(--border)";
-
-      target.style.boxShadow =
-        "0 12px 34px rgba(0,0,0,0.22)";
-    }
-  }
-);

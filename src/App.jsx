@@ -1,13 +1,13 @@
 import {
-  useState,
   useEffect,
+  useState,
 } from "react";
 
 import {
   BrowserRouter,
-  Routes,
-  Route,
   Link,
+  Route,
+  Routes,
 } from "react-router-dom";
 
 import { Helmet } from "react-helmet-async";
@@ -27,441 +27,507 @@ import ConnectionsGame from "./pages/ConnectionsGame";
 import SnakeLadders from "./pages/SnakeLadders";
 
 import {
-  Trophy,
-  Settings,
-  Save,
+  BookOpen,
+  Calculator,
+  ChevronRight,
+  CircleHelp,
   Gamepad2,
+  Save,
+  Settings,
+  Trophy,
+  X,
 } from "lucide-react";
 
-export default function App() {
+const primaryTools = [
+  {
+    title: "Trampoline",
+    subtitle: "Build a 10 skill routine and total the DD.",
+    meta: "Routine calculator",
+    to: "/trampoline",
+    icon: Calculator,
+    info:
+      "Use this for trampoline routines. Type a skill code or choose from the skill list, and the total DD updates as you build.",
+  },
+  {
+    title: "Double Mini",
+    subtitle: "Score two or four double mini passes.",
+    meta: "DMT calculator",
+    to: "/double-mini",
+    icon: Calculator,
+    info:
+      "Use this for double mini routines. Pick each pass skill, switch between 2 and 4 routine mode, and save your setup when you are done.",
+  },
+  {
+    title: "Tumbling",
+    subtitle: "Track two full passes or an 8 plus 3 pass setup.",
+    meta: "Pass calculator",
+    to: "/tumbling",
+    icon: Calculator,
+    info:
+      "Use this for tumbling passes. Choose the pass format, enter each skill, and the pass and total DD values stay visible while you work.",
+  },
+];
 
+const supportTools = [
+  {
+    title: "Saved",
+    subtitle: "Open, share, and reuse your saved routines.",
+    to: "/saved",
+    icon: Save,
+    info:
+      "Saved routines live on this device. Open one to keep editing, copy a share link, or clear them from Settings.",
+  },
+  {
+    title: "Leaderboard",
+    subtitle: "Check benchmark DD scores.",
+    to: "/leaderboard",
+    icon: Trophy,
+    info:
+      "Leaderboard keeps the higher score examples separate from your saved routines so you can compare without cluttering your own list.",
+  },
+  {
+    title: "Games",
+    subtitle: "Practice games for trampoline sessions.",
+    to: "/games",
+    icon: Gamepad2,
+    info:
+      "Games are designed for quick phone use at the gym: random skills, routine challenges, bingo, skill race, and connect style games.",
+  },
+  {
+    title: "Settings",
+    subtitle: "Theme, reset, links, and common questions.",
+    action: "settings",
+    icon: Settings,
+    info:
+      "Settings controls dark mode, saved routine reset, rule links, version info, and common questions about the calculators.",
+  },
+];
+
+const faqItems = [
+  {
+    q: "What is trampoline DD?",
+    a:
+      "DD stands for Degree of Difficulty. Each trampoline skill has a difficulty value based on flips, twists, and body position.",
+  },
+  {
+    q: "How does the trampoline calculator work?",
+    a:
+      "The calculator adds the difficulty values of each skill in your routine to calculate a total DD score.",
+  },
+  {
+    q: "What is Double Mini?",
+    a:
+      "Double Mini Trampoline is a gymnastics event where athletes perform two connected skills on a small trampoline runway.",
+  },
+  {
+    q: "How is tumbling scored?",
+    a:
+      "Tumbling scores are based on difficulty, execution, and completion of connected tumbling passes.",
+  },
+  {
+    q: "Is this based on FIG rules?",
+    a:
+      "The calculator uses FIG and Gymnastics Canada difficulty values and pathways where possible.",
+  },
+];
+
+function ToolCard({
+  item,
+  compact = false,
+  onInfo,
+  onSettings,
+}) {
+  const Icon = item.icon;
+
+  const cardContent = (
+    <>
+      <div className="home-card-icon">
+        <Icon size={compact ? 23 : 28} />
+      </div>
+
+      <div className="home-card-copy">
+        {item.meta && (
+          <div className="home-card-meta">
+            {item.meta}
+          </div>
+        )}
+
+        <div className="home-card-title">
+          {item.title}
+        </div>
+
+        <div className="home-card-subtitle">
+          {item.subtitle}
+        </div>
+      </div>
+
+      <ChevronRight
+        className="home-card-arrow"
+        size={22}
+      />
+    </>
+  );
+
+  const openInfo = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    onInfo(item);
+  };
+
+  return (
+    <div
+      className={
+        compact
+          ? "home-tool-card home-tool-card-compact"
+          : "home-tool-card"
+      }
+    >
+      {item.to ? (
+        <Link
+          to={item.to}
+          className="home-tool-link"
+        >
+          {cardContent}
+        </Link>
+      ) : (
+        <button
+          className="home-tool-link home-tool-button"
+          onClick={onSettings}
+          type="button"
+        >
+          {cardContent}
+        </button>
+      )}
+
+      <button
+        className="home-info-button"
+        onClick={openInfo}
+        type="button"
+        aria-label={`Information about ${item.title}`}
+        title={`Information about ${item.title}`}
+      >
+        <CircleHelp size={19} />
+      </button>
+    </div>
+  );
+}
+
+function HomeScreen() {
   const [settingsOpen, setSettingsOpen] =
     useState(false);
 
   const [darkMode, setDarkMode] =
     useState(true);
 
-    const [faqOpen, setFaqOpen] =
-  useState(false);
+  const [faqOpen, setFaqOpen] =
+    useState(false);
 
-const [openQuestion, setOpenQuestion] =
-  useState(null);
+  const [openQuestion, setOpenQuestion] =
+    useState(null);
+
+  const [infoItem, setInfoItem] =
+    useState(null);
 
   useEffect(() => {
-
     if (darkMode) {
-
-      document.body.classList.add(
-        "dark"
-      );
-
+      document.body.classList.add("dark");
     } else {
-
-      document.body.classList.remove(
-        "dark"
-      );
-
+      document.body.classList.remove("dark");
     }
-
   }, [darkMode]);
 
-  const hoverIn = (e) => {
-
-    e.currentTarget.style.transform =
-      "translateY(-6px)";
-
-    e.currentTarget.style.border =
-      "1px solid rgba(252,175,69,0.4)";
-
-    e.currentTarget.style.boxShadow =
-      "0 0 30px rgba(252,175,69,0.22)";
-  };
-
-  const hoverOut = (e) => {
-
-    e.currentTarget.style.transform =
-      "translateY(0px)";
-
-    e.currentTarget.style.border =
-      "1px solid var(--border)";
-
-    e.currentTarget.style.boxShadow =
-      "0 12px 30px rgba(0,0,0,0.18)";
-  };
-
   return (
+    <>
+      <Helmet>
+        <title>
+          Tramp Calc | Trampoline DD Calculator & Gymnastics Tools
+        </title>
 
+        <meta
+          name="description"
+          content="Trampoline DD calculator, double mini calculator, tumbling tools, routine builders, trampoline games, and gymnastics scoring tools."
+        />
+
+        <meta
+          name="keywords"
+          content="trampoline calculator, trampoline DD, double mini calculator, tumbling calculator, gymnastics difficulty calculator, trampoline scoring"
+        />
+      </Helmet>
+
+      <main className="home-shell">
+        <section className="home-hero">
+          <div className="home-kicker">
+            Tramp Calc
+          </div>
+
+          <h1 className="home-title">
+            Gymnastics Calculator
+          </h1>
+
+          <p className="home-subtitle">
+            Faster DD checks, cleaner routine building, and gym games made for one hand on a phone.
+          </p>
+        </section>
+
+        <section
+          className="home-section"
+          aria-label="Calculators"
+        >
+          <div className="home-section-heading">
+            <span>
+              Calculators
+            </span>
+
+            <span>
+              Pick your event
+            </span>
+          </div>
+
+          <div className="home-primary-grid">
+            {primaryTools.map((item) => (
+              <ToolCard
+                key={item.title}
+                item={item}
+                onInfo={setInfoItem}
+              />
+            ))}
+          </div>
+        </section>
+
+        <section
+          className="home-section"
+          aria-label="More tools"
+        >
+          <div className="home-section-heading">
+            <span>
+              More
+            </span>
+
+            <span>
+              Routines, games, and app controls
+            </span>
+          </div>
+
+          <div className="home-support-grid">
+            {supportTools.map((item) => (
+              <ToolCard
+                key={item.title}
+                item={item}
+                compact
+                onInfo={setInfoItem}
+                onSettings={() =>
+                  setSettingsOpen(true)
+                }
+              />
+            ))}
+          </div>
+        </section>
+
+        <footer className="home-footer">
+          <a
+            href="https://www.gymbc.org/media/qb5g331q/2025_tg_canadian_pathways_en_v6_march-2025.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Canadian Pathways PDF
+          </a>
+
+          <a
+            href="https://www.gymbc.org/media/1wbnaeax/fig-tra-cop-2025-2028.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            FIG Code of Points PDF
+          </a>
+
+          <p>
+            Created by Jackson Cann{" "}
+            <a
+              href="https://www.instagram.com/jcanflip"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @jcanflip
+            </a>
+          </p>
+        </footer>
+      </main>
+
+      {infoItem && (
+        <div className="app-modal-overlay">
+          <div className="app-info-modal">
+            <button
+              className="app-modal-icon-button"
+              onClick={() => setInfoItem(null)}
+              type="button"
+              aria-label="Close information"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="app-modal-mark">
+              <BookOpen size={24} />
+            </div>
+
+            <h2>
+              {infoItem.title}
+            </h2>
+
+            <p>
+              {infoItem.info}
+            </p>
+
+            <button
+              className="app-modal-primary"
+              onClick={() => setInfoItem(null)}
+              type="button"
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+
+      {settingsOpen && (
+        <div className="app-modal-overlay">
+          <div className="settings-modal">
+            <button
+              className="app-modal-icon-button"
+              onClick={() => setSettingsOpen(false)}
+              type="button"
+              aria-label="Close settings"
+            >
+              <X size={20} />
+            </button>
+
+            <h2>
+              Settings
+            </h2>
+
+            <div className="settings-row">
+              <span>
+                Show Skill Names
+              </span>
+
+              <button
+                className="settings-button"
+                type="button"
+              >
+                Soon
+              </button>
+            </div>
+
+            <div className="settings-row">
+              <span>
+                Dark Mode
+              </span>
+
+              <button
+                className={
+                  darkMode
+                    ? "settings-button settings-button-active"
+                    : "settings-button"
+                }
+                onClick={() =>
+                  setDarkMode(!darkMode)
+                }
+                type="button"
+              >
+                {darkMode
+                  ? "Enabled"
+                  : "Disabled"}
+              </button>
+            </div>
+
+            <div className="settings-row">
+              <span>
+                Reset Saved Routines
+              </span>
+
+              <button
+                className="settings-delete-button"
+                onClick={() => {
+                  const confirmed =
+                    window.confirm(
+                      "Delete all saved routines?"
+                    );
+
+                  if (!confirmed) return;
+
+                  localStorage.removeItem(
+                    "savedRoutines"
+                  );
+
+                  alert(
+                    "Saved routines deleted."
+                  );
+                }}
+                type="button"
+              >
+                Reset
+              </button>
+            </div>
+
+            <button
+              onClick={() =>
+                setFaqOpen(!faqOpen)
+              }
+              className="settings-wide-button"
+              type="button"
+            >
+              {faqOpen
+                ? "Hide Questions"
+                : "Common Questions"}
+            </button>
+
+            {faqOpen && (
+              <div className="settings-faq-list">
+                {faqItems.map((item, index) => (
+                  <div
+                    key={item.q}
+                    className="settings-faq-item"
+                  >
+                    <button
+                      onClick={() =>
+                        setOpenQuestion(
+                          openQuestion === index
+                            ? null
+                            : index
+                        )
+                      }
+                      className="settings-faq-question"
+                      type="button"
+                    >
+                      {item.q}
+                    </button>
+
+                    {openQuestion === index && (
+                      <p>
+                        {item.a}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <p className="settings-version">
+              Version 13.5.26
+            </p>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function App() {
+  return (
     <BrowserRouter>
-
       <Routes>
-
         <Route
           path="/"
-
-          element={
-
-  <>
-    <Helmet>
-
-      <title>
-        Tramp Calc | Trampoline DD Calculator & Gymnastics Tools
-      </title>
-
-      <meta
-        name="description"
-        content="Trampoline DD calculator, double mini calculator, tumbling tools, routine builders, trampoline games, and gymnastics scoring tools."
-      />
-
-      <meta
-        name="keywords"
-        content="trampoline calculator, trampoline DD, double mini calculator, tumbling calculator, gymnastics difficulty calculator, trampoline scoring"
-      />
-
-    </Helmet>
-
-    <div style={styles.container}>
-
-              <div style={styles.overlay} />
-
-              <div style={styles.content}>
-
-                <h1 style={styles.title}>
-                  Gymnastics Calculator
-                </h1>
-
-                <p style={styles.subtitle}>
-                  Trampoline • Double Mini • Tumbling
-                </p>
-
-                <div style={styles.buttonContainer}>
-
-                  <Link
-                    to="/trampoline"
-
-                    style={styles.card}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    Trampoline
-                  </Link>
-
-                  <Link
-                    to="/double-mini"
-
-                    style={styles.card}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    Double Mini
-                  </Link>
-
-                  <Link
-                    to="/tumbling"
-
-                    style={styles.card}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    Tumbling
-                  </Link>
-
-                </div>
-
-                <div style={styles.bottomButtons}>
-
-                  <Link
-                    to="/saved"
-
-                    style={styles.squareButton}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    <Save size={40} />
-                  </Link>
-
-                  <Link
-                    to="/leaderboard"
-
-                    style={styles.squareButton}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    <Trophy size={40} />
-                  </Link>
-
-                  <Link
-                    to="/games"
-
-                    style={styles.squareButton}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    <Gamepad2 size={40} />
-                  </Link>
-
-                  <button
-                    onClick={() =>
-                      setSettingsOpen(true)
-                    }
-
-                    style={styles.squareButton}
-
-                    onMouseEnter={hoverIn}
-                    onMouseLeave={hoverOut}
-                  >
-                    <Settings size={40} />
-                  </button>
-
-                </div>
-
-                {settingsOpen && (
-
-                  <div style={styles.modalOverlay}>
-
-                    <div style={styles.settingsModal}>
-
-                      <h2 style={styles.settingsTitle}>
-                        Settings
-                      </h2>
-
-                      <div style={styles.settingItem}>
-
-                        <span>
-                          Show Skill Names
-                        </span>
-
-                        <button
-                          style={styles.settingButton}
-                        >
-                          Soon
-                        </button>
-
-                      </div>
-
-                      <div style={styles.settingItem}>
-
-                        <span>
-                          Dark Mode
-                        </span>
-
-                        <button
-                          style={
-                            darkMode
-                              ? styles.settingButtonActive
-                              : styles.settingButton
-                          }
-
-                          onClick={() =>
-                            setDarkMode(!darkMode)
-                          }
-                        >
-
-                          {darkMode
-                            ? "Enabled"
-                            : "Disabled"}
-
-                        </button>
-
-                      </div>
-
-                      <div style={styles.settingItem}>
-
-                        <span>
-                          Reset Saved Routines
-                        </span>
-
-                        <button
-                          style={styles.deleteButton}
-
-                          onClick={() => {
-
-                            const confirmed =
-                              window.confirm(
-                                "Delete all saved routines?"
-                              );
-
-                            if (!confirmed)
-                              return;
-
-                            localStorage.removeItem(
-                              "savedRoutines"
-                            );
-
-                            alert(
-                              "Saved routines deleted."
-                            );
-
-                          }}
-                        >
-                          Reset
-                        </button>
-
-                      </div>
-
-                      <button
-  onClick={() =>
-    setFaqOpen(!faqOpen)
-  }
-
-  style={styles.faqButton}
->
-
-  {faqOpen
-    ? "Hide Questions"
-    : "Common Questions"}
-
-</button>
-
-{faqOpen && (
-
-  <div style={styles.faqContainer}>
-
-    {[
-      {
-        q: "What is trampoline DD?",
-        a: "DD stands for Degree of Difficulty. Each trampoline skill has a difficulty value based on flips, twists, and body position."
-      },
-
-      {
-        q: "How does the trampoline calculator work?",
-        a: "The calculator adds the difficulty values of each skill in your routine to calculate a total DD score."
-      },
-
-      {
-        q: "What is Double Mini?",
-        a: "Double Mini Trampoline is a gymnastics event where athletes perform two connected skills on a small trampoline runway."
-      },
-
-      {
-        q: "How is tumbling scored?",
-        a: "Tumbling scores are based on difficulty, execution, and completion of connected tumbling passes."
-      },
-
-      {
-        q: "Is this based on FIG rules?",
-        a: "The calculator uses FIG and Gymnastics Canada difficulty values and pathways where possible."
-      }
-
-    ].map((item, index) => (
-
-      <div
-        key={index}
-        style={styles.faqItem}
-      >
-
-        <button
-          onClick={() =>
-
-            setOpenQuestion(
-              openQuestion === index
-                ? null
-                : index
-            )
-
-          }
-
-          style={styles.faqQuestion}
-        >
-
-          {item.q}
-
-        </button>
-
-        {openQuestion === index && (
-
-          <p style={styles.faqAnswer}>
-            {item.a}
-          </p>
-
-        )}
-
-      </div>
-
-    ))}
-
-  </div>
-
-)}
-
-                      <p style={styles.versionText}>
-                        Version 13.5.26
-                      </p>
-
-                      <button
-                        onClick={() =>
-                          setSettingsOpen(false)
-                        }
-
-                        style={styles.closeButton}
-                      >
-                        Close
-                      </button>
-
-                    </div>
-
-                  </div>
-
-                )}
-
-                <div style={styles.footer}>
-
-                  <a
-                    href="https://www.gymbc.org/media/qb5g331q/2025_tg_canadian_pathways_en_v6_march-2025.pdf"
-
-                    target="_blank"
-
-                    rel="noopener noreferrer"
-
-                    style={styles.footerLink}
-                  >
-                    Canadian Pathways PDF
-                  </a>
-
-                  <a
-                    href="https://www.gymbc.org/media/1wbnaeax/fig-tra-cop-2025-2028.pdf"
-
-                    target="_blank"
-
-                    rel="noopener noreferrer"
-
-                    style={styles.footerLink}
-                  >
-                    FIG Code of Points PDF
-                  </a>
-
-                  <p style={styles.credit}>
-
-                    Created by Jackson Cann •{" "}
-
-                    <a
-                      href="https://www.instagram.com/jcanflip"
-
-                      target="_blank"
-
-                      rel="noopener noreferrer"
-
-                      style={styles.instagramLink}
-                    >
-                      @jcanflip
-                    </a>
-
-                  </p>
-
-                </div>
-
-              </div>
-
-           </div>
-
-</>
-
-}
+          element={<HomeScreen />}
         />
 
         <Route
@@ -528,387 +594,7 @@ const [openQuestion, setOpenQuestion] =
           path="/random-routine-game"
           element={<RandomRoutineGame />}
         />
-
       </Routes>
-
     </BrowserRouter>
-
   );
 }
-
-const styles = {
-
-  container: {
-    minHeight: "100vh",
-    width: "100vw",
-
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-
-    background:
-      "var(--bg-primary)",
-
-    position: "relative",
-
-    overflow: "hidden",
-
-    transition: "0.3s",
-  },
-
-  overlay: {
-    position: "absolute",
-    inset: 0,
-
-    background:
-      "radial-gradient(circle at top, rgba(252,175,69,0.12), transparent 45%)",
-  },
-
-  content: {
-    position: "relative",
-
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-
-    gap: "18px",
-  },
-
-  title: {
-    color:
-      "var(--text-primary)",
-
-    fontSize:
-      "clamp(42px, 8vw, 72px)",
-
-    fontWeight: "bold",
-
-    margin: 0,
-
-    letterSpacing: "-2px",
-
-    textAlign: "center",
-  },
-
-  subtitle: {
-    color:
-      "var(--text-secondary)",
-
-    fontSize: "20px",
-
-    marginBottom: "34px",
-
-    textAlign: "center",
-  },
-
-  buttonContainer: {
-    display: "flex",
-
-    flexDirection: "column",
-
-    gap: "20px",
-  },
-
-  card: {
-    width: "min(340px, 92vw)",
-
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-
-    padding: "30px",
-
-    borderRadius: "28px",
-
-    background:
-      "var(--card-bg)",
-
-    backdropFilter: "blur(14px)",
-
-    border:
-      "1px solid var(--border)",
-
-    color:
-      "var(--text-primary)",
-
-    textDecoration: "none",
-
-    fontSize: "34px",
-
-    fontWeight: "bold",
-
-    textAlign: "center",
-
-    transition:
-      "0.22s ease",
-
-    boxShadow:
-      "0 12px 30px rgba(0,0,0,0.18)",
-
-    cursor: "pointer",
-  },
-
-  bottomButtons: {
-    display: "grid",
-
-    gridTemplateColumns:
-      "repeat(2, 92px)",
-
-    gap: "18px",
-
-    marginTop: "18px",
-  },
-
-  squareButton: {
-    width: "92px",
-    height: "92px",
-
-    borderRadius: "24px",
-
-    border:
-      "1px solid var(--border)",
-
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-
-    background:
-      "var(--card-bg)",
-
-    color:
-      "var(--text-primary)",
-
-    cursor: "pointer",
-
-    textDecoration: "none",
-
-    backdropFilter: "blur(12px)",
-
-    boxShadow:
-      "0 10px 25px rgba(0,0,0,0.18)",
-
-    transition: "0.2s",
-  },
-
-  footer: {
-    marginTop: "42px",
-
-    display: "flex",
-
-    flexDirection: "column",
-
-    gap: "10px",
-
-    alignItems: "center",
-  },
-
-  footerLink: {
-    color:
-      "var(--text-secondary)",
-
-    textDecoration: "none",
-
-    fontSize: "16px",
-  },
-
-  credit: {
-    color:
-      "var(--text-secondary)",
-
-    fontSize: "14px",
-
-    marginTop: "10px",
-  },
-
-  instagramLink: {
-    color:
-      "var(--accent)",
-
-    textDecoration: "none",
-
-    fontWeight: "bold",
-  },
-
-  modalOverlay: {
-    position: "fixed",
-
-    inset: 0,
-
-    background:
-      "rgba(0,0,0,0.5)",
-
-    display: "flex",
-
-    alignItems: "center",
-
-    justifyContent: "center",
-
-    zIndex: 9999,
-  },
-
-  settingsModal: {
-    width: "min(430px, 92vw)",
-
-    maxHeight: "85vh",
-overflowY: "auto",
-
-    background:
-      "var(--card-bg)",
-
-    border:
-      "1px solid var(--border)",
-
-    borderRadius: "30px",
-
-    padding: "30px",
-
-    display: "flex",
-
-    flexDirection: "column",
-
-    gap: "22px",
-
-    color:
-      "var(--text-primary)",
-
-    backdropFilter:
-      "blur(16px)",
-
-    boxShadow:
-      "0 20px 60px rgba(0,0,0,0.4)",
-  },
-
-  settingsTitle: {
-    fontSize: "36px",
-
-    fontWeight: "bold",
-
-    margin: 0,
-  },
-
-  settingItem: {
-    display: "flex",
-
-    justifyContent: "space-between",
-
-    alignItems: "center",
-  },
-
-  settingButton: {
-    padding: "10px 16px",
-
-    borderRadius: "12px",
-
-    border: "none",
-
-    background:
-      "rgba(255,255,255,0.08)",
-
-    color:
-      "var(--text-primary)",
-  },
-
-  settingButtonActive: {
-    padding: "10px 16px",
-
-    borderRadius: "12px",
-
-    border: "none",
-
-    background:
-      "var(--accent-glow)",
-
-    color:
-      "var(--accent)",
-
-    fontWeight: "bold",
-
-    cursor: "pointer",
-  },
-
-  deleteButton: {
-    padding: "10px 16px",
-
-    borderRadius: "12px",
-
-    border: "none",
-
-    background: "#ef4444",
-
-    color: "white",
-
-    fontWeight: "bold",
-
-    cursor: "pointer",
-  },
-
-  closeButton: {
-    padding: "16px",
-
-    borderRadius: "16px",
-
-    border: "none",
-
-    background:
-      "var(--accent-glow)",
-
-    color:
-      "var(--accent)",
-
-    fontWeight: "bold",
-
-    cursor: "pointer",
-  },
-
-  versionText: {
-    color:
-      "var(--text-secondary)",
-
-    textAlign: "center",
-
-    marginTop: "8px",
-  },
-
-  faqButton: {
-  padding: "14px",
-  borderRadius: "14px",
-  width: "100%",
-  border: "none",
-  background: "rgba(255,255,255,0.08)",
-  color: "var(--text-primary)",
-  cursor: "pointer",
-  fontWeight: "bold",
-},
-
-faqContainer: {
-  display: "flex",
-  flexDirection: "column",
-  gap: "12px",
-},
-
-faqItem: {
-  background: "rgba(255,255,255,0.04)",
-  borderRadius: "16px",
-  overflow: "hidden",
-},
-
-faqQuestion: {
-  width: "100%",
-  padding: "16px",
-  background: "transparent",
-  border: "none",
-  color: "var(--text-primary)",
-  textAlign: "left",
-  fontWeight: "bold",
-  cursor: "pointer",
-  fontSize: "16px",
-},
-
-faqAnswer: {
-  padding: "0 16px 16px",
-  color: "var(--text-secondary)",
-  lineHeight: 1.5,
-  fontSize: "15px",
-},
-
-};
